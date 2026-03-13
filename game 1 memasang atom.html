@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis 2: Puzzle Partikel - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --success-green: #2ecc71;
+            --error-red: #e74c3c;
+            --proton-color: #e74c3c;
+            --neutron-color: #f1c40f;
+            --electron-color: #3498db;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.75);
+            z-index: 1;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 45px; 
+            position: relative;
+            z-index: 5;
+            justify-content: space-between;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 2px;
+        }
+        .header-title span { color: var(--accent-orange); }
+
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* AREA GAME PUZZLE */
+        .game-area {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            border-top: 6px solid var(--cyan);
+            padding: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 30px;
+        }
+
+        /* --- DESAIN ATOM --- */
+        .atom-board {
+            position: relative;
+            width: 340px;
+            height: 340px;
+            background: radial-gradient(circle, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 50%;
+            border: 3px dashed var(--blue-medium);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .nucleus {
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            justify-items: center;
+            align-items: center;
+            padding: 12px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 0 15px rgba(38, 165, 203, 0.2);
+            z-index: 3;
+        }
+
+        .orbit {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--blue-light);
+        }
+
+        .orbit-1 { width: 220px; height: 220px; z-index: 2; }
+        .orbit-2 { width: 310px; height: 310px; z-index: 1; }
+
+        /* SLOT DROPDOWN */
+        .drop-slot {
+            width: 32px;
+            height: 32px;
+            background: rgba(0,0,0,0.04);
+            border: 2px dashed #94a3b8;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .electron-slot { position: absolute; }
+
+        .drop-slot.filled {
+            border: none;
+            background: transparent;
+        }
+
+        /* KOTAK PARTIKEL */
+        .particles-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 250px;
+        }
+
+        .particles-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid var(--blue-light);
+            justify-content: center;
+            min-height: 100px;
+        }
+
+        .particles-box h3 {
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: var(--navy);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .particle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            color: white;
+            cursor: grab;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            font-size: 13px;
+            transition: transform 0.2s;
+        }
+
+        .particle.proton { background-color: var(--proton-color); }
+        .particle.neutron { background-color: var(--neutron-color); color: #333; }
+        .particle.electron { background-color: var(--electron-color); }
+
+        .particle:active { cursor: grabbing; transform: scale(1.1); }
+
+        /* ANIMASI SALAH */
+        .error-shake {
+            animation: shake 0.4s;
+            border-color: var(--error-red) !important;
+            background: rgba(231, 76, 60, 0.2);
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25%, 75% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+        }
+
+        /* TOMBOL & POPUP */
+        .bottom-actions { display: flex; justify-content: flex-start; align-items: center; }
+        .btn-action { padding: 10px 20px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px; }
+        .btn-back { background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; backdrop-filter: blur(5px); }
+        .btn-back:hover { background-color: white; color: var(--navy); transform: translateX(-3px); }
+
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 30, 50, 0.85); z-index: 100; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.4s; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content { background: #ffffff; width: 450px; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 10px solid var(--success-green); }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-content h2 { color: var(--success-green); font-size: 28px; margin-bottom: 10px; font-weight: 800; }
+        .modal-content p { color: var(--navy); font-size: 16px; margin-bottom: 25px; font-weight: 500; }
+        
+        .btn-primary { background-color: var(--accent-orange); color: white; padding: 14px 25px; border: none; border-radius: 12px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; box-shadow: 0 5px 0px #c48a30; transition: all 0.3s; }
+        .btn-primary:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 7px 0px #c48a30; }
+
+        .level-indicator { background: var(--navy); color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: 700; letter-spacing: 1px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="main-content">
+            
+            <div class="header-section">
+                <h1 class="header-title">Fokus, <span id="playerNameDisplay">Pelajar</span>!</h1>
+                <p class="header-subtitle" id="instructionText">Tarik partikel ke posisinya untuk membentuk Atom!</p>
+            </div>
+
+            <div class="game-area">
+                
+                <div class="level-indicator" id="levelBadge">LEVEL 1/3</div>
+
+                <div class="atom-board">
+                    <div class="orbit orbit-2" id="orbit2"></div>
+                    <div class="orbit orbit-1" id="orbit1"></div>
+                    <div class="nucleus" id="nucleus"></div>
+                </div>
+
+                <div class="particles-panel">
+                    <div class="particles-box" id="particleBox">
+                        <h3>Pilih Partikel</h3>
+                        </div>
+                </div>
+
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='kuis 1 memasang atom.html'">
+                    ⬅ KEMBALI KE MENU KUIS
+                </button>
+            </div>
+
+        </div>
+
+        <div class="modal-overlay" id="levelPopup">
+            <div class="modal-content">
+                <h2 id="popupTitle">🌟 Luar Biasa!</h2>
+                <p id="popupDesc">Kamu berhasil merakit Atom ini. Siap untuk tingkat kesulitan selanjutnya?</p>
+                <button class="btn-primary" id="btnNextAction">
+                    LANJUT KE LEVEL BERIKUTNYA ➔
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. DATA LEVEL KUIS (He, C, N)
+        const levels = [
+            { name: "Helium (He)", p: 2, n: 2, e1: 2, e2: 0 },
+            { name: "Carbon (C)", p: 6, n: 6, e1: 2, e2: 4 },
+            { name: "Nitrogen (N)", p: 7, n: 7, e1: 2, e2: 5 }
+        ];
+
+        let currentLevel = 0;
+        let correctPlacements = 0;
+        let totalRequired = 0;
+
+        // Tampilkan Nama dari Login
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('playerNameDisplay').innerText = savedName;
+            }
+            loadLevel(currentLevel);
+        });
+
+        // 2. FUNGSI RENDER LEVEL
+        function loadLevel(index) {
+            correctPlacements = 0;
+            const levelData = levels[index];
+            totalRequired = levelData.p + levelData.n + levelData.e1 + levelData.e2;
+
+            document.getElementById('instructionText').innerHTML = `Tarik <b>${totalRequired} partikel</b> untuk membentuk <b>Atom ${levelData.name}</b>!`;
+            document.getElementById('levelBadge').innerText = `LEVEL ${index + 1} / 3`;
+
+            // Bersihkan Board & Kotak
+            const nucleus = document.getElementById('nucleus');
+            const orbit1 = document.getElementById('orbit1');
+            const orbit2 = document.getElementById('orbit2');
+            const pBox = document.getElementById('particleBox');
+            
+            nucleus.innerHTML = '';
+            orbit1.innerHTML = '';
+            orbit2.innerHTML = '';
+            pBox.innerHTML = '<h3>Pilih Partikel</h3>';
+
+            // Generate Slot Inti Atom (Nukleus)
+            let nucleusSlots = [];
+            for(let i=0; i<levelData.p; i++) nucleusSlots.push('proton');
+            for(let i=0; i<levelData.n; i++) nucleusSlots.push('neutron');
+            
+            // Acak urutan slot di inti agar terlihat alami
+            nucleusSlots.sort(() => Math.random() - 0.5);
+
+            nucleusSlots.forEach(type => {
+                let slot = document.createElement('div');
+                slot.className = 'drop-slot';
+                slot.setAttribute('data-expected', type);
+                slot.setAttribute('ondrop', 'drop(event)');
+                slot.setAttribute('ondragover', 'allowDrop(event)');
+                nucleus.appendChild(slot);
+            });
+
+            // Generate Slot Orbit
+            createOrbitSlots(orbit1, levelData.e1);
+            createOrbitSlots(orbit2, levelData.e2);
+
+            // Generate Item Partikel yang Bisa di-Drag
+            for(let i=0; i<levelData.p; i++) createDraggable(pBox, 'proton', 'p+');
+            for(let i=0; i<levelData.n; i++) createDraggable(pBox, 'neutron', 'n0');
+            for(let i=0; i<levelData.e1 + levelData.e2; i++) createDraggable(pBox, 'elektron', 'e-');
+        }
+
+        // Fungsi mengatur jarak elektron melingkar
+        function createOrbitSlots(container, count) {
+            if(count === 0) {
+                container.style.border = 'none';
+                return;
+            } else {
+                container.style.border = '2px solid var(--blue-light)';
+            }
+
+            const radius = 50; 
+            const offset = 16; 
+
+            for(let i = 0; i < count; i++) {
+                let angle = (i * (360 / count)) * (Math.PI / 180);
+                
+                let x = 50 + radius * Math.cos(angle);
+                let y = 50 + radius * Math.sin(angle);
+
+                let slot = document.createElement('div');
+                slot.className = 'drop-slot electron-slot';
+                slot.setAttribute('data-expected', 'elektron');
+                slot.setAttribute('ondrop', 'drop(event)');
+                slot.setAttribute('ondragover', 'allowDrop(event)');
+                
+                slot.style.left = `calc(${x}% - ${offset}px)`;
+                slot.style.top = `calc(${y}% - ${offset}px)`;
+                
+                container.appendChild(slot);
+            }
+        }
+
+        function createDraggable(container, type, text) {
+            let item = document.createElement('div');
+            item.className = `particle ${type}`;
+            item.setAttribute('data-value', type);
+            item.setAttribute('draggable', 'true');
+            item.id = type + '_' + Math.random().toString(36).substr(2, 5);
+            item.innerText = text;
+            item.ondragstart = drag;
+            container.appendChild(item);
+        }
+
+        // 3. LOGIKA DRAG & DROP
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            ev.target.style.opacity = "0.5";
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const draggedId = ev.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(draggedId);
+            const slot = ev.target;
+            
+            draggedElement.style.opacity = "1";
+
+            const expectedValue = slot.getAttribute('data-expected');
+            const droppedValue = draggedElement.getAttribute('data-value');
+
+            // Cek kebenaran & pastikan slot kosong
+            if (expectedValue === droppedValue && !slot.hasChildNodes()) {
+                slot.appendChild(draggedElement);
+                slot.classList.add('filled');
+                
+                draggedElement.setAttribute('draggable', 'false');
+                draggedElement.style.cursor = 'default';
+                draggedElement.style.boxShadow = 'none';
+                draggedElement.style.margin = '0'; 
+
+                correctPlacements++;
+                checkWin();
+            } else {
+                slot.classList.add('error-shake');
+                setTimeout(() => slot.classList.remove('error-shake'), 400);
+            }
+        }
+
+        function checkWin() {
+            if (correctPlacements === totalRequired) {
+                setTimeout(() => {
+                    showPopup();
+                }, 500);
+            }
+        }
+
+        // 4. LOGIKA PERPINDAHAN LEVEL & POPUP
+        function showPopup() {
+            const popup = document.getElementById('levelPopup');
+            const title = document.getElementById('popupTitle');
+            const desc = document.getElementById('popupDesc');
+            const btn = document.getElementById('btnNextAction');
+
+            if (currentLevel < levels.length - 1) {
+                // Jika belum level terakhir
+                title.innerText = "🌟 Susunan Sempurna!";
+                desc.innerText = `Kamu berhasil merakit Atom ${levels[currentLevel].name}. Mari kita coba unsur yang lebih kompleks!`;
+                btn.innerText = "LANJUT LEVEL BERIKUTNYA ➔";
+                btn.onclick = () => {
+                    popup.classList.remove('active');
+                    currentLevel++;
+                    loadLevel(currentLevel);
+                };
+            } else {
+                // Jika level terakhir (Nitrogen) selesai, MENUJU KUIS 3 MENJODOHKAN
+                title.innerText = "🏆 Master Partikel!";
+                desc.innerText = "Kamu berhasil menyelesaikan seluruh puzzle Atom tanpa kesalahan!";
+                btn.innerText = "LANJUT KE KUIS 3 (MENJODOHKAN) ➔";
+                btn.onclick = () => {
+                    window.location.href = 'kuis 2 menjodohkan.html';
+                };
+            }
+            popup.classList.add('active');
+        }
+
+        document.addEventListener('dragend', function(ev) {
+            if(ev.target.className.includes('particle')) {
+                ev.target.style.opacity = "1";
+            }
+        });
+    </script>
+</body>
+</html>

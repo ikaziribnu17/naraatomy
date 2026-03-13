@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 4: Pemisahan Campuran - X-MATTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --bg-white: #F2F3F6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-color: var(--bg-white);
+            background-image: radial-gradient(circle at 50% 10%, rgba(38, 165, 203, 0.08) 0%, transparent 50%);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            padding: 40px 50px;
+        }
+
+        /* Bagian Header */
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-title {
+            color: var(--navy);
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: inline-block;
+            border-bottom: 4px solid var(--accent-orange);
+            padding-bottom: 5px;
+        }
+
+        .instruction-text {
+            color: var(--blue-medium);
+            font-size: 16px;
+            font-weight: 500;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--blue-light);
+        }
+
+        .instruction-text strong {
+            color: var(--cyan);
+        }
+
+        /* Grid Layout untuk 4 Kartu Pemisahan */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            flex: 1;
+        }
+
+        /* Desain Kartu Informasi */
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            box-shadow: 0 10px 20px rgba(101, 134, 177, 0.1);
+            border-left: 6px solid var(--cyan);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Variasi warna border kiri untuk estetika */
+        .info-card:nth-child(2) { border-left-color: var(--accent-orange); }
+        .info-card:nth-child(3) { border-left-color: var(--navy); }
+        .info-card:nth-child(4) { border-left-color: var(--blue-medium); }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(38, 165, 203, 0.15);
+        }
+
+        /* Ikon Besar */
+        .icon-box {
+            font-size: 45px;
+            background: var(--bg-white);
+            min-width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+        }
+
+        /* Konten Teks */
+        .text-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .text-content h3 {
+            color: var(--navy);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .text-content p.desc {
+            color: var(--navy);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .contoh-label {
+            background-color: rgba(239, 178, 91, 0.15);
+            color: var(--navy);
+            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-orange);
+            font-weight: 500;
+        }
+
+        .contoh-label span {
+            font-weight: 700;
+        }
+
+        /* Tombol Navigasi */
+        .btn-next {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            padding: 12px 25px;
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 0px #d49a4a;
+        }
+
+        .btn-next:hover {
+            background-color: #f2bc6b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #d49a4a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        
+        <div class="header-section">
+            <h1 class="header-title">Modul 4: Metode Pemisahan Campuran</h1>
+            <p class="instruction-text">"Pelajari alat laboratorium di bawah ini, <strong id="playerNameDisplay">Detektif</strong>, untuk mulai memisahkan zat!"</p>
+        </div>
+
+        <div class="grid-container">
+            
+            <div class="info-card">
+                <div class="icon-box">🌪️</div>
+                <div class="text-content">
+                    <h3>Filtrasi (Penyaringan)</h3>
+                    <p class="desc">Memisahkan partikel padatan dari cairan dengan menggunakan alat penyaring berpori (kertas saring).</p>
+                    <div class="contoh-label">
+                        <span>Contoh:</span> Memisahkan pasir kotor dari air.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="icon-box">♨️</div>
+                <div class="text-content">
+                    <h3>Evaporasi (Penguapan)</h3>
+                    <p class="desc">Memisahkan zat padat yang terlarut dalam cairan dengan cara memanaskannya hingga pelarutnya menguap habis.</p>
+                    <div class="contoh-label">
+                        <span>Contoh:</span> Mendapatkan garam dari air laut.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="icon-box">⚗️</div>
+                <div class="text-content">
+                    <h3>Distilasi (Penyulingan)</h3>
+                    <p class="desc">Memisahkan zat cair dari campurannya berdasarkan perbedaan titik didih menggunakan kondensor.</p>
+                    <div class="contoh-label">
+                        <span>Contoh:</span> Memisahkan air murni dari larutan alkohol.
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="icon-box">🌈</div>
+                <div class="text-content">
+                    <h3>Kromatografi</h3>
+                    <p class="desc">Memisahkan campuran berdasarkan perbedaan kecepatan merambat atau meresapnya zat pada suatu medium (seperti kertas).</p>
+                    <div class="contoh-label">
+                        <span>Contoh:</span> Memisahkan warna pada tinta spidol.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="btn-next" onclick="alert('Melanjutkan ke Tantangan Nyata!')">LANJUT ➔</button>
+
+    </div>
+
+    <script>
+        // Mengambil nama pemain dari SessionStorage
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName) {
+                document.getElementById('playerNameDisplay').innerText = savedName;
+            }
+        });
+    </script>
+</body>
+</html>

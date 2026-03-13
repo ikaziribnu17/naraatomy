@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi: Mengenal Unsur - X-MATTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --bg-white: #F2F3F6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-color: var(--bg-white);
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        /* Styling Umum untuk Slide */
+        .slide-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            padding: 40px;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Sembunyikan Slide 9 di Awal */
+        #slide9 {
+            opacity: 0;
+            pointer-events: none; /* Mencegah klik saat disembunyikan */
+        }
+
+        /* =========================================
+           SLIDE 8: MENGENAL UNSUR
+           ========================================= */
+        #slide8 {
+            background-image: radial-gradient(circle at 80% 50%, rgba(239, 178, 91, 0.05) 0%, transparent 60%);
+            flex-direction: row;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .text-panel {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-title {
+            color: var(--navy);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 4px solid var(--cyan);
+            display: inline-block;
+            padding-bottom: 5px;
+            align-self: flex-start;
+        }
+
+        .materi-text {
+            background-color: white;
+            border-left: 6px solid var(--navy);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(61, 84, 116, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .materi-text p {
+            color: var(--navy);
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .contoh-box {
+            background-color: rgba(38, 165, 203, 0.1);
+            border: 2px dashed var(--cyan);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .contoh-box strong {
+            color: var(--navy);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .contoh-box p {
+            color: var(--blue-medium);
+            font-size: 15px;
+        }
+
+        /* Visual Panel Kanan */
+        .visual-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-box {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid var(--blue-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+        }
+
+        .icon-box span {
+            font-size: 50px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .icon-box p {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 14px;
+        }
+
+        /* Animasi Glow Teknis */
+        @keyframes glowEffect {
+            0% { box-shadow: 0 0 5px var(--accent-orange), inset 0 0 5px var(--accent-orange); border-color: var(--accent-orange); }
+            50% { box-shadow: 0 0 25px var(--accent-orange), inset 0 0 10px var(--accent-orange); border-color: var(--accent-orange); transform: scale(1.05); }
+            100% { box-shadow: 0 0 5px var(--accent-orange), inset 0 0 5px var(--accent-orange); border-color: var(--accent-orange); }
+        }
+
+        .glow-active {
+            animation: glowEffect 2s infinite;
+        }
+
+        /* =========================================
+           SLIDE 9: SISTEM PERIODIK UNSUR
+           ========================================= */
+        #slide9 {
+            background-color: var(--navy); /* Full screen gelap agar tabel menonjol */
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+
+        #slide9 .header-title {
+            color: white;
+            border-bottom: 4px solid var(--accent-orange);
+            margin-bottom: 20px;
+        }
+
+        /* CSS Art: Simulasi Tabel Periodik */
+        .periodic-table {
+            width: 100%;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 2px solid var(--blue-medium);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 20px;
+            justify-content: center;
+            align-content: center;
+            position: relative;
+        }
+
+        .element-box {
+            width: 40px;
+            height: 45px;
+            background-color: var(--cyan);
+            border-radius: 4px;
+            opacity: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .element-box.orange { background-color: var(--accent-orange); }
+        .element-box.blue { background-color: var(--blue-light); color: var(--navy); }
+        .element-box.empty { background-color: transparent; border: 1px dashed rgba(255,255,255,0.2); }
+
+        /* =========================================
+           ELEMEN BERSAMA (AUDIO VO & TOMBOL)
+           ========================================= */
+        .vo-box {
+            position: absolute;
+            bottom: 30px;
+            left: 40px;
+            background: white;
+            border: 2px solid var(--cyan);
+            border-radius: 16px 16px 16px 0;
+            padding: 15px 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 20;
+        }
+
+        .vo-icon {
+            font-size: 24px;
+        }
+
+        .vo-box p {
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .btn-action {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            padding: 12px 25px;
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 0px #d49a4a;
+            z-index: 20;
+        }
+
+        .btn-action:hover {
+            background-color: #f2bc6b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #d49a4a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        
+        <div id="slide8" class="slide-container">
+            <div class="text-panel">
+                <h1 class="header-title">Materi: Mengenal Unsur</h1>
+                
+                <div class="materi-text">
+                    <p>"Unsur adalah zat murni yang hanya terdiri dari satu jenis atom. Unsur tidak bisa diuraikan lagi menjadi zat yang lebih sederhana."</p>
+                </div>
+
+                <div class="contoh-box">
+                    <strong>Contoh:</strong>
+                    <p>Emas murni (Au), Besi (Fe), dan gas Oksigen (O₂).</p>
+                </div>
+            </div>
+
+            <div class="visual-panel">
+                <div class="icon-box glow-active">
+                    <span>🥇</span>
+                    <p>Emas Batangan (Au)</p>
+                </div>
+                <div class="icon-box glow-active" style="animation-delay: 1s;">
+                    <span>🧯</span>
+                    <p>Tabung Oksigen (O₂)</p>
+                </div>
+            </div>
+
+            <div class="vo-box">
+                <div class="vo-icon">🔊</div>
+                <p><strong>VO Atomy:</strong> "Emas yang berkilau ini hanya berisi atom emas saja, tidak ada campuran lainnya. Itulah kenapa disebut Unsur."</p>
+            </div>
+
+            <button class="btn-action" onclick="goToSlide9()">TABEL PERIODIK ➔</button>
+        </div>
+
+
+        <div id="slide9" class="slide-container">
+            <h1 class="header-title">Peta Unsur di Alam Semesta</h1>
+            
+            <div class="periodic-table" id="periodicTableCanvas">
+                </div>
+
+            <div class="vo-box">
+                <div class="vo-icon">🔊</div>
+                <p><strong>VO:</strong> "Inilah tabel yang berisi seluruh 'anggota keluarga' unsur yang sudah ditemukan manusia."</p>
+            </div>
+
+            <button class="btn-action" onclick="alert('Lanjut ke Halaman Senyawa!')">LANJUT ➔</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Fungsi untuk transisi ke Slide 9
+        function goToSlide9() {
+            // Sembunyikan Slide 8
+            document.getElementById('slide8').style.opacity = '0';
+            document.getElementById('slide8').style.pointerEvents = 'none';
+            
+            // Tampilkan Slide 9
+            document.getElementById('slide9').style.opacity = '1';
+            document.getElementById('slide9').style.pointerEvents = 'auto';
+            
+            generatePeriodicTable(); // Gambar tabel periodik saat slide 9 dibuka
+        }
+
+        // Fungsi membuat grafik kotak-kotak mirip Tabel Periodik Unsur
+        function generatePeriodicTable() {
+            const tableContainer = document.getElementById('periodicTableCanvas');
+            tableContainer.innerHTML = ''; // Bersihkan dulu
+            
+            // Membuat grid 18 kolom x 7 baris untuk mensimulasikan bentuk kasar TPU
+            for (let i = 0; i < 126; i++) {
+                let box = document.createElement('div');
+                box.classList.add('element-box');
+                
+                // Menghapus elemen di ruang kosong (antara H dan He, dll)
+                if ((i > 0 && i < 17) || (i > 19 && i < 29) || (i > 37 && i < 47)) {
+                    box.classList.add('empty');
+                } else {
+                    // Memberikan warna acak agar meriah
+                    let randomColor = Math.random();
+                    if (randomColor < 0.3) {
+                        box.classList.add('orange');
+                    } else if (randomColor < 0.6) {
+                        box.classList.add('blue');
+                    }
+                    box.innerText = "El"; // Teks dummy Element
+                }
+                tableContainer.appendChild(box);
+            }
+        }
+    </script>
+</body>
+</html>

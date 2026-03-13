@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi: Mengenal Senyawa - X-MATTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --bg-white: #F2F3F6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-color: var(--bg-white);
+            background-image: radial-gradient(circle at 20% 50%, rgba(38, 165, 203, 0.05) 0%, transparent 60%);
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        /* Layout Utama Terbagi 2 Kolom */
+        .content-wrapper {
+            display: flex;
+            width: 100%;
+            gap: 40px;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* Panel Kiri: Teks Materi */
+        .text-panel {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-bottom: 60px; /* Ruang untuk kotak VO */
+        }
+
+        .header-title {
+            color: var(--navy);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 4px solid var(--accent-orange);
+            display: inline-block;
+            padding-bottom: 5px;
+            align-self: flex-start;
+        }
+
+        .materi-text {
+            background-color: white;
+            border-left: 6px solid var(--navy);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(61, 84, 116, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .materi-text p {
+            color: var(--navy);
+            font-size: 16px;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .materi-text strong {
+            color: var(--cyan);
+        }
+
+        .contoh-box {
+            background-color: rgba(239, 178, 91, 0.1);
+            border: 2px dashed var(--accent-orange);
+            padding: 15px 20px;
+            border-radius: 12px;
+        }
+
+        .contoh-box strong {
+            color: var(--navy);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .contoh-box p {
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* Panel Kanan: Visual & Animasi */
+        .visual-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 100%;
+        }
+
+        /* Container Molekul dengan Animasi Zoom In */
+        .molecule-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Animasi Zoom In sesuai instruksi teknis */
+            animation: zoomInBounce 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0.3);
+        }
+
+        @keyframes zoomInBounce {
+            0% { opacity: 0; transform: scale(0.3); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* CSS Art: Molekul H2O */
+        .atom-oxygen {
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle at 30% 30%, #ffd085, var(--accent-orange));
+            border-radius: 50%;
+            position: absolute;
+            z-index: 5;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2), 0 10px 20px rgba(239, 178, 91, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .atom-hydrogen {
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle at 30% 30%, #7ee1ff, var(--cyan));
+            border-radius: 50%;
+            position: absolute;
+            z-index: 4;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.2), 0 5px 15px rgba(38, 165, 203, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        /* Posisi sudut ikatan air (sekitar 104.5 derajat) */
+        .h1 {
+            top: 40px;
+            left: 20px;
+        }
+
+        .h2 {
+            top: 40px;
+            right: 20px;
+        }
+
+        /* Garis Ikatan Kimia */
+        .bond {
+            position: absolute;
+            background-color: var(--blue-medium);
+            height: 10px;
+            width: 60px;
+            z-index: 3;
+            border-radius: 5px;
+        }
+
+        .bond-1 {
+            top: 100px;
+            left: 65px;
+            transform: rotate(-45deg);
+        }
+
+        .bond-2 {
+            top: 100px;
+            right: 65px;
+            transform: rotate(45deg);
+        }
+
+        .visual-label {
+            margin-top: 40px;
+            background: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            border: 2px solid var(--blue-light);
+            animation: fadeIn 2s ease forwards;
+            opacity: 0;
+            animation-delay: 1s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Kotak Audio VO (Kiri Bawah) */
+        .vo-box {
+            position: absolute;
+            bottom: 30px;
+            left: 40px;
+            background: white;
+            border: 2px solid var(--cyan);
+            border-radius: 16px 16px 16px 0;
+            padding: 15px 25px;
+            box-shadow: 0 10px 20px rgba(38, 165, 203, 0.15);
+            max-width: 550px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 20;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 2s; /* VO muncul setelah molekul selesai zoom in */
+        }
+
+        .vo-icon {
+            font-size: 28px;
+            background: var(--bg-white);
+            border-radius: 50%;
+            padding: 8px;
+        }
+
+        .vo-box p {
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .vo-box strong {
+            color: var(--accent-orange);
+        }
+
+        /* Tombol Navigasi Bawah Kanan */
+        .btn-next {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            padding: 12px 25px;
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 0px #d49a4a;
+        }
+
+        .btn-next:hover {
+            background-color: #f2bc6b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #d49a4a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        
+        <div class="content-wrapper">
+            
+            <div class="text-panel">
+                <h1 class="header-title">Materi: Mengenal Senyawa</h1>
+                
+                <div class="materi-text">
+                    <p>"Senyawa adalah <strong>zat murni</strong> yang terbentuk dari gabungan dua atau lebih unsur berbeda melalui reaksi kimia."</p>
+                </div>
+
+                <div class="contoh-box">
+                    <strong>Contoh Senyawa:</strong>
+                    <p>💧 Air (H<sub>2</sub>O)</p>
+                    <p>🧂 Garam Dapur (NaCl)</p>
+                    <p>💨 Karbondioksida (CO<sub>2</sub>)</p>
+                </div>
+            </div>
+
+            <div class="visual-panel">
+                
+                <div class="molecule-wrapper">
+                    <div class="atom-oxygen">O</div>
+                    
+                    <div class="bond bond-1"></div>
+                    <div class="bond bond-2"></div>
+                    
+                    <div class="atom-hydrogen h1">H</div>
+                    <div class="atom-hydrogen h2">H</div>
+                </div>
+
+                <div class="visual-label">Struktur Molekul Air (H₂O)</div>
+
+            </div>
+
+        </div>
+
+        <div class="vo-box">
+            <div class="vo-icon">🔊</div>
+            <p><strong>VO Atomy:</strong> "Unsur yang berbeda bisa 'menikah' dan membentuk Senyawa. Sifatnya akan berbeda total dari unsur aslinya!"</p>
+        </div>
+
+        <button class="btn-next" onclick="alert('Lanjut ke Halaman Campuran!')">LANJUT ➔</button>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Kuis - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --success-green: #4CAF50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 KONSISTEN */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.7); /* Overlay gelap transparan */
+            z-index: 1;
+        }
+
+        /* Area Konten Utama */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 45px; 
+            position: relative;
+            z-index: 5;
+            justify-content: space-between;
+        }
+
+        /* Header Misi */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 34px;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+        }
+
+        .header-title span {
+            color: var(--cyan);
+        }
+
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        /* Container Grid Kuis (Diubah agar muat 4 Kartu Berjejer) */
+        .quiz-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Membungkus jika layar mengecil */
+            gap: 20px;
+            margin-bottom: auto;
+            margin-top: 10px;
+        }
+
+        /* Kartu Kuis - Lebar diperkecil agar 4 kartu sejajar rapi */
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 220px; 
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            border: 3px solid transparent;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top: 8px solid var(--accent-orange);
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--cyan);
+            border-top-color: var(--cyan);
+            box-shadow: 0 15px 30px rgba(38, 165, 203, 0.4);
+            background: #ffffff;
+        }
+
+        .quiz-icon {
+            font-size: 45px; /* Disesuaikan agar proporsional */
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.15));
+            transition: transform 0.3s ease;
+        }
+
+        .quiz-card:hover .quiz-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .quiz-card h3 {
+            color: var(--navy);
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .quiz-card span.sub-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--blue-medium);
+            display: block;
+            margin-top: 5px;
+        }
+
+        .quiz-badge {
+            background-color: var(--navy);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .btn-action {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="main-content">
+            
+            <div class="header-section">
+                <h1 class="header-title">Zona Kuis <span id="playerNameDisplay">ATOMY</span></h1>
+                <p class="header-subtitle">Uji kemampuanmu! Pilih tantangan di bawah ini untuk memulai.</p>
+            </div>
+
+            <div class="quiz-grid">
+                
+                <div class="quiz-card" onclick="window.location.href='kuis 4 memasang nomor massa atom.html'">
+                    <div class="quiz-badge">KUIS 1</div>
+                    <div class="quiz-icon">🔢</div>
+                    <h3>Nomor Massa<br><span class="sub-text">Tentukan massa atom!</span></h3>
+                </div>
+
+                <div class="quiz-card" onclick="window.location.href='game 1 memasang atom.html'">
+                    <div class="quiz-badge">KUIS 2</div>
+                    <div class="quiz-icon">🧩</div>
+                    <h3>Puzzle Partikel<br><span class="sub-text">Rakit atom dan unsurmu!</span></h3>
+                </div>
+
+                <div class="quiz-card" onclick="window.location.href='kuis 2 menjodohkan.html'">
+                    <div class="quiz-badge">KUIS 3</div>
+                    <div class="quiz-icon">⚖️</div>
+                    <h3>Sortir Materi<br><span class="sub-text">Kelompokkan jenis zat.</span></h3>
+                </div>
+
+                <div class="quiz-card" onclick="window.location.href='kuis 3 pemisahan campuran.html'">
+                    <div class="quiz-badge">KUIS 4</div>
+                    <div class="quiz-icon">⚗️</div>
+                    <h3>Lab Pemisahan<br><span class="sub-text">Temukan metode yang pas.</span></h3>
+                </div>
+
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='halaman beranda.html'">
+                    ⬅ KEMBALI KE BERANDA
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Mengambil nama pemain dari SessionStorage
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('playerNameDisplay').innerText = savedName;
+            }
+        });
+    </script>
+</body>
+</html>

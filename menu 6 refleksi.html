@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cermin Belajar (Refleksi) - X-MATTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --bg-white: #F8F9FA;
+            --text-dark: #2C3E50;
+            --border-light: #E0E6ED;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 - Dominan Cerah */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            /* Latar belakang cerah: gradasi putih ke cyan sangat muda */
+            background: linear-gradient(135deg, #ffffff 0%, #e0f2f7 100%);
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        /* Efek Modern Digital Lab yang Blur di Background */
+        .bg-ornament {
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(38, 165, 203, 0.1) 0%, transparent 60%);
+            border-radius: 50%;
+            z-index: 1;
+            filter: blur(20px);
+        }
+
+        .bg-ornament-2 {
+            position: absolute;
+            bottom: -150px;
+            right: -100px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(239, 178, 91, 0.1) 0%, transparent 60%);
+            border-radius: 50%;
+            z-index: 1;
+            filter: blur(30px);
+        }
+
+        /* Wrapper Konten Utama (Refleksi Card) */
+        .content-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(101, 134, 177, 0.15);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* Panel Kiri: Mascot Atomy */
+        .mascot-panel {
+            flex: 0.8;
+            background-color: white;
+            color: var(--navy);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+            text-align: center;
+            position: relative;
+            border-right: 2px solid #E0E6ED;
+        }
+
+        .mascot-icon {
+            font-size: 110px;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .speech-bubble {
+            background: var(--bg-white);
+            padding: 20px 25px;
+            border-radius: 20px;
+            border-bottom-left-radius: 0;
+            border: 1px solid var(--border-light);
+            font-size: 15px;
+            color: var(--text-dark);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .speech-bubble strong { color: var(--cyan); }
+
+        .vo-subtext {
+            font-size: 12px;
+            color: var(--blue-medium);
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        /* Panel Kanan: Pertanyaan Refleksi */
+        .info-panel {
+            flex: 1.2;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .header-title {
+            color: var(--navy);
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .title-underline {
+            width: 70px;
+            height: 5px;
+            background-color: var(--accent-orange);
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        /* Kartu Pertanyaan */
+        .question-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .question-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            border: 2px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0; /* Mulai tersembunyi */
+            position: absolute; /* Bertumpuk di satu posisi */
+            top: 0; left: 0; width: 100%;
+            transform: translateY(15px);
+            pointer-events: none;
+        }
+
+        /* State Aktif (Awal & Fade In) */
+        .question-item.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            position: relative; /* Menjadi relatif agar muat di container */
+        }
+
+        /* Animasi Fade In */
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .q-icon {
+            font-size: 30px;
+            color: var(--accent-orange);
+            background: rgba(239, 178, 91, 0.1);
+            width: 55px; height: 55px;
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .question-item p {
+            color: var(--navy);
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        /* Tombol Aksi */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-next {
+            background-color: var(--accent-orange);
+            color: white;
+            box-shadow: 0 4px 0px #c99347;
+        }
+        .btn-next:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 6px 0px #c99347; }
+        .btn-next:active { transform: translateY(2px); box-shadow: 0 2px 0px #c99347; }
+
+        .btn-home {
+            background-color: var(--cyan);
+            color: white;
+            box-shadow: 0 4px 0px #1c82a3;
+            display: none; /* Disembunyikan di awal */
+        }
+        .btn-home:hover { background-color: #2ab6df; transform: translateY(-2px); box-shadow: 0 6px 0px #1c82a3; }
+        .btn-home:active { transform: translateY(2px); box-shadow: 0 2px 0px #1c82a3; }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="bg-ornament"></div>
+        <div class="bg-ornament-2"></div>
+        
+        <div class="content-wrapper">
+            
+            <div class="mascot-panel">
+                <div class="mascot-icon">🧑‍🏫</div>
+                <div class="speech-bubble">
+                    <p>Luar biasa, Detektif <strong id="playerNameDisplay"></strong>! Kamu telah menyelesaikan misi.</p>
+                    <div class="vo-subtext"><em>(Mari sejenak berkaca, ceritakan jawabanmu pada Bapak/Ibu Guru ya!)</em></div>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h1 class="header-title">Cermin Belajar</h1>
+                <div class="title-underline"></div>
+
+                <div class="question-container" id="questionContainer">
+                    
+                    <div class="question-item active fade-in-element">
+                        <div class="q-icon">🤔</div>
+                        <p>1. Apa hal paling mengejutkan yang kamu temukan tentang atom?</p>
+                    </div>
+
+                    <div class="question-item">
+                        <div class="q-icon">🏔️</div>
+                        <p>2. Dari 5 modul, mana yang paling menantang bagimu? Mengapa?</p>
+                    </div>
+
+                    <div class="question-item">
+                        <div class="q-icon">🌍</div>
+                        <p>3. Bagaimana ilmu kimia ini bisa membantumu menjaga lingkungan?</p>
+                    </div>
+
+                    <div class="question-item">
+                        <div class="q-icon">🕵️‍♂️</div>
+                        <p>4. Bagaimana perasaanmu setelah menjadi 'Detektif Materi'?</p>
+                    </div>
+
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-next" id="btnNext" onclick="showNextQuestion()">Pertanyaan Selanjutnya ➔</button>
+                    <button class="btn btn-home" id="btnHome" onclick="alert('Kembali ke Menu Utama...')">Kembali ke Beranda 🏠</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Memuat nama pemain untuk ditampilkan
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedName = sessionStorage.getItem('xmatter_name') || "Materi";
+            document.getElementById('playerNameDisplay').innerText = savedName;
+        });
+
+        // Logika Menampilkan Pertanyaan Satu per Satu
+        let currentQuestionIndex = 0;
+        const questions = document.querySelectorAll('.question-item');
+        const btnNext = document.getElementById('btnNext');
+        const btnHome = document.getElementById('btnHome');
+
+        function showNextQuestion() {
+            // Simulasi Suara Klik UI
+            console.log("🎵 Sound Effect: Click/Fade");
+
+            // Matikan state aktif pertanyaan saat ini
+            questions[currentQuestionIndex].classList.remove('active');
+
+            // Tambahkan index
+            currentQuestionIndex++;
+
+            // Jika masih ada pertanyaan
+            if (currentQuestionIndex < questions.length) {
+                // Tampilkan pertanyaan berikutnya dengan animasi Fade In
+                questions[currentQuestionIndex].classList.add('active');
+                
+                // Jika sudah mencapai pertanyaan terakhir
+                if (currentQuestionIndex === questions.length - 1) {
+                    btnNext.style.display = 'none'; // Sembunyikan tombol "Next"
+                    btnHome.style.display = 'flex'; // Tampilkan tombol "Home"
+                }
+            }
+        }
+    </script>
+</body>
+</html>

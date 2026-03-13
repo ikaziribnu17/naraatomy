@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Utama - ATOMY: Unsur, Senyawa, & Campuran</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- KESEPAKATAN GAYA GLOBAL --- */
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --text-dark: #2C3E50;
+            --bg-white: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Container Kanvas 16:9 */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #fff7ed 0%, #e0f2f7 100%);
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        /* Ornamen Latar */
+        .grid-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(38, 165, 203, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(38, 165, 203, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+        }
+
+        /* --- LAYOUT UTAMA --- */
+        .main-content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            position: relative;
+            gap: 40px;
+        }
+
+        /* PANEL KIRI: Animasi Atom */
+        .left-panel {
+            flex: 0.7;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Ukuran untuk gambar GIF Atom */
+        .mascot-big {
+            width: 250px; 
+            height: auto;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.15));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .mascot-base {
+            width: 160px;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(101, 134, 177, 0.3) 0%, transparent 70%);
+            margin-top: 10px;
+            border-radius: 50%;
+            animation: shadow-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes shadow-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(0.8); opacity: 0.2; }
+        }
+
+        /* PANEL KANAN: Judul & Menu */
+        .right-panel {
+            flex: 1.3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Sapaan Nama dari Halaman Login */
+        .welcome-badge {
+            display: inline-block;
+            background: var(--cyan);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(38, 165, 203, 0.3);
+            width: max-content;
+        }
+
+        /* Judul Besar */
+        .title-section {
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-title {
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--accent-orange);
+            letter-spacing: 2px;
+            line-height: 1.1;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .app-subtitle {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--cyan);
+            letter-spacing: 1px;
+        }
+
+        .title-divider {
+            width: 100px;
+            height: 5px;
+            background: var(--accent-orange);
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        /* Grid 6 Menu Utama */
+        .main-menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: auto;
+        }
+
+        .menu-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(101, 134, 177, 0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan);
+            background: white;
+            box-shadow: 0 10px 20px rgba(38, 165, 203, 0.2);
+        }
+
+        .menu-icon {
+            font-size: 32px;
+            background: rgba(239, 178, 91, 0.15);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .menu-card:hover .menu-icon {
+            background: var(--cyan);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .menu-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        /* --- MENU BAWAH (KECIL) --- */
+        .bottom-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-small {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--blue-light);
+            color: var(--navy);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-small:hover {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy);
+            transform: translateY(-2px);
+        }
+
+        .btn-exit {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .btn-exit:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="grid-bg"></div>
+
+        <div class="main-content">
+            
+            <div class="left-panel">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Atom_animation.gif" alt="Animasi Struktur Atom" class="mascot-big">
+                <div class="mascot-base"></div>
+            </div>
+
+            <div class="right-panel">
+                
+                <div class="title-section">
+                    <div class="welcome-badge" id="welcomeBox" style="display: none;">
+                        Halo, <span id="userNameDisplay">Pelajar</span>! 👋
+                    </div>
+                    
+                    <h1 class="app-title">ATOMY</h1>
+                    <h2 class="app-subtitle">Unsur, Senyawa, dan Campuran</h2>
+                    <div class="title-divider"></div>
+                </div>
+
+                <div class="main-menu-grid">
+                    <div class="menu-card" onclick="window.location.href='menu 1 pendahuluan.html'">
+                        <div class="menu-icon">📜</div>
+                        <div class="menu-text">Pendahuluan</div>
+                    </div>
+                    <div class="menu-card" onclick="window.location.href='menu 2 kompetensi 1 CP ATP.html'">
+                        <div class="menu-icon">🎯</div>
+                        <div class="menu-text">Kompetensi</div>
+                    </div>
+                    <div class="menu-card" onclick="window.location.href='menu 3 materi 5 modul.html'">
+                        <div class="menu-icon">📚</div>
+                        <div class="menu-text">Materi</div>
+                    </div>
+                    <div class="menu-card" onclick="window.location.href='kuis 1 memasang atom.html'">
+                        <div class="menu-icon">🧩</div>
+                        <div class="menu-text">Kuis</div>
+                    </div>
+                    <div class="menu-card" onclick="window.location.href='menu 5 halaman awal evaluasi.html'">
+                        <div class="menu-icon">📝</div>
+                        <div class="menu-text">Evaluasi</div>
+                    </div>
+                    <div class="menu-card" onclick="window.location.href='menu 6 refleksi.html'">
+                        <div class="menu-icon">💡</div>
+                        <div class="menu-text">Refleksi</div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <button class="btn-small" onclick="window.location.href='info pengembang.html'">
+                        <span>ℹ️</span> Info Aplikasi
+                    </button>
+                    <button class="btn-small" onclick="window.location.href='halaman petunjuk navigasi.html'">
+                        <span>❓</span> Petunjuk
+                    </button>
+                    <button class="btn-small" onclick="window.location.href='halaman pustaka.html'">
+                        <span>📖</span> Referensi
+                    </button>
+                    <button class="btn-small btn-exit" onclick="keluarAplikasi()">
+                        <span>🚪</span> Keluar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('userNameDisplay').innerText = savedName;
+                document.getElementById('welcomeBox').style.display = 'inline-block';
+            }
+        };
+
+        function keluarAplikasi() {
+            if(confirm('Apakah Anda yakin ingin keluar dari aplikasi?')) {
+                // Menghapus data login
+                sessionStorage.clear();
+                
+                // Menutup jendela tab jika memungkinkan (hanya berfungsi jika web dibuka lewat script/localhost khusus)
+                window.close();
+                
+                // Fallback: Jika window.close() diblokir browser, kembali ke halaman login
+                window.location.href = "HALAMAN LOGIN.html";
+            }
+        }
+    </script>
+</body>
+</html>

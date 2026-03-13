@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kompetensi - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 KONSISTEN */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.7);
+            z-index: 1;
+        }
+
+        /* Area Konten Utama - Padding atas/bawah dikurangi agar muat */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            justify-content: space-between;
+        }
+
+        .header-title {
+            color: #ffffff;
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 10px; /* Margin diperkecil */
+            border-bottom: 4px solid var(--accent-orange);
+            display: inline-block;
+            padding-bottom: 3px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* Kotak Capaian Pembelajaran */
+        .cp-box {
+            background-color: rgba(61, 84, 116, 0.95);
+            color: white;
+            padding: 15px 25px; /* Padding diperkecil */
+            border-radius: 12px;
+            margin-bottom: 15px; /* Margin diperkecil */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-left: 8px solid var(--accent-orange);
+        }
+
+        .cp-box h2 {
+            font-size: 20px;
+            color: var(--accent-orange);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+        }
+
+        .cp-box p {
+            font-size: 17px;
+            line-height: 1.5;
+            color: #f8fafc;
+            font-weight: 500;
+        }
+
+        /* Grid Tujuan Pembelajaran */
+        .tp-section-title {
+            color: #e2e8f0;
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .tp-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; /* Jarak antar kartu diperkecil */
+            margin-bottom: auto; /* Mendorong tombol ke bawah secukupnya */
+        }
+
+        .tp-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid transparent;
+            border-radius: 12px;
+            padding: 15px; /* Padding diperkecil */
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tp-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--cyan);
+            background-color: #ffffff;
+        }
+
+        .tp-icon {
+            background-color: var(--blue-medium);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-size: 18px;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .tp-card:hover .tp-icon {
+            background-color: var(--cyan);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .tp-text h3 {
+            color: var(--navy);
+            font-size: 18px;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+
+        .tp-text p {
+            color: var(--navy);
+            font-size: 14px;
+            line-height: 1.3;
+            font-weight: 500;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px; /* Margin atas diperkecil */
+        }
+
+        .btn-action {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
+        }
+
+        .btn-next {
+            background-color: var(--accent-orange);
+            color: white;
+            box-shadow: 0 5px 0px #c48a30;
+        }
+
+        .btn-next:hover {
+            background-color: #f2bc6b;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0px #c48a30;
+        }
+
+        .btn-next:active {
+            transform: translateY(3px);
+            box-shadow: 0 0px 0px #c48a30;
+        }
+
+        /* STYLING UNTUK POP-UP MODAL */
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 30, 50, 0.8);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 500px;
+            padding: 35px;
+            border-radius: 20px;
+            border-top: 10px solid var(--cyan);
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
+            animation: popUpAnim 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popUpAnim {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 32px;
+            font-weight: 700;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.2s;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #e74c3c;
+            transform: scale(1.1);
+        }
+
+        .modal-title {
+            color: var(--navy);
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .modal-desc {
+            color: var(--text-dark);
+            font-size: 17px;
+            line-height: 1.6;
+            font-weight: 500;
+            background: rgba(38, 165, 203, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="main-content">
+            
+            <h1 class="header-title">Kompetensi & Tujuan</h1>
+
+            <div class="cp-box">
+                <h2>⭐ Capaian Pembelajaran (CP)</h2>
+                <p>Peserta didik mampu mengklasifikasikan zat (unsur, senyawa, campuran) dan menganalisis perubahan fisika/kimia serta pemisahan campuran dalam kehidupan sehari-hari.</p>
+            </div>
+
+            <h2 class="tp-section-title">Tujuan Pembelajaran (Klik kartu untuk detail):</h2>
+            <div class="tp-grid">
+                
+                <div class="tp-card" onclick="bukaModal('Identifikasi Zat', 'C1: Peserta didik mampu menyebutkan contoh zat yang ada di sekitar dalam kehidupan sehari-hari (seperti Emas, Air, Kopi, dsb).')">
+                    <div class="tp-icon">C1</div>
+                    <div class="tp-text">
+                        <h3>Identifikasi Zat</h3>
+                        <p>Menyebutkan contoh zat di sekitar kita.</p>
+                    </div>
+                </div>
+
+                <div class="tp-card" onclick="bukaModal('Klasifikasi Sifat', 'C2: Peserta didik mampu membedakan karakteristik dan sifat dari unsur murni, senyawa kimia, serta campuran (heterogen/homogen).')">
+                    <div class="tp-icon">C2</div>
+                    <div class="tp-text">
+                        <h3>Klasifikasi Sifat</h3>
+                        <p>Membedakan sifat unsur, senyawa, & campuran.</p>
+                    </div>
+                </div>
+
+                <div class="tp-card" onclick="bukaModal('Simulasi Pemisahan', 'C3: Peserta didik dapat mengoperasikan simulasi alat pemisahan campuran seperti filtrasi, evaporasi, kromatografi, dan distilasi.')">
+                    <div class="tp-icon">C3</div>
+                    <div class="tp-text">
+                        <h3>Simulasi Pemisahan</h3>
+                        <p>Mengoperasikan simulasi alat pemisahan.</p>
+                    </div>
+                </div>
+
+                <div class="tp-card" onclick="bukaModal('Analisis Perubahan', 'C4: Peserta didik mampu menganalisis fenomena es mencair sebagai Perubahan Fisika dan besi berkarat sebagai Perubahan Kimia.')">
+                    <div class="tp-icon">C4</div>
+                    <div class="tp-text">
+                        <h3>Analisis Perubahan</h3>
+                        <p>Menganalisis fenomena perubahan materi.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='halaman beranda.html'">
+                    ⬅ KEMBALI
+                </button>
+                
+                <button class="btn-action btn-next" onclick="window.location.href='menu 2 kompetensi 2 DPL .html'">
+                    LANJUT KE KOMPETENSI 2 ➔
+                </button>
+            </div>
+
+        </div>
+
+        <div class="modal-overlay" id="popupModal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="tutupModal()">&times;</span>
+                <h2 class="modal-title" id="judulModal">Judul</h2>
+                <p class="modal-desc" id="deskripsiModal">Deskripsi lengkap tujuan pembelajaran...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function bukaModal(judul, deskripsi) {
+            document.getElementById('judulModal').innerText = judul;
+            document.getElementById('deskripsiModal').innerText = deskripsi;
+            document.getElementById('popupModal').style.display = 'flex';
+        }
+
+        function tutupModal() {
+            document.getElementById('popupModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('popupModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

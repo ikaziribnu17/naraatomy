@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimensi Profil Lulusan - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --text-dark: #2C3E50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 KONSISTEN */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.7); /* Overlay gelap transparan */
+            z-index: 1;
+        }
+
+        /* Area Konten Utama */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 25px 45px;
+            position: relative;
+            z-index: 5;
+            justify-content: space-between;
+        }
+
+        /* Split Layout untuk Konten Tengah */
+        .split-layout {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* Panel Kiri: Maskot Atomy */
+        .mascot-panel {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .speech-bubble {
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid var(--accent-orange);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        /* Segitiga panah balon percakapan */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 18px 15px 0;
+            border-style: solid;
+            border-color: var(--accent-orange) transparent transparent transparent;
+            display: block;
+            width: 0;
+        }
+
+        .speech-bubble p {
+            color: var(--navy);
+            font-weight: 600;
+            font-size: 18px; /* Diperbesar agar mudah dibaca */
+            line-height: 1.5;
+        }
+
+        .speech-bubble strong {
+            color: var(--cyan);
+            font-weight: 800;
+        }
+
+        /* Maskot Gambar Animasi */
+        .mascot-img {
+            width: 180px;
+            height: auto;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Panel Kanan: Konten Profil Lulusan */
+        .profil-panel {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-title {
+            color: #ffffff;
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            border-bottom: 4px solid var(--accent-orange);
+            display: inline-block;
+            padding-bottom: 5px;
+            align-self: flex-start;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* Grid untuk 3 Ikon Besar */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* Kartu Profil Lulusan Interaktif */
+        .profil-card {
+            background: rgba(61, 84, 116, 0.95); /* Warna navy transparan */
+            border-top: 8px solid var(--cyan);
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 220px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+        .profil-card:hover {
+            border-top-color: var(--accent-orange);
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.95);
+            color: var(--navy);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+        }
+
+        .profil-card:hover .icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .profil-card h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .btn-action {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
+        }
+
+        .btn-next {
+            background-color: var(--accent-orange);
+            color: white;
+            box-shadow: 0 5px 0px #c48a30;
+        }
+
+        .btn-next:hover {
+            background-color: #f2bc6b;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0px #c48a30;
+        }
+
+        .btn-next:active {
+            transform: translateY(3px);
+            box-shadow: 0 0px 0px #c48a30;
+        }
+
+        /* STYLING UNTUK POP-UP MODAL */
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 30, 50, 0.8);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 500px;
+            padding: 35px;
+            border-radius: 20px;
+            border-top: 10px solid var(--cyan);
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
+            animation: popUpAnim 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popUpAnim {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 32px;
+            font-weight: 700;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: 0.2s;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #e74c3c;
+            transform: scale(1.1);
+        }
+
+        .modal-title {
+            color: var(--navy);
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .modal-desc {
+            color: var(--text-dark);
+            font-size: 18px;
+            line-height: 1.6;
+            font-weight: 500;
+            background: rgba(38, 165, 203, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="main-content">
+            
+            <div class="split-layout">
+                <div class="mascot-panel">
+                    <div class="speech-bubble">
+                        <p>Halo <strong id="userNameDisplay">Pelajar</strong>! 👋<br>Dalam misi kali ini, kita akan melatih <strong>3 Dimensi Profil Lulusan</strong>. Coba klik ikon di sebelah kanan!</p>
+                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Atom_animation.gif" alt="Animasi Struktur Atom" class="mascot-img">
+                </div>
+
+                <div class="profil-panel">
+                    <h1 class="header-title">Dimensi Profil Lulusan</h1>
+                    
+                    <div class="cards-container">
+                        
+                        <div class="profil-card" onclick="bukaModal('🎒 Mandiri', 'Mampu belajar dan mengeksplorasi materi dengan kecepatanmu sendiri (Self-paced) serta bertanggung jawab atas proses belajar.')">
+                            <div class="icon">🎒</div>
+                            <h3>Mandiri</h3>
+                        </div>
+
+                        <div class="profil-card" onclick="bukaModal('🧠 Bernalar Kritis', 'Melakukan eksperimen virtual, memproses informasi, dan menganalisis fenomena wujud zat secara objektif.')">
+                            <div class="icon">🧠</div>
+                            <h3>Bernalar Kritis</h3>
+                        </div>
+
+                        <div class="profil-card" onclick="bukaModal('💡 Kreatif', 'Mampu memecahkan masalah, menghasilkan gagasan orisinal, dan menemukan solusi dalam metode pemisahan campuran.')">
+                            <div class="icon">💡</div>
+                            <h3>Kreatif</h3>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='menu 2 kompetensi 1 CP ATP.html'">
+                    ⬅ KEMBALI
+                </button>
+                
+                <button class="btn-action btn-next" onclick="window.location.href='menu 3 materi 5 modul.html'">
+                    LANJUT KE MATERI ➔
+                </button>
+            </div>
+
+        </div>
+
+        <div class="modal-overlay" id="popupModal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="tutupModal()">&times;</span>
+                <h2 class="modal-title" id="judulModal">Judul</h2>
+                <p class="modal-desc" id="deskripsiModal">Deskripsi lengkap profil lulusan...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Mengambil nama dari Halaman Login saat halaman dimuat
+        window.onload = function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName && savedName.trim() !== "") {
+                // Mengubah kata Pelajar menjadi nama yang diinput
+                document.getElementById('userNameDisplay').innerText = savedName;
+            }
+        };
+
+        // Fungsi untuk Pop-up Modal
+        function bukaModal(judul, deskripsi) {
+            document.getElementById('judulModal').innerText = judul;
+            document.getElementById('deskripsiModal').innerText = deskripsi;
+            document.getElementById('popupModal').style.display = 'flex';
+        }
+
+        function tutupModal() {
+            document.getElementById('popupModal').style.display = 'none';
+        }
+
+        // Tutup modal jika mengklik area gelap di luar kotak putih
+        window.onclick = function(event) {
+            var modal = document.getElementById('popupModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

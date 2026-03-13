@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petunjuk Evaluasi - X-MATTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --bg-white: #F2F3F6;
+            --success-green: #2ecc71;
+            --warning-red: #e74c3c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 - Dominan Cerah */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            /* Latar belakang cerah: gradasi putih ke cyan sangat muda */
+            background: linear-gradient(135deg, #ffffff 0%, #e0f2f7 100%);
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        /* Ornamen Latar Belakang Digital Lab (Terang) */
+        .bg-ornament {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(38, 165, 203, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .bg-ornament-2 {
+            position: absolute;
+            bottom: -100px;
+            left: -50px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(239, 178, 91, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Wrapper Konten (Papan Jalan Digital) */
+        .content-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(101, 134, 177, 0.15);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* Panel Kiri (Mascot & Sapaan) */
+        .mascot-panel {
+            flex: 0.8;
+            background-color: var(--cyan);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Garis aksen oranye di pembatas */
+        .mascot-panel::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6px;
+            height: 100%;
+            background-color: var(--accent-orange);
+        }
+
+        .mascot-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .greeting-text {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .sub-greeting {
+            font-size: 14px;
+            font-weight: 500;
+            color: #e0f2f7;
+        }
+
+        /* Panel Kanan (Informasi Evaluasi) */
+        .info-panel {
+            flex: 1.2;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-title {
+            color: var(--navy);
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .title-underline {
+            width: 80px;
+            height: 5px;
+            background-color: var(--accent-orange);
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        /* List Petunjuk */
+        .rules-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--bg-white);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--blue-medium);
+            transition: transform 0.2s;
+        }
+
+        .rule-item:hover {
+            transform: translateX(10px);
+            background: white;
+            box-shadow: 0 5px 15px rgba(101, 134, 177, 0.1);
+        }
+
+        .rule-icon {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .rule-text {
+            color: var(--navy);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .rule-sub {
+            color: var(--blue-medium);
+            font-size: 13px;
+            font-weight: 500;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Syarat Kelulusan Khusus */
+        .rule-item.passing-score {
+            border-left-color: var(--accent-orange);
+            background: rgba(239, 178, 91, 0.1);
+        }
+
+        .rule-item.passing-score .rule-icon {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        /* Tombol Mulai */
+        .btn-start {
+            align-self: flex-start;
+            padding: 15px 40px;
+            background-color: var(--accent-orange);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 6px 0px #c99347;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-start:hover {
+            background-color: #f2bc6b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0px #c99347;
+        }
+
+        .btn-start:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px #c99347;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="bg-ornament"></div>
+        <div class="bg-ornament-2"></div>
+        
+        <div class="content-wrapper">
+            
+            <div class="mascot-panel">
+                <div class="mascot-icon">👨‍🔬</div>
+                <div class="greeting-text">
+                    Siap membuktikan kemampuanmu,<br> <span id="playerNameDisplay" style="color: var(--accent-orange);">Detektif</span>?
+                </div>
+                <div class="sub-greeting">
+                    "Evaluasi ini akan merekam skormu di sertifikat kelulusan X-MATTER."
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h1 class="header-title">EVALUASI AKHIR</h1>
+                <div class="title-underline"></div>
+
+                <div class="rules-container">
+                    
+                    <div class="rule-item">
+                        <div class="rule-icon">📝</div>
+                        <div>
+                            <span class="rule-text">20 Soal Pilihan Ganda</span>
+                            <span class="rule-sub">Pilih satu jawaban yang paling tepat (A, B, C, atau D).</span>
+                        </div>
+                    </div>
+
+                    <div class="rule-item">
+                        <div class="rule-icon">✅</div>
+                        <div>
+                            <span class="rule-text">5 Soal Benar / Salah</span>
+                            <span class="rule-sub">Analisis pernyataan dan tentukan kebenarannya.</span>
+                        </div>
+                    </div>
+
+                    <div class="rule-item passing-score">
+                        <div class="rule-icon">🎯</div>
+                        <div>
+                            <span class="rule-text">Syarat Lulus: Skor Minimal 80</span>
+                            <span class="rule-sub">Jika skormu di bawah 80, kamu harus mengulang evaluasi ini.</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="btn-start" onclick="startEvaluation()">MULAI EVALUASI 🚀</button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Memuat nama pemain untuk ditampilkan
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName) {
+                document.getElementById('playerNameDisplay').innerText = savedName;
+            }
+        });
+
+        // Simulasi Trigger: Jump to Next Slide & Reset Quiz
+        function startEvaluation() {
+            // Simulasi suara klik tombol UI
+            console.log("🎵 Sound Effect: Click/Start");
+            
+            // Konfirmasi untuk memulai
+            const ready = confirm("Perhatian: Setelah evaluasi dimulai, kamu tidak bisa kembali ke menu materi. Yakin sudah siap?");
+            
+            if (ready) {
+                // Di Storyline: Trigger -> "Reset Results" dan "Jump to Next Slide"
+                alert("Memuat bank soal... Evaluasi di-reset. Semoga berhasil!");
+                // window.location.href = "halaman-soal-1.html"; // Navigasi sesungguhnya
+            }
+        }
+    </script>
+</body>
+</html>

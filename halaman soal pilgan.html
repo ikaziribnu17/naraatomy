@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluasi Pilihan Ganda - X-MATTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --bg-white: #F8F9FA;
+            --text-dark: #2C3E50;
+            --success-green: #2ecc71;
+            --border-light: #E0E6ED;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 - Clean Layout */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        /* Header Soal */
+        .quiz-header {
+            background-color: var(--navy);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .question-number { font-size: 18px; font-weight: 700; color: var(--accent-orange); }
+        .module-badge { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 1px; }
+
+        /* Area Konten Utama */
+        .quiz-content {
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            flex: 1;
+            position: relative;
+        }
+
+        /* Teks Pertanyaan */
+        .question-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.5;
+            margin-bottom: 30px;
+            max-width: 900px;
+        }
+
+        /* Opsi Jawaban (Pilihan Ganda) */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 800px;
+        }
+
+        .option-btn {
+            background-color: var(--bg-white);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            position: relative;
+        }
+
+        .option-btn:hover {
+            border-color: var(--cyan);
+            background-color: #f0f9fb;
+            transform: translateX(5px);
+        }
+
+        /* State saat opsi dipilih */
+        .option-btn.selected {
+            border-color: var(--accent-orange);
+            background-color: rgba(239, 178, 91, 0.1);
+            box-shadow: 0 4px 15px rgba(239, 178, 91, 0.2);
+        }
+
+        .option-letter {
+            background-color: var(--navy);
+            color: white;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: background-color 0.2s;
+        }
+
+        .option-btn.selected .option-letter {
+            background-color: var(--accent-orange);
+        }
+
+        .option-text {
+            color: var(--text-dark);
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* Navigasi Bawah */
+        .quiz-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            border-top: 1px solid var(--border-light);
+            padding-top: 20px;
+        }
+
+        .btn-submit {
+            padding: 12px 35px;
+            background-color: var(--navy);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: not-allowed;
+            opacity: 0.5;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Aktif jika ada jawaban yang dipilih */
+        .btn-submit.active {
+            background-color: var(--cyan);
+            cursor: pointer;
+            opacity: 1;
+            box-shadow: 0 4px 0px #1c82a3;
+        }
+
+        .btn-submit.active:hover { background-color: #2ab6df; transform: translateY(-2px); box-shadow: 0 6px 0px #1c82a3; }
+        .btn-submit.active:active { transform: translateY(2px); box-shadow: 0 0px 0px #1c82a3; }
+
+        /* Mascot Penyemangat (Atomy) di pojok kiri bawah */
+        .mascot-corner {
+            position: absolute;
+            bottom: 30px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0.8;
+        }
+
+        .mascot-emoji {
+            font-size: 60px;
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.2));
+            animation: bounce 2s infinite;
+        }
+
+        .mascot-bubble {
+            background: var(--bg-white);
+            padding: 10px 15px;
+            border-radius: 15px;
+            border-bottom-left-radius: 0;
+            border: 1px solid var(--border-light);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        
+        <div class="quiz-header">
+            <div class="question-number">SOAL 1 DARI 20</div>
+            <div class="module-badge">MODUL: PEMISAHAN CAMPURAN (C4)</div>
+        </div>
+
+        <div class="quiz-content">
+            <div class="question-text">
+                Di sebuah laboratorium investigasi, Detektif menemukan cairan bening yang merupakan campuran homogen antara air dan alkohol. Jika Detektif ingin memisahkan alkohol murni dari air tersebut, metode pemisahan apa yang paling tepat digunakan dan apa prinsip dasar yang melandasinya?
+            </div>
+
+            <div class="options-container" id="optionsContainer">
+                </div>
+
+            <div class="quiz-footer">
+                <button class="btn-submit" id="btnSubmit" onclick="submitAnswer()" disabled>SIMPAN & LANJUT ➔</button>
+            </div>
+
+            <div class="mascot-corner">
+                <div class="mascot-emoji">🕵️‍♂️</div>
+                <div class="mascot-bubble">"Baca dengan teliti, perhatikan<br>kata kunci pertanyaannya!"</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Data Soal dan Jawaban (Bisa diganti-ganti)
+        const questionData = [
+            { id: 'correct', text: "Distilasi, karena metode ini didasarkan pada perbedaan titik didih antara alkohol dan air." },
+            { id: 'wrong1', text: "Evaporasi, karena metode ini didasarkan pada proses penguapan zat padat dari pelarutnya." },
+            { id: 'wrong2', text: "Filtrasi, karena metode ini didasarkan pada perbedaan ukuran partikel zat cair." },
+            { id: 'wrong3', text: "Kromatografi, karena metode ini didasarkan pada perbedaan kecepatan merambat antar partikel." }
+        ];
+
+        let selectedAnswer = null;
+        const container = document.getElementById('optionsContainer');
+        const submitBtn = document.getElementById('btnSubmit');
+
+        // Fungsi Mengacak Array (Fisher-Yates Shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Fungsi Render Jawaban ke HTML
+        function renderOptions() {
+            shuffleArray(questionData); // Acak jawaban
+            const letters = ['A', 'B', 'C', 'D'];
+
+            questionData.forEach((option, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-btn';
+                btn.onclick = () => selectOption(btn, option.id);
+
+                btn.innerHTML = `
+                    <div class="option-letter">${letters[index]}</div>
+                    <div class="option-text">${option.text}</div>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        // Fungsi Memilih Jawaban
+        function selectOption(clickedElement, optionId) {
+            // Efek Suara Klik (Simulasi Articulate Storyline)
+            console.log("🔊 Sound Effect: Click/Select");
+
+            // Reset semua pilihan
+            const allOptions = document.querySelectorAll('.option-btn');
+            allOptions.forEach(opt => opt.classList.remove('selected'));
+
+            // Set pilihan aktif
+            clickedElement.classList.add('selected');
+            selectedAnswer = optionId;
+
+            // Aktifkan tombol Submit
+            submitBtn.classList.add('active');
+            submitBtn.disabled = false;
+        }
+
+        // Fungsi Simpan Jawaban
+        function submitAnswer() {
+            if (!selectedAnswer) return;
+
+            // Efek Suara Submit
+            console.log("🔊 Sound Effect: Submit");
+
+            // Karena ini Graded Question tipe Summative, kita biasanya tidak menampilkan pop-up 
+            // benar/salah secara langsung, melainkan menyimpannya ke variabel skor.
+            
+            // Simulasi Logika Articulate:
+            // if (selectedAnswer === 'correct') { addScore(5); }
+            // jumpToSlide('Next Slide');
+
+            alert("Jawaban disimpan! (Mekanisme Articulate akan memindahkan Anda ke Soal 2).");
+        }
+
+        // Inisialisasi saat halaman dimuat
+        window.onload = renderOptions;
+
+    </script>
+</body>
+</html>

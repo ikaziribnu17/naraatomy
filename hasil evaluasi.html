@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Evaluasi - X-MATTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --bg-white: #F2F3F6;
+            --success-green: #2ecc71;
+            --error-red: #e74c3c;
+            --text-dark: #2C3E50;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #ffffff 0%, #e0f2f7 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            padding: 40px;
+            transition: background 0.5s ease;
+        }
+
+        /* Ornamen Background Dinamis */
+        .bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 1;
+            opacity: 0.15;
+            transition: background 0.5s ease;
+        }
+
+        /* Card Hasil Akhir */
+        .result-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(101, 134, 177, 0.15);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Garis Status di atas Card */
+        .status-bar {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 8px;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Mascot Atomy */
+        .mascot-result {
+            font-size: 80px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+            animation: float 3s ease-in-out infinite;
+            transition: transform 0.3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Teks Hasil */
+        .status-text {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .motivation-text {
+            font-size: 16px;
+            color: var(--blue-medium);
+            font-weight: 500;
+            max-width: 600px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Lingkaran Skor */
+        .score-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* SVG Circular Progress (Opsional, diwakili border tebal) */
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border-radius: 50%;
+            border: 8px solid var(--border-color, var(--navy));
+            z-index: -1;
+            transition: border-color 0.5s ease;
+        }
+
+        .score-value {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--blue-medium);
+            margin-top: 5px;
+        }
+
+        .passing-info {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            background: var(--bg-white);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid #E0E6ED;
+        }
+
+        /* Tombol Aksi */
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-review {
+            background-color: white;
+            color: var(--navy);
+            border: 2px solid var(--navy);
+        }
+        .btn-review:hover { background-color: var(--bg-white); transform: translateY(-2px); }
+
+        .btn-retry {
+            background-color: var(--accent-orange);
+            color: white;
+            box-shadow: 0 4px 0px #c99347;
+        }
+        .btn-retry:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 6px 0px #c99347; }
+        .btn-retry:active { transform: translateY(2px); box-shadow: 0 0px 0px #c99347; }
+
+        .btn-home {
+            background-color: var(--cyan);
+            color: white;
+            box-shadow: 0 4px 0px #1c82a3;
+        }
+        .btn-home:hover { background-color: #2ab6df; transform: translateY(-2px); box-shadow: 0 6px 0px #1c82a3; }
+        .btn-home:active { transform: translateY(2px); box-shadow: 0 0px 0px #1c82a3; }
+
+        /* Panel Simulasi (Hanya untuk Testing HTML) */
+        .simulation-panel {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 100;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .simulation-panel button {
+            padding: 5px 10px; cursor: pointer; font-family: 'Poppins'; font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas" id="mainCanvas">
+        <div class="bg-glow" id="bgGlow"></div>
+        
+        <div class="simulation-panel">
+            <b>Simulasi Storyline:</b>
+            <button onclick="setResult(95)">Test LULUS (Skor 95)</button>
+            <button onclick="setResult(60)">Test GAGAL (Skor 60)</button>
+        </div>
+
+        <div class="result-card">
+            <div class="status-bar" id="statusBar"></div>
+            
+            <div class="mascot-result" id="mascotIcon">🏆👨‍🔬</div>
+            
+            <h1 class="status-text" id="statusText">LULUS!</h1>
+            <p class="motivation-text" id="motivationText">Luar biasa, Detektif! Analisamu sangat tajam. Kamu telah menguasai materi ini dengan sempurna!</p>
+
+            <div class="score-circle" id="scoreCircle">
+                <div class="score-value" id="scoreDisplay">0</div>
+                <div class="score-label">SKOR AKHIR</div>
+            </div>
+
+            <div class="passing-info">
+                Syarat Kelulusan: Skor Minimal 80
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-review" onclick="alert('Membuka Review Kuis...')">🔍 Review Quiz</button>
+                <button class="btn btn-retry" id="btnRetry" onclick="alert('Mereset Kuis...')">🔄 Ulangi Evaluasi</button>
+                <button class="btn btn-home" id="btnHome" onclick="alert('Kembali ke Menu Utama...')">🏠 Beranda Materi</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Logika Dinamis Result Slide
+        function setResult(score) {
+            const passingScore = 80;
+            const isPassed = score >= passingScore;
+
+            // Elemen DOM
+            const mainCanvas = document.getElementById('mainCanvas');
+            const bgGlow = document.getElementById('bgGlow');
+            const statusBar = document.getElementById('statusBar');
+            const mascotIcon = document.getElementById('mascotIcon');
+            const statusText = document.getElementById('statusText');
+            const motivationText = document.getElementById('motivationText');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreCircle = document.getElementById('scoreCircle');
+            const btnRetry = document.getElementById('btnRetry');
+            const btnHome = document.getElementById('btnHome');
+
+            // Animasi Angka Skor Berjalan (Counter up)
+            animateValue(scoreDisplay, 0, score, 1000);
+
+            if (isPassed) {
+                // TAMPILAN LULUS (PASS)
+                console.log("🎵 Sound Effect: Triumphant Fanfare!");
+                bgGlow.style.background = "var(--success-green)";
+                statusBar.style.backgroundColor = "var(--success-green)";
+                scoreCircle.style.setProperty('--border-color', 'var(--success-green)');
+                statusText.style.color = "var(--success-green)";
+                
+                mascotIcon.innerHTML = "🏆👨‍🔬"; // Pose The Winner
+                statusText.innerText = "SELAMAT, KAMU LULUS!";
+                motivationText.innerText = "Luar biasa, Detektif! Analisamu sangat tajam. Kamu telah berhasil menguasai seluruh materi X-MATTER dengan sempurna!";
+                
+                // Sembunyikan tombol Ulangi, tonjolkan tombol Beranda
+                btnRetry.style.display = "none";
+                btnHome.style.display = "flex";
+
+            } else {
+                // TAMPILAN GAGAL (FAIL)
+                console.log("🎵 Sound Effect: Encouraging / Soft Motivation Music");
+                bgGlow.style.background = "var(--error-red)";
+                statusBar.style.backgroundColor = "var(--error-red)";
+                scoreCircle.style.setProperty('--border-color', 'var(--error-red)');
+                statusText.style.color = "var(--error-red)";
+                
+                mascotIcon.innerHTML = "💪👨‍🔬"; // Pose The Encourager
+                statusText.innerText = "BELUM LULUS";
+                motivationText.innerText = "Jangan menyerah, Detektif! Penemuan besar selalu butuh beberapa kali percobaan. Mari pelajari lagi materi yang terlewat dan coba kembali!";
+                
+                // Tampilkan tombol Ulangi
+                btnRetry.style.display = "flex";
+                // btnHome.style.display = "flex"; // Beranda tetap ada jika siswa ingin baca materi lagi
+            }
+        }
+
+        // Fungsi Animasi Counter Skor
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Inisialisasi awal (Misal simulasi memanggil variabel dari Storyline)
+        // Di Storyline, Anda akan mem-passing %Results.ScorePercent% ke script JS.
+        window.onload = () => {
+            // Default load kita buat simulasi seolah mendapat nilai 85
+            setTimeout(() => setResult(85), 500); 
+        };
+    </script>
+</body>
+</html>

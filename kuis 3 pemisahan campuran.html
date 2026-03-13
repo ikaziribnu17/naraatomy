@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis 3: Jodohkan Solusinya - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --bg-white: #F2F3F6;
+            --error-red: #e74c3c;
+            --success-green: #2ecc71;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Container 16:9 */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.75);
+            z-index: 1;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 45px; 
+            position: relative;
+            z-index: 5;
+            justify-content: space-between;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 2px;
+        }
+
+        .header-title span { color: var(--accent-orange); }
+        .header-subtitle { color: #e2e8f0; font-size: 15px; font-weight: 500; }
+
+        /* AREA GAME KUIS */
+        .game-area {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            border-top: 6px solid var(--cyan);
+            padding: 20px 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        /* SVG untuk garis penghubung */
+        #svgCanvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 2;
+            width: 40%;
+        }
+
+        .item-box {
+            background: var(--bg-white);
+            border: 2px solid var(--blue-light);
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--navy);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .item-box:hover {
+            border-color: var(--cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+        }
+
+        .item-box.selected {
+            background: var(--cyan);
+            color: white;
+            border-color: var(--navy);
+        }
+
+        .node {
+            width: 14px;
+            height: 14px;
+            background: var(--blue-medium);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: background 0.3s;
+        }
+
+        .item-box.selected .node { background: white; }
+        .left-col .node { right: -7px; }
+        .right-col .node { left: -7px; }
+
+        .btn-check-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .btn-check {
+            background-color: var(--success-green);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 0px #27ae60;
+            transition: all 0.2s;
+            display: none; 
+        }
+        .btn-check:hover { background-color: #2ecc71; transform: translateY(-2px); box-shadow: 0 6px 0px #27ae60; }
+        .btn-check:active { transform: translateY(2px); box-shadow: 0 2px 0px #27ae60; }
+
+        /* Area Tombol Bawah */
+        .bottom-actions { display: flex; justify-content: flex-start; align-items: center; }
+
+        .btn-action {
+            padding: 10px 20px; border: none; border-radius: 10px;
+            font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px;
+            cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; backdrop-filter: blur(5px);
+        }
+        .btn-back:hover { background-color: white; color: var(--navy); transform: translateX(-3px); }
+
+        /* POPUP FEEDBACK */
+        .modal-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 30, 50, 0.85); z-index: 100;
+            display: none; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.4s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: #ffffff; width: 450px; padding: 40px; border-radius: 20px;
+            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 10px solid var(--cyan);
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-content h2 { font-size: 28px; margin-bottom: 15px; font-weight: 800; }
+        .modal-content p { color: var(--navy); font-size: 16px; margin-bottom: 25px; font-weight: 500; }
+
+        .btn-primary {
+            background-color: var(--accent-orange); color: white; padding: 14px 25px; border: none; border-radius: 12px;
+            font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer;
+            width: 100%; box-shadow: 0 5px 0px #c48a30; transition: all 0.3s;
+        }
+        .btn-primary:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 7px 0px #c48a30; }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="main-content">
+            
+            <div class="header-section">
+                <h1 class="header-title">Lab Pemisahan, <span id="playerNameDisplay">Pelajar</span>!</h1>
+                <p class="header-subtitle">Hubungkan masalah campuran (kiri) dengan metode pemisahan yang tepat (kanan).</p>
+            </div>
+
+            <div class="game-area" id="gameArea">
+                <svg id="svgCanvas"></svg>
+                
+                <div class="col left-col">
+                    <div class="item-box left-item" data-id="L1" data-match="R3">Memisahkan pasir dari air kotor <div class="node" id="node-L1"></div></div>
+                    <div class="item-box left-item" data-id="L2" data-match="R1">Mendapatkan garam dari air laut <div class="node" id="node-L2"></div></div>
+                    <div class="item-box left-item" data-id="L3" data-match="R4">Memisahkan zat warna pada tinta <div class="node" id="node-L3"></div></div>
+                    <div class="item-box left-item" data-id="L4" data-match="R2">Mendapatkan air murni dari larutan <div class="node" id="node-L4"></div></div>
+                </div>
+
+                <div class="col right-col">
+                    <div class="item-box right-item" data-id="R1"><div class="node" id="node-R1"></div> Evaporasi (Penguapan)</div>
+                    <div class="item-box right-item" data-id="R2"><div class="node" id="node-R2"></div> Distilasi (Penyulingan)</div>
+                    <div class="item-box right-item" data-id="R3"><div class="node" id="node-R3"></div> Filtrasi (Penyaringan)</div>
+                    <div class="item-box right-item" data-id="R4"><div class="node" id="node-R4"></div> Kromatografi</div>
+                </div>
+
+                <div class="btn-check-container">
+                    <button class="btn-check" id="btnCheckAnswer" onclick="checkAnswers()">CEK JAWABAN ✔️</button>
+                </div>
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='kuis 1 memasang atom.html'">
+                    ⬅ KEMBALI
+                </button>
+            </div>
+
+        </div>
+
+        <div class="modal-overlay" id="feedbackPopup">
+            <div class="modal-content">
+                <h2 id="feedbackTitle">Hasil Kuis</h2>
+                <p id="feedbackDesc">Deskripsi akan muncul di sini.</p>
+                <button class="btn-primary" id="btnAction"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('playerNameDisplay').innerText = savedName;
+            }
+        });
+
+        let selectedLeft = null;
+        let connections = {}; 
+        const totalQuestions = 4;
+
+        const leftItems = document.querySelectorAll('.left-item');
+        const rightItems = document.querySelectorAll('.right-item');
+        const svgCanvas = document.getElementById('svgCanvas');
+        const gameArea = document.getElementById('gameArea');
+        const btnCheck = document.getElementById('btnCheckAnswer');
+
+        // Event Klik Kiri
+        leftItems.forEach(item => {
+            item.addEventListener('click', () => {
+                leftItems.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                selectedLeft = item;
+            });
+        });
+
+        // Event Klik Kanan
+        rightItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (!selectedLeft) return; 
+                
+                const leftId = selectedLeft.getAttribute('data-id');
+                const rightId = item.getAttribute('data-id');
+
+                if (connections[leftId]) {
+                    svgCanvas.removeChild(connections[leftId].line);
+                }
+
+                const correctAnswer = selectedLeft.getAttribute('data-match');
+                const isCorrect = (correctAnswer === rightId);
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('stroke-width', '4');
+                line.setAttribute('stroke', '#26A5CB'); 
+                line.setAttribute('stroke-linecap', 'round');
+                svgCanvas.appendChild(line);
+
+                connections[leftId] = { rightId, line, isCorrect };
+
+                updateLines();
+                
+                selectedLeft.classList.remove('selected');
+                selectedLeft = null;
+
+                if (Object.keys(connections).length === totalQuestions) {
+                    btnCheck.style.display = 'block';
+                }
+            });
+        });
+
+        function updateLines() {
+            const areaRect = gameArea.getBoundingClientRect();
+            
+            for (let leftId in connections) {
+                const conn = connections[leftId];
+                const nodeLeft = document.getElementById(`node-${leftId}`);
+                const nodeRight = document.getElementById(`node-${conn.rightId}`);
+
+                const rectL = nodeLeft.getBoundingClientRect();
+                const rectR = nodeRight.getBoundingClientRect();
+
+                const x1 = rectL.left + (rectL.width / 2) - areaRect.left;
+                const y1 = rectL.top + (rectL.height / 2) - areaRect.top;
+                const x2 = rectR.left + (rectR.width / 2) - areaRect.left;
+                const y2 = rectR.top + (rectR.height / 2) - areaRect.top;
+
+                conn.line.setAttribute('x1', x1);
+                conn.line.setAttribute('y1', y1);
+                conn.line.setAttribute('x2', x2);
+                conn.line.setAttribute('y2', y2);
+            }
+        }
+
+        window.addEventListener('resize', updateLines);
+
+        function checkAnswers() {
+            let correctCount = 0;
+
+            for (let key in connections) {
+                if (connections[key].isCorrect) {
+                    connections[key].line.setAttribute('stroke', '#2ecc71'); 
+                    correctCount++;
+                } else {
+                    connections[key].line.setAttribute('stroke', '#e74c3c'); 
+                }
+            }
+
+            const popup = document.getElementById('feedbackPopup');
+            const title = document.getElementById('feedbackTitle');
+            const desc = document.getElementById('feedbackDesc');
+            const btn = document.getElementById('btnAction');
+
+            // --- BAGIAN INI SUDAH DIUPDATE ---
+            if (correctCount === totalQuestions) {
+                title.innerHTML = "🌟 Sempurna!";
+                title.style.color = "var(--success-green)";
+                desc.innerHTML = "Kamu berhasil menjodohkan semua metode pemisahan campuran dengan tepat! Pengetahuanmu sudah setingkat ilmuwan sungguhan.";
+                
+                // Text dan Redirect diatur ke halaman beranda
+                btn.innerHTML = "KEMBALI KE BERANDA ➔";
+                btn.onclick = () => { window.location.href = 'halaman beranda.html'; };
+            } else {
+                title.innerHTML = "⚠️ Periksa Kembali";
+                title.style.color = "var(--error-red)";
+                desc.innerHTML = `Kamu menjawab benar ${correctCount} dari ${totalQuestions} pertanyaan. Garis merah menunjukkan pasangan yang kurang tepat. Coba ubah sambungannya!`;
+                btn.innerHTML = "PERBAIKI JAWABAN";
+                btn.onclick = closeFeedback;
+            }
+
+            popup.classList.add('active');
+        }
+
+        function closeFeedback() {
+            document.getElementById('feedbackPopup').classList.remove('active');
+            
+            for (let key in connections) {
+                if (!connections[key].isCorrect) {
+                    connections[key].line.setAttribute('stroke', '#26A5CB'); 
+                }
+            }
+        }
+    </script>
+</body>
+</html>

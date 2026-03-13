@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Pengembang: ATOMY - X-MATTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #3D5474;
+            --blue-medium: #6586B1;
+            --blue-light: #82B2D8;
+            --cyan: #26A5CB;
+            --accent-orange: #EFB25B;
+            --text-dark: #2C3E50;
+            --bg-white: #F8F9FA;
+            --border-light: #E0E6ED;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #d1d5db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container 16:9 - Bright Theme */
+        .canvas {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #fff7ed 0%, #e0f2f7 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            padding: 30px 40px;
+            color: var(--text-dark);
+        }
+
+        /* Ornamen Background Digital Lab Cerah */
+        .grid-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(38, 165, 203, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(38, 165, 203, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* Navigasi Atas (Tombol Kembali ke Beranda) */
+        .top-nav {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            z-index: 20;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-home {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--navy);
+            color: var(--navy);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .btn-home:hover {
+            background: var(--bg-white);
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(239, 178, 91, 0.2);
+        }
+
+        /* Layout Utama: Kiri (Aplikasi) & Kanan (Pengembang) */
+        .main-content {
+            display: flex;
+            gap: 40px;
+            z-index: 10;
+            flex: 1;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Bagian Kiri: Info Aplikasi & Atomy */
+        .app-section {
+            flex: 0.8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .mascot-welcome {
+            font-size: 80px;
+            margin-bottom: 10px;
+            animation: wave 2.5s infinite;
+            transform-origin: bottom center;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            50% { transform: rotate(-5deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .app-logo {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--navy);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-logo span { color: var(--cyan); }
+
+        .app-version {
+            background: var(--accent-orange);
+            color: var(--navy);
+            padding: 3px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .app-desc {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid var(--accent-orange);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Bagian Kanan: Futuristic ID Card (Cerah) */
+        .dev-card {
+            flex: 1.2;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(101, 134, 177, 0.1);
+            padding: 25px 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Ornamen Garis Kartu */
+        .dev-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 40px; right: 40px; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            border-radius: 3px;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+
+        .school-info {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--blue-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Wadah Profil (Tanpa Scroll) */
+        .profiles-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Jarak antar profil diperkecil agar muat */
+        }
+
+        /* Profil Individual */
+        .profile-item {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--border-light);
+            transition: all 0.3s;
+        }
+
+        .profile-item:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 5px 15px rgba(38, 165, 203, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .dev-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dev-role {
+            font-size: 11px;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .dev-bio {
+            font-size: 13px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="canvas">
+        <div class="grid-bg"></div>
+
+        <div class="top-nav">
+            <button class="btn-home" onclick="alert('Kembali ke Beranda Utama...')">
+                <span>🏠</span> Kembali ke Beranda
+            </button>
+        </div>
+
+        <div class="main-content">
+            
+            <div class="app-section">
+                <div class="mascot-welcome">👋👨‍🔬</div>
+                
+                <div class="app-logo">
+                    ⚛️ AT<span>OMY</span>
+                </div>
+                <div class="app-version">ATOMY v1.0</div>
+                
+                <div class="app-desc">
+                    <strong>ATOMY: Unsur, Senyawa, dan Campuran</strong> adalah media pembelajaran interaktif berbasis laboratorium digital yang dirancang untuk membantu siswa mengeksplorasi sifat-sifat materi dan atom. Diciptakan dengan pendekatan gamifikasi untuk menumbuhkan jiwa detektif sains pada siswa secara menyenangkan.
+                </div>
+            </div>
+
+            <div class="dev-card">
+                
+                <div class="card-header">
+                    <h2>TIM PENGEMBANG</h2>
+                    <div class="school-info">
+                        🏫 SMP NEGERI 5 SATU ATAP BUMIJAWA, TEGAL, JAWA TENGAH
+                    </div>
+                </div>
+
+                <div class="profiles-container">
+                    
+                    <div class="profile-item">
+                        <div class="dev-name">👨‍🏫 Ibnu Rizaki, S.Pd.</div>
+                        <div class="dev-role">SME & Instructional Designer</div>
+                        <div class="dev-bio">
+                            Pengembang materi dan perancang instruksional pembelajaran IPA. Bertanggung jawab atas akurasi konten ilmiah dan penyusunan modul materi detektif sains.
+                        </div>
+                    </div>
+
+                    <div class="profile-item">
+                        <div class="dev-name">👨‍💻 Dwi Heru Irmawan, S.Kom.</div>
+                        <div class="dev-role">Interactive Media Developer</div>
+                        <div class="dev-bio">
+                            Spesialis pengembangan media interaktif. Mengubah konsep instruksional menjadi antarmuka digital yang dinamis, mendesain UI/UX, dan mengintegrasikan gamifikasi interaktif.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
