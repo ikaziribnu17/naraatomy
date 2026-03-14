@@ -18,6 +18,14 @@
             --bg-white: #FFFFFF;
         }
 
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
@@ -26,33 +34,33 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             overflow: hidden;
         }
 
-        /* Container Kanvas 16:9 */
+        /* Container Kanvas 16:9 DENGAN LATAR GELAP KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw;
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            background: linear-gradient(135deg, #fff7ed 0%, #e0f2f7 100%);
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
             padding: 40px;
         }
 
-        /* Ornamen Latar */
-        .grid-bg {
+        /* Overlay Gelap */
+        .canvas::before {
+            content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(38, 165, 203, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(38, 165, 203, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: 0;
+            background: rgba(20, 35, 55, 0.75);
+            z-index: 1;
         }
 
         /* --- LAYOUT UTAMA --- */
@@ -79,7 +87,7 @@
         .mascot-big {
             width: 250px; 
             height: auto;
-            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3));
             animation: float 4s ease-in-out infinite;
         }
 
@@ -91,15 +99,15 @@
         .mascot-base {
             width: 160px;
             height: 20px;
-            background: radial-gradient(ellipse at center, rgba(101, 134, 177, 0.3) 0%, transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(38, 165, 203, 0.5) 0%, transparent 70%);
             margin-top: 10px;
             border-radius: 50%;
             animation: shadow-pulse 4s ease-in-out infinite;
         }
 
         @keyframes shadow-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(0.8); opacity: 0.2; }
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(0.8); opacity: 0.3; }
         }
 
         /* PANEL KANAN: Judul & Menu */
@@ -108,20 +116,24 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            min-height: 0; /* Penting untuk scroll di HP */
         }
 
         /* Sapaan Nama dari Halaman Login */
         .welcome-badge {
             display: inline-block;
-            background: var(--cyan);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
-            padding: 6px 16px;
+            padding: 8px 18px;
             border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 14.5px;
+            font-weight: 500;
             margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(38, 165, 203, 0.3);
+            border: 1px solid var(--cyan);
+            backdrop-filter: blur(5px);
             width: max-content;
+            max-width: 100%; /* Mencegah meluber di HP */
+            white-space: normal; /* Izinkan teks turun ke bawah jika panjang */
         }
 
         /* Judul Besar */
@@ -129,22 +141,25 @@
             margin-bottom: 30px;
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
         }
 
         .app-title {
             font-size: 52px;
             font-weight: 800;
-            color: var(--accent-orange);
+            color: white;
             letter-spacing: 2px;
             line-height: 1.1;
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .app-title span {
+            color: var(--accent-orange);
         }
 
         .app-subtitle {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--cyan);
             letter-spacing: 1px;
@@ -158,17 +173,27 @@
             margin-top: 15px;
         }
 
-        /* Grid 6 Menu Utama */
+        /* Grid 6 Menu Utama (BISA DI-SCROLL DI HP) */
+        .scrollable-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .scrollable-menu::-webkit-scrollbar { width: 6px; }
+        .scrollable-menu::-webkit-scrollbar-track { background: transparent; }
+        .scrollable-menu::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+
         .main-menu-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-bottom: auto;
+            padding-bottom: 10px;
         }
 
         .menu-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid white;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid transparent;
             border-radius: 15px;
             padding: 20px 15px;
             display: flex;
@@ -177,21 +202,20 @@
             text-align: center;
             gap: 10px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(101, 134, 177, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(5px);
         }
 
         .menu-card:hover {
             transform: translateY(-5px);
             border-color: var(--cyan);
             background: white;
-            box-shadow: 0 10px 20px rgba(38, 165, 203, 0.2);
+            box-shadow: 0 10px 20px rgba(38, 165, 203, 0.4);
         }
 
         .menu-icon {
             font-size: 32px;
-            background: rgba(239, 178, 91, 0.15);
+            background: rgba(38, 165, 203, 0.15);
             width: 60px;
             height: 60px;
             display: flex;
@@ -208,23 +232,25 @@
 
         .menu-text {
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--navy);
         }
 
         /* --- MENU BAWAH (KECIL) --- */
         .bottom-nav {
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-start;
             align-items: center;
             gap: 12px;
-            margin-top: 20px;
+            margin-top: 15px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
         }
 
         .btn-small {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid var(--blue-light);
-            color: var(--navy);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
             padding: 8px 15px;
             border-radius: 20px;
             font-family: 'Poppins', sans-serif;
@@ -235,33 +261,72 @@
             align-items: center;
             gap: 5px;
             transition: all 0.3s;
+            backdrop-filter: blur(5px);
         }
 
         .btn-small:hover {
-            background: var(--navy);
-            color: white;
-            border-color: var(--navy);
+            background: white;
+            color: var(--navy);
             transform: translateY(-2px);
         }
 
         .btn-exit {
-            background: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.2);
+            color: #ff7675;
+            border-color: rgba(231, 76, 60, 0.5);
         }
 
         .btn-exit:hover {
             background: #e74c3c;
             color: white;
+            border-color: #e74c3c;
         }
 
+        /* TAMPILAN KHUSUS HP (RESPONSIF) */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto;
+                border-radius: 0;
+                padding: 20px;
+            }
+            .main-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .left-panel {
+                flex: none; /* Animasi pindah ke atas di HP */
+                height: auto;
+            }
+            .mascot-big {
+                width: 110px; /* Ukuran GIF diperkecil di HP */
+            }
+            .mascot-base {
+                width: 80px;
+                height: 10px;
+            }
+            .right-panel {
+                flex: 1;
+            }
+            .app-title {
+                font-size: 38px;
+            }
+            .app-subtitle {
+                font-size: 16px;
+            }
+            .main-menu-grid {
+                grid-template-columns: repeat(2, 1fr); /* 6 Menu menjadi 2 kolom di HP */
+            }
+            .bottom-nav {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        <div class="grid-bg"></div>
-
         <div class="main-content">
             
             <div class="left-panel">
@@ -273,38 +338,40 @@
                 
                 <div class="title-section">
                     <div class="welcome-badge" id="welcomeBox" style="display: none;">
-                        Halo, <span id="userNameDisplay">Pelajar</span>! 👋
+                        <span id="welcomeText">Halo!</span>
                     </div>
                     
-                    <h1 class="app-title">ATOMY</h1>
+                    <h1 class="app-title">ATO<span>MY</span></h1>
                     <h2 class="app-subtitle">Unsur, Senyawa, dan Campuran</h2>
                     <div class="title-divider"></div>
                 </div>
 
-                <div class="main-menu-grid">
-                    <div class="menu-card" onclick="window.location.href='menu 1 pendahuluan.html'">
-                        <div class="menu-icon">📜</div>
-                        <div class="menu-text">Pendahuluan</div>
-                    </div>
-                    <div class="menu-card" onclick="window.location.href='menu 2 kompetensi 1 CP ATP.html'">
-                        <div class="menu-icon">🎯</div>
-                        <div class="menu-text">Kompetensi</div>
-                    </div>
-                    <div class="menu-card" onclick="window.location.href='menu 3 materi 5 modul.html'">
-                        <div class="menu-icon">📚</div>
-                        <div class="menu-text">Materi</div>
-                    </div>
-                    <div class="menu-card" onclick="window.location.href='kuis 1 memasang atom.html'">
-                        <div class="menu-icon">🧩</div>
-                        <div class="menu-text">Kuis</div>
-                    </div>
-                    <div class="menu-card" onclick="window.location.href='menu 5 halaman awal evaluasi.html'">
-                        <div class="menu-icon">📝</div>
-                        <div class="menu-text">Evaluasi</div>
-                    </div>
-                    <div class="menu-card" onclick="window.location.href='menu 6 refleksi.html'">
-                        <div class="menu-icon">💡</div>
-                        <div class="menu-text">Refleksi</div>
+                <div class="scrollable-menu">
+                    <div class="main-menu-grid">
+                        <div class="menu-card" onclick="window.location.href='menu 1 pendahuluan.html'">
+                            <div class="menu-icon">📜</div>
+                            <div class="menu-text">Pendahuluan</div>
+                        </div>
+                        <div class="menu-card" onclick="window.location.href='menu 2 kompetensi 1 CP ATP.html'">
+                            <div class="menu-icon">🎯</div>
+                            <div class="menu-text">Kompetensi</div>
+                        </div>
+                        <div class="menu-card" onclick="window.location.href='menu 3 materi 5 modul.html'">
+                            <div class="menu-icon">📚</div>
+                            <div class="menu-text">Materi</div>
+                        </div>
+                        <div class="menu-card" onclick="window.location.href='kuis 1 memasang atom.html'">
+                            <div class="menu-icon">🧩</div>
+                            <div class="menu-text">Kuis</div>
+                        </div>
+                        <div class="menu-card" onclick="window.location.href='menu 5 halaman awal evaluasi.html'">
+                            <div class="menu-icon">📝</div>
+                            <div class="menu-text">Evaluasi</div>
+                        </div>
+                        <div class="menu-card" onclick="window.location.href='menu 6 refleksi.html'">
+                            <div class="menu-icon">💡</div>
+                            <div class="menu-text">Refleksi</div>
+                        </div>
                     </div>
                 </div>
 
@@ -329,23 +396,27 @@
 
     <script>
         window.onload = function() {
-            const savedName = sessionStorage.getItem('xmatter_name');
-            if (savedName && savedName.trim() !== "") {
-                document.getElementById('userNameDisplay').innerText = savedName;
-                document.getElementById('welcomeBox').style.display = 'inline-block';
+            // Mengambil data dari SessionStorage (yang disimpan saat login)
+            const savedName = sessionStorage.getItem('xmatter_name') || 'Pelajar';
+            const savedSchool = sessionStorage.getItem('xmatter_school'); 
+            
+            // Logika Penyusunan Kalimat Sambutan
+            let greetingHTML = `Halo selamat datang, <strong style="color: var(--accent-orange); font-weight: 700;">${savedName}</strong>! 👋`;
+            
+            // Jika siswa mengisi nama sekolah di halaman login, tampilkan juga
+            if (savedSchool && savedSchool.trim() !== "") {
+                greetingHTML = `Halo selamat datang, <strong style="color: var(--accent-orange); font-weight: 700;">${savedName}</strong> dari <strong style="color: var(--cyan); font-weight: 700;">${savedSchool}</strong>! 👋`;
             }
+
+            document.getElementById('welcomeText').innerHTML = greetingHTML;
+            document.getElementById('welcomeBox').style.display = 'inline-block';
         };
 
         function keluarAplikasi() {
             if(confirm('Apakah Anda yakin ingin keluar dari aplikasi?')) {
                 // Menghapus data login
                 sessionStorage.clear();
-                
-                // Menutup jendela tab jika memungkinkan (hanya berfungsi jika web dibuka lewat script/localhost khusus)
-                window.close();
-                
-                // Fallback: Jika window.close() diblokir browser, kembali ke halaman login
-                window.location.href = "HALAMAN LOGIN.html";
+                window.location.href = "halaman login.html"; // Pastikan nama file loginmu benar
             }
         }
     </script>
