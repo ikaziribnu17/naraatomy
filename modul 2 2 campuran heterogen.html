@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jenis Campuran Heterogen - X-MATTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Materi: Campuran Heterogen - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -16,119 +16,223 @@
             --bg-white: #F2F3F6;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db;
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; 
+            overflow: hidden;
         }
 
+        /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; 
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            background-color: var(--bg-white);
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
-            padding: 40px 60px;
+        }
+
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.75);
+            z-index: 1;
+        }
+
+        /* Area Konten Utama */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        /* Header Materi */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+            flex-shrink: 0; 
         }
 
         .header-title {
-            color: var(--navy);
+            color: white;
             font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            border-bottom: 4px solid var(--cyan);
-            display: inline-block;
-            padding-bottom: 5px;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
         }
 
-        .instruction-text {
-            color: var(--blue-medium);
+        .header-title span {
+            color: var(--accent-orange);
+        }
+
+        .header-subtitle {
+            color: #e2e8f0;
             font-size: 16px;
             font-weight: 500;
-            margin-bottom: 30px;
         }
 
-        /* 3 Kolom Interaktif (Button Sets) */
+        /* AREA TEKS MATERI YANG BISA DI-SCROLL */
+        .scrollable-area {
+            flex: 1;
+            min-height: 0; 
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-bottom: 20px;
+        }
+
+        .scrollable-area::-webkit-scrollbar { width: 8px; }
+        .scrollable-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb:hover { background: var(--accent-orange); }
+
+        /* Grid Atas untuk Pengertian & Ciri-ciri */
+        .top-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card-materi {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-left: 6px solid var(--cyan);
+            color: var(--navy);
+            line-height: 1.6;
+            height: 100%;
+        }
+
+        .card-materi h2 {
+            font-size: 19px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            font-weight: 800;
+            border-bottom: 2px solid var(--blue-light);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-materi p {
+            margin-bottom: 10px;
+            font-size: 14.5px;
+            font-weight: 500;
+        }
+
+        .rules-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .rules-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            font-size: 14.5px;
+            font-weight: 600;
+        }
+
+        .rules-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            font-size: 14px;
+            top: 2px;
+        }
+
+        /* TAB INTERAKTIF (KOLOID, SUSPENSI, EMULSI) */
+        .interactive-container {
+            background: rgba(20, 35, 55, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--cyan);
+        }
+
+        .interactive-title {
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
         .tab-buttons {
             display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
             flex: 1;
-            background: white;
-            border: 3px solid var(--blue-light);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 2px solid var(--blue-medium);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            transition: all 0.3s;
+            text-align: center;
+            min-width: 120px;
         }
 
         .tab-btn:hover {
-            transform: translateY(-5px);
+            background: rgba(255,255,255,0.2);
             border-color: var(--cyan);
-            box-shadow: 0 10px 20px rgba(38, 165, 203, 0.2);
         }
 
-        /* Active State (Tombol Terpilih) */
         .tab-btn.active {
-            background-color: var(--navy);
-            border-color: var(--navy);
+            background: var(--accent-orange);
             color: white;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(61, 84, 116, 0.3);
-        }
-
-        .tab-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.1));
-        }
-
-        .tab-btn h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--navy);
-            transition: color 0.3s;
-        }
-
-        .tab-btn.active h3 { color: var(--accent-orange); }
-
-        /* Layer Penjelasan (Detail Panel) */
-        .detail-panel {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: inset 0 0 0 4px rgba(38, 165, 203, 0.1), 0 10px 20px rgba(0,0,0,0.05);
-            min-height: 140px;
-            display: flex;
-            align-items: center;
+            border-color: var(--accent-orange);
+            box-shadow: 0 4px 10px rgba(239, 178, 91, 0.4);
         }
 
         .detail-content {
-            display: none; /* Disembunyikan secara default */
-            animation: fadeIn 0.4s ease forwards;
+            display: none;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            border-left: 6px solid var(--accent-orange);
+            animation: fadeIn 0.4s ease;
         }
 
         .detail-content.active {
-            display: block; /* Ditampilkan saat aktif */
+            display: block;
         }
 
         @keyframes fadeIn {
@@ -137,90 +241,169 @@
         }
 
         .detail-content h4 {
-            color: var(--cyan);
-            font-size: 20px;
-            margin-bottom: 10px;
+            color: var(--navy);
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 8px;
         }
 
         .detail-content p {
             color: var(--navy);
-            font-size: 15px;
-            line-height: 1.6;
+            font-size: 14.5px;
             font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0; 
+        }
+
+        .btn-action {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
         }
 
         .btn-next {
-            position: absolute;
-            bottom: 30px; right: 40px;
-            padding: 12px 25px;
-            background-color: var(--accent-orange);
+            background-color: var(--cyan);
             color: white;
-            border: none; border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700; font-size: 15px;
-            cursor: pointer;
-            box-shadow: 0 4px 0px #d49a4a;
+            box-shadow: 0 4px 0px #1a7a99;
+        }
+
+        .btn-next:hover {
+            background-color: #2ab7e1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #1a7a99;
+        }
+
+        /* TAMPILAN KHUSUS HP */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto; 
+                border-radius: 0;
+            }
+            .main-content {
+                padding: 15px 20px;
+            }
+            .top-grid {
+                grid-template-columns: 1fr; /* Jadi 1 kolom bersusun ke bawah */
+                gap: 15px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        <h1 class="header-title">Jenis Campuran Heterogen</h1>
-        <p class="instruction-text">"Campuran heterogen memiliki bentuk yang beragam tergantung ukuran partikelnya. Klik ikon di bawah ini!"</p>
-
-        <div class="tab-buttons">
-            <div class="tab-btn active" onclick="showLayer('suspensi', this)">
-                <div class="tab-icon">☕</div>
-                <h3>Suspensi</h3>
-            </div>
-            <div class="tab-btn" onclick="showLayer('koloid', this)">
-                <div class="tab-icon">🥛</div>
-                <h3>Koloid</h3>
-            </div>
-            <div class="tab-btn" onclick="showLayer('emulsi', this)">
-                <div class="tab-icon">🧴</div>
-                <h3>Emulsi</h3>
-            </div>
-        </div>
-
-        <div class="detail-panel">
+        <div class="main-content">
             
-            <div class="detail-content active" id="layer-suspensi">
-                <h4>Suspensi (Contoh: Air Sungai Keruh / Kopi)</h4>
-                <p>Campuran heterogen yang partikelnya berukuran besar. Jika didiamkan beberapa saat, partikel padatnya akan mengendap ke dasar wadah sehingga cairan terpisah.</p>
+            <div class="header-section">
+                <h1 class="header-title">Campuran <span>Heterogen</span></h1>
+                <p class="header-subtitle">Zat-zat yang menolak untuk menyatu dengan sempurna.</p>
             </div>
 
-            <div class="detail-content" id="layer-koloid">
-                <h4>Koloid (Contoh: Susu / Santan)</h4>
-                <p>Campuran yang secara kasat mata terlihat menyatu (homogen), namun jika dilihat dengan mikroskop, partikelnya tetap terpisah (heterogen). Campuran ini tidak akan mengendap jika didiamkan.</p>
+            <div class="scrollable-area">
+                
+                <div class="top-grid">
+                    <div class="card-materi">
+                        <h2>🧪 Pengertian</h2>
+                        <p><strong>Campuran Heterogen</strong> adalah campuran yang partikel penyusunnya tidak merata, sehingga zat-zat di dalamnya masih dapat dibedakan dan dilihat batasan fasenya secara langsung.</p>
+                        <p>Zat-zat ini seolah "menolak" untuk melebur bersama secara sempurna.</p>
+                    </div>
+
+                    <div class="card-materi" style="border-left-color: var(--accent-orange);">
+                        <h2>📋 Ciri-ciri Campuran</h2>
+                        <ul class="rules-list">
+                            <li>Dapat dibedakan antar komponennya.</li>
+                            <li>Komposisinya <strong>tidak merata</strong>.</li>
+                            <li>Tampak lebih dari satu fase (wujud/lapisan).</li>
+                            <li>Partikel dapat terlihat jelas atau disaring.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="interactive-container">
+                    <div class="interactive-title">Pilih Jenis Campuran Heterogen:</div>
+                    
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="showLayer('suspensi', this)">⏳ Suspensi</button>
+                        <button class="tab-btn" onclick="showLayer('koloid', this)">🌫️ Koloid</button>
+                        <button class="tab-btn" onclick="showLayer('emulsi', this)">🧴 Emulsi</button>
+                    </div>
+
+                    <div class="detail-content active" id="layer-suspensi">
+                        <h4>⏳ Suspensi (Contoh: Air Kopi, Air Pasir)</h4>
+                        <p>Campuran kasar di mana zat yang dicampurkan tidak dapat larut dan akan mengendap ke bawah botol/gelas jika didiamkan selama beberapa waktu. Partikelnya cukup besar untuk disaring dengan kertas saring biasa.</p>
+                    </div>
+
+                    <div class="detail-content" id="layer-koloid">
+                        <h4>🌫️ Koloid (Contoh: Susu, Asap, Santan)</h4>
+                        <p>Campuran yang secara kasat mata terlihat menyatu (seperti homogen), namun jika dilihat dengan mikroskop, partikelnya sebenarnya terpisah. Campuran ini tidak akan mengendap jika didiamkan, tetapi partikelnya menghamburkan cahaya (Efek Tyndall).</p>
+                    </div>
+
+                    <div class="detail-content" id="layer-emulsi">
+                        <h4>🧴 Emulsi (Contoh: Campuran Minyak & Air)</h4>
+                        <p>Bentuk khusus dari campuran di mana dua zat cair tidak saling melarutkan dan terpisah dengan jelas menjadi dua lapisan. Untuk dapat menyatukannya secara stabil, dibutuhkan pihak ketiga yaitu zat pengemulsi (seperti sabun atau kuning telur).</p>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="detail-content" id="layer-emulsi">
-                <h4>Emulsi (Contoh: Campuran Minyak & Air)</h4>
-                <p>Bentuk khusus dari campuran heterogen di mana dua zat cair tidak saling melarutkan dan terpisah dengan jelas. Untuk menyatukannya, dibutuhkan zat pengemulsi (seperti sabun).</p>
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='modul 2 1 campuran homogen.html'">
+                    ⬅ KEMBALI
+                </button>
+                
+                <button class="btn-action btn-next" onclick="window.location.href='menu 3 materi 5 modul.html'">
+                    MENU UTAMA ➔
+                </button>
             </div>
 
         </div>
-
-        <button class="btn-next" onclick="alert('Pindah ke Kuis!')">LANJUT ➔</button>
     </div>
 
     <script>
-        // Logika Button Sets & Layers
+        // Logika Tab Layer Interaktif
         function showLayer(layerId, element) {
-            // 1. Hapus status 'active' dari semua tombol
+            // 1. Hapus status 'active' dari semua tombol tab
             const buttons = document.querySelectorAll('.tab-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
 
-            // 2. Beri status 'active' pada tombol yang diklik
+            // 2. Beri status 'active' pada tombol yang baru saja diklik
             element.classList.add('active');
 
-            // 3. Sembunyikan semua layer detail
+            // 3. Sembunyikan semua layer konten detail
             const layers = document.querySelectorAll('.detail-content');
             layers.forEach(layer => layer.classList.remove('active'));
 
-            // 4. Tampilkan layer yang sesuai dengan tombol
+            // 4. Tampilkan layer konten yang sesuai dengan ID tombol
             document.getElementById('layer-' + layerId).classList.add('active');
         }
     </script>
