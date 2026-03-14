@@ -14,6 +14,14 @@
             --accent-orange: #EFB25B;
         }
 
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -26,12 +34,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Diubah ke min-height agar lebih aman */
+            overflow: hidden;
         }
 
         /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; /* Disesuaikan agar fleksibel */
             max-width: 1100px;
             aspect-ratio: 16 / 9;
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
@@ -52,7 +61,7 @@
             z-index: 1;
         }
 
-        /* Area Konten Utama - Padding atas/bawah dikurangi agar muat */
+        /* Area Konten Utama */
         .main-content {
             flex: 1;
             display: flex;
@@ -60,29 +69,48 @@
             padding: 25px 45px; 
             position: relative;
             z-index: 5;
-            justify-content: space-between;
+            overflow: hidden;
         }
 
         .header-title {
             color: #ffffff;
             font-size: 34px;
             font-weight: 800;
-            margin-bottom: 10px; /* Margin diperkecil */
+            margin-bottom: 10px;
             border-bottom: 4px solid var(--accent-orange);
             display: inline-block;
             padding-bottom: 3px;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            flex-shrink: 0; /* Mencegah judul terpotong */
         }
+
+        /* AREA TENGAH YANG BISA DI-SCROLL */
+        .scrollable-area {
+            flex: 1;
+            min-height: 0; /* Trik Flexbox agar tidak tumpah */
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Kustomisasi Scrollbar */
+        .scrollable-area::-webkit-scrollbar { width: 8px; }
+        .scrollable-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb:hover { background: var(--accent-orange); }
 
         /* Kotak Capaian Pembelajaran */
         .cp-box {
             background-color: rgba(61, 84, 116, 0.95);
             color: white;
-            padding: 15px 25px; /* Padding diperkecil */
+            padding: 15px 25px;
             border-radius: 12px;
-            margin-bottom: 15px; /* Margin diperkecil */
+            margin-bottom: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             border-left: 8px solid var(--accent-orange);
+            flex-shrink: 0;
         }
 
         .cp-box h2 {
@@ -109,20 +137,21 @@
             font-weight: 600;
             margin-bottom: 10px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            flex-shrink: 0;
         }
 
         .tp-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px; /* Jarak antar kartu diperkecil */
-            margin-bottom: auto; /* Mendorong tombol ke bawah secukupnya */
+            gap: 15px; 
+            margin-bottom: 10px; 
         }
 
         .tp-card {
             background: rgba(255, 255, 255, 0.95);
             border: 3px solid transparent;
             border-radius: 12px;
-            padding: 15px; /* Padding diperkecil */
+            padding: 15px; 
             display: flex;
             align-items: center;
             gap: 15px;
@@ -176,7 +205,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 15px; /* Margin atas diperkecil */
+            flex-shrink: 0; /* Mencegah tombol terpotong ke bawah */
         }
 
         .btn-action {
@@ -238,6 +267,7 @@
         .modal-content {
             background: #ffffff;
             width: 500px;
+            max-width: 90%;
             padding: 35px;
             border-radius: 20px;
             border-top: 10px solid var(--cyan);
@@ -276,13 +306,30 @@
         }
 
         .modal-desc {
-            color: var(--text-dark);
+            color: var(--navy);
             font-size: 17px;
             line-height: 1.6;
             font-weight: 500;
             background: rgba(38, 165, 203, 0.1);
             padding: 20px;
             border-radius: 12px;
+        }
+
+        /* TAMPILAN KHUSUS HP (MEDIA QUERY) */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto;
+                border-radius: 0;
+            }
+            .main-content {
+                padding: 15px 20px;
+            }
+            /* Ubah grid 2 kolom menjadi 1 kolom yang memanjang ke bawah */
+            .tp-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -293,46 +340,48 @@
             
             <h1 class="header-title">Kompetensi & Tujuan</h1>
 
-            <div class="cp-box">
-                <h2>⭐ Capaian Pembelajaran (CP)</h2>
-                <p>Peserta didik mampu mengklasifikasikan zat (unsur, senyawa, campuran) dan menganalisis perubahan fisika/kimia serta pemisahan campuran dalam kehidupan sehari-hari.</p>
-            </div>
-
-            <h2 class="tp-section-title">Tujuan Pembelajaran (Klik kartu untuk detail):</h2>
-            <div class="tp-grid">
-                
-                <div class="tp-card" onclick="bukaModal('Identifikasi Zat', 'C1: Peserta didik mampu menyebutkan contoh zat yang ada di sekitar dalam kehidupan sehari-hari (seperti Emas, Air, Kopi, dsb).')">
-                    <div class="tp-icon">C1</div>
-                    <div class="tp-text">
-                        <h3>Identifikasi Zat</h3>
-                        <p>Menyebutkan contoh zat di sekitar kita.</p>
-                    </div>
+            <div class="scrollable-area">
+                <div class="cp-box">
+                    <h2>⭐ Capaian Pembelajaran (CP)</h2>
+                    <p>Peserta didik mampu mengklasifikasikan zat (unsur, senyawa, campuran) dan menganalisis perubahan fisika/kimia serta pemisahan campuran dalam kehidupan sehari-hari.</p>
                 </div>
 
-                <div class="tp-card" onclick="bukaModal('Klasifikasi Sifat', 'C2: Peserta didik mampu membedakan karakteristik dan sifat dari unsur murni, senyawa kimia, serta campuran (heterogen/homogen).')">
-                    <div class="tp-icon">C2</div>
-                    <div class="tp-text">
-                        <h3>Klasifikasi Sifat</h3>
-                        <p>Membedakan sifat unsur, senyawa, & campuran.</p>
+                <h2 class="tp-section-title">Tujuan Pembelajaran (Klik kartu untuk detail):</h2>
+                <div class="tp-grid">
+                    
+                    <div class="tp-card" onclick="bukaModal('Identifikasi Zat', 'C1: Peserta didik mampu menyebutkan contoh zat yang ada di sekitar dalam kehidupan sehari-hari (seperti Emas, Air, Kopi, dsb).')">
+                        <div class="tp-icon">C1</div>
+                        <div class="tp-text">
+                            <h3>Identifikasi Zat</h3>
+                            <p>Menyebutkan contoh zat di sekitar kita.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="tp-card" onclick="bukaModal('Simulasi Pemisahan', 'C3: Peserta didik dapat mengoperasikan simulasi alat pemisahan campuran seperti filtrasi, evaporasi, kromatografi, dan distilasi.')">
-                    <div class="tp-icon">C3</div>
-                    <div class="tp-text">
-                        <h3>Simulasi Pemisahan</h3>
-                        <p>Mengoperasikan simulasi alat pemisahan.</p>
+                    <div class="tp-card" onclick="bukaModal('Klasifikasi Sifat', 'C2: Peserta didik mampu membedakan karakteristik dan sifat dari unsur murni, senyawa kimia, serta campuran (heterogen/homogen).')">
+                        <div class="tp-icon">C2</div>
+                        <div class="tp-text">
+                            <h3>Klasifikasi Sifat</h3>
+                            <p>Membedakan sifat unsur, senyawa, & campuran.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="tp-card" onclick="bukaModal('Analisis Perubahan', 'C4: Peserta didik mampu menganalisis fenomena es mencair sebagai Perubahan Fisika dan besi berkarat sebagai Perubahan Kimia.')">
-                    <div class="tp-icon">C4</div>
-                    <div class="tp-text">
-                        <h3>Analisis Perubahan</h3>
-                        <p>Menganalisis fenomena perubahan materi.</p>
+                    <div class="tp-card" onclick="bukaModal('Simulasi Pemisahan', 'C3: Peserta didik dapat mengoperasikan simulasi alat pemisahan campuran seperti filtrasi, evaporasi, kromatografi, dan distilasi.')">
+                        <div class="tp-icon">C3</div>
+                        <div class="tp-text">
+                            <h3>Simulasi Pemisahan</h3>
+                            <p>Mengoperasikan simulasi alat pemisahan.</p>
+                        </div>
                     </div>
-                </div>
 
+                    <div class="tp-card" onclick="bukaModal('Analisis Perubahan', 'C4: Peserta didik mampu menganalisis fenomena es mencair sebagai Perubahan Fisika dan besi berkarat sebagai Perubahan Kimia.')">
+                        <div class="tp-icon">C4</div>
+                        <div class="tp-text">
+                            <h3>Analisis Perubahan</h3>
+                            <p>Menganalisis fenomena perubahan materi.</p>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
             <div class="bottom-actions">
