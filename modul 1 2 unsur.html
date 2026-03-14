@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materi: Mengenal Unsur - X-MATTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Materi: Mengenal Unsur - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -16,6 +16,14 @@
             --bg-white: #F2F3F6;
         }
 
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,352 +32,349 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db;
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; 
+            overflow: hidden;
         }
 
-        /* Container 16:9 */
+        /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; 
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            background-color: var(--bg-white);
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
         }
 
-        /* Styling Umum untuk Slide */
-        .slide-container {
-            width: 100%;
-            height: 100%;
+        .canvas::before {
+            content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            padding: 40px;
-            transition: opacity 0.5s ease;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.75);
+            z-index: 1;
         }
 
-        /* Sembunyikan Slide 9 di Awal */
-        #slide9 {
-            opacity: 0;
-            pointer-events: none; /* Mencegah klik saat disembunyikan */
-        }
-
-        /* =========================================
-           SLIDE 8: MENGENAL UNSUR
-           ========================================= */
-        #slide8 {
-            background-image: radial-gradient(circle at 80% 50%, rgba(239, 178, 91, 0.05) 0%, transparent 60%);
-            flex-direction: row;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .text-panel {
-            flex: 1.2;
+        /* Area Konten Utama */
+        .main-content {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        /* Header Materi */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+            flex-shrink: 0; 
         }
 
         .header-title {
-            color: var(--navy);
+            color: white;
             font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            border-bottom: 4px solid var(--cyan);
-            display: inline-block;
-            padding-bottom: 5px;
-            align-self: flex-start;
-        }
-
-        .materi-text {
-            background-color: white;
-            border-left: 6px solid var(--navy);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(61, 84, 116, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .materi-text p {
-            color: var(--navy);
-            font-size: 16px;
-            line-height: 1.6;
-            font-weight: 500;
-        }
-
-        .contoh-box {
-            background-color: rgba(38, 165, 203, 0.1);
-            border: 2px dashed var(--cyan);
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .contoh-box strong {
-            color: var(--navy);
-            display: block;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             margin-bottom: 5px;
         }
 
-        .contoh-box p {
-            color: var(--blue-medium);
-            font-size: 15px;
+        .header-title span {
+            color: var(--accent-orange);
         }
 
-        /* Visual Panel Kanan */
-        .visual-panel {
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* AREA TEKS MATERI YANG BISA DI-SCROLL */
+        .scrollable-area {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .icon-box {
-            background: white;
-            padding: 20px 30px;
-            border-radius: 16px;
-            text-align: center;
-            border: 2px solid var(--blue-light);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 200px;
-        }
-
-        .icon-box span {
-            font-size: 50px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .icon-box p {
-            font-weight: 600;
-            color: var(--navy);
-            font-size: 14px;
-        }
-
-        /* Animasi Glow Teknis */
-        @keyframes glowEffect {
-            0% { box-shadow: 0 0 5px var(--accent-orange), inset 0 0 5px var(--accent-orange); border-color: var(--accent-orange); }
-            50% { box-shadow: 0 0 25px var(--accent-orange), inset 0 0 10px var(--accent-orange); border-color: var(--accent-orange); transform: scale(1.05); }
-            100% { box-shadow: 0 0 5px var(--accent-orange), inset 0 0 5px var(--accent-orange); border-color: var(--accent-orange); }
-        }
-
-        .glow-active {
-            animation: glowEffect 2s infinite;
-        }
-
-        /* =========================================
-           SLIDE 9: SISTEM PERIODIK UNSUR
-           ========================================= */
-        #slide9 {
-            background-color: var(--navy); /* Full screen gelap agar tabel menonjol */
-            flex-direction: column;
-            align-items: center;
-            padding: 30px;
-        }
-
-        #slide9 .header-title {
-            color: white;
-            border-bottom: 4px solid var(--accent-orange);
+            min-height: 0; 
+            overflow-y: auto;
+            padding-right: 15px;
             margin-bottom: 20px;
         }
 
-        /* CSS Art: Simulasi Tabel Periodik */
-        .periodic-table {
-            width: 100%;
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            border: 2px solid var(--blue-medium);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            padding: 20px;
-            justify-content: center;
-            align-content: center;
-            position: relative;
-        }
+        /* Kustomisasi Scrollbar */
+        .scrollable-area::-webkit-scrollbar { width: 8px; }
+        .scrollable-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb:hover { background: var(--accent-orange); }
 
-        .element-box {
-            width: 40px;
-            height: 45px;
-            background-color: var(--cyan);
-            border-radius: 4px;
-            opacity: 0.8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-        }
-        
-        .element-box.orange { background-color: var(--accent-orange); }
-        .element-box.blue { background-color: var(--blue-light); color: var(--navy); }
-        .element-box.empty { background-color: transparent; border: 1px dashed rgba(255,255,255,0.2); }
-
-        /* =========================================
-           ELEMEN BERSAMA (AUDIO VO & TOMBOL)
-           ========================================= */
-        .vo-box {
-            position: absolute;
-            bottom: 30px;
-            left: 40px;
-            background: white;
-            border: 2px solid var(--cyan);
-            border-radius: 16px 16px 16px 0;
-            padding: 15px 25px;
+        /* Kartu Materi Pembungkus */
+        .card-materi {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 20px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            max-width: 500px;
+            border-left: 6px solid var(--cyan);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        .card-materi h2 {
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            font-weight: 800;
+            border-bottom: 2px solid var(--blue-light);
+            padding-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            z-index: 20;
+            gap: 10px;
         }
 
-        .vo-icon {
-            font-size: 24px;
-        }
-
-        .vo-box p {
-            color: var(--navy);
-            font-size: 14px;
+        .card-materi p {
+            margin-bottom: 15px;
+            font-size: 15px;
             font-weight: 500;
-            margin: 0;
-            line-height: 1.5;
+        }
+
+        /* List Aturan */
+        .rules-list {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 15px;
+        }
+
+        .rules-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .rules-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            font-size: 14px;
+            top: 2px;
+        }
+
+        /* Grid Contoh Unsur */
+        .element-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .element-card {
+            background: #f8fafc;
+            border: 2px solid var(--cyan);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .element-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 8px 15px rgba(239, 178, 91, 0.3);
+            background: #ffffff;
+        }
+
+        .element-symbol {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+
+        .element-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+
+        .element-latin {
+            font-size: 13px;
+            font-style: italic;
+            color: var(--blue-medium);
+            font-weight: 500;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0; 
         }
 
         .btn-action {
-            position: absolute;
-            bottom: 30px;
-            right: 40px;
-            padding: 12px 25px;
-            background-color: var(--accent-orange);
-            color: white;
+            padding: 12px 20px;
             border: none;
             border-radius: 10px;
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 0px #d49a4a;
-            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
         }
 
-        .btn-action:hover {
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
+        }
+
+        .btn-tpu {
+            background-color: var(--cyan);
+            color: white;
+            box-shadow: 0 4px 0px #1a7a99;
+            flex: 1; /* Supaya tombol ini otomatis mengisi ruang tengah */
+            justify-content: center;
+        }
+
+        .btn-tpu:hover {
+            background-color: #2ab7e1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #1a7a99;
+        }
+
+        .btn-next {
+            background-color: var(--accent-orange);
+            color: white;
+            box-shadow: 0 4px 0px #c48a30;
+        }
+
+        .btn-next:hover {
             background-color: #f2bc6b;
             transform: translateY(-2px);
-            box-shadow: 0 6px 0px #d49a4a;
+            box-shadow: 0 6px 0px #c48a30;
+        }
+
+        /* TAMPILAN KHUSUS HP */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto; 
+                border-radius: 0;
+            }
+            .main-content {
+                padding: 15px 20px;
+            }
+            .element-grid {
+                grid-template-columns: repeat(2, 1fr); /* 4 kolom jadi 2 kolom di HP */
+            }
+            .bottom-actions {
+                flex-wrap: wrap; /* Izinkan tombol turun ke baris baru jika sempit */
+                justify-content: center;
+            }
+            .btn-action {
+                font-size: 13px;
+                padding: 10px 15px;
+            }
+            .btn-tpu {
+                order: -1; /* Pindahkan tombol Tabel Periodik ke baris atas di mode HP */
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        
-        <div id="slide8" class="slide-container">
-            <div class="text-panel">
-                <h1 class="header-title">Materi: Mengenal Unsur</h1>
-                
-                <div class="materi-text">
-                    <p>"Unsur adalah zat murni yang hanya terdiri dari satu jenis atom. Unsur tidak bisa diuraikan lagi menjadi zat yang lebih sederhana."</p>
-                </div>
-
-                <div class="contoh-box">
-                    <strong>Contoh:</strong>
-                    <p>Emas murni (Au), Besi (Fe), dan gas Oksigen (O₂).</p>
-                </div>
-            </div>
-
-            <div class="visual-panel">
-                <div class="icon-box glow-active">
-                    <span>🥇</span>
-                    <p>Emas Batangan (Au)</p>
-                </div>
-                <div class="icon-box glow-active" style="animation-delay: 1s;">
-                    <span>🧯</span>
-                    <p>Tabung Oksigen (O₂)</p>
-                </div>
-            </div>
-
-            <div class="vo-box">
-                <div class="vo-icon">🔊</div>
-                <p><strong>VO Atomy:</strong> "Emas yang berkilau ini hanya berisi atom emas saja, tidak ada campuran lainnya. Itulah kenapa disebut Unsur."</p>
-            </div>
-
-            <button class="btn-action" onclick="goToSlide9()">TABEL PERIODIK ➔</button>
-        </div>
-
-
-        <div id="slide9" class="slide-container">
-            <h1 class="header-title">Peta Unsur di Alam Semesta</h1>
+        <div class="main-content">
             
-            <div class="periodic-table" id="periodicTableCanvas">
-                </div>
-
-            <div class="vo-box">
-                <div class="vo-icon">🔊</div>
-                <p><strong>VO:</strong> "Inilah tabel yang berisi seluruh 'anggota keluarga' unsur yang sudah ditemukan manusia."</p>
+            <div class="header-section">
+                <h1 class="header-title">Mengenal <span>Unsur</span></h1>
+                <p class="header-subtitle">Zat tunggal murni penyusun alam semesta.</p>
             </div>
 
-            <button class="btn-action" onclick="alert('Lanjut ke Halaman Senyawa!')">LANJUT ➔</button>
-        </div>
+            <div class="scrollable-area">
+                
+                <div class="card-materi">
+                    <h2>✨ Pengertian Unsur</h2>
+                    <p><strong>Unsur</strong> adalah zat tunggal yang tidak dapat diuraikan lagi menjadi zat yang lebih sederhana dengan reaksi kimia biasa.</p>
+                    <p>Unsur tersusun dari atom-atom yang sejenis. Hebatnya, saat ini para ilmuwan telah menemukan <strong>118 unsur</strong> yang tercatat resmi di dalam Tabel Periodik Unsur.</p>
+                </div>
 
+                <div class="card-materi" style="border-left-color: var(--accent-orange);">
+                    <h2>🔡 Lambang Unsur (Aturan IUPAC) 📊</h2>
+                    <p>Setiap unsur memiliki <strong>lambang unsur</strong> yang merupakan singkatan nama unsur tersebut berdasarkan aturan IUPAC <em>(International Union of Pure and Applied Chemistry)</em>:</p>
+                    
+                    <ul class="rules-list">
+                        <li>Lambang unsur terdiri dari <strong>satu atau dua huruf</strong>.</li>
+                        <li>Huruf pertama <strong>selalu huruf kapital</strong>.</li>
+                        <li>Huruf kedua (jika ada) <strong>selalu huruf kecil</strong>.</li>
+                        <li>Berasal dari nama Latin, Yunani, atau nama penemunya.</li>
+                    </ul>
+
+                    <div class="element-grid">
+                        <div class="element-card">
+                            <div class="element-symbol">Au</div>
+                            <div class="element-name">Emas</div>
+                            <div class="element-latin">(Aurum)</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-symbol">Ag</div>
+                            <div class="element-name">Perak</div>
+                            <div class="element-latin">(Argentum)</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-symbol">Cu</div>
+                            <div class="element-name">Tembaga</div>
+                            <div class="element-latin">(Cuprum)</div>
+                        </div>
+                        <div class="element-card">
+                            <div class="element-symbol">Fe</div>
+                            <div class="element-name">Besi</div>
+                            <div class="element-latin">(Ferrum)</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='modul 1 1 atom.html'">
+                    ⬅ KEMBALI
+                </button>
+
+                <button class="btn-action btn-tpu" onclick="window.open('https://artsexperiments.withgoogle.com/periodic-table/?exp=true&lang=en', '_blank')">
+                    🔬 LIHAT TABEL PERIODIK 3D
+                </button>
+                
+                <button class="btn-action btn-next" onclick="window.location.href='modul 1 3 senyawa.html'">
+                    LANJUT MATERI ➔
+                </button>
+            </div>
+
+        </div>
     </div>
 
-    <script>
-        // Fungsi untuk transisi ke Slide 9
-        function goToSlide9() {
-            // Sembunyikan Slide 8
-            document.getElementById('slide8').style.opacity = '0';
-            document.getElementById('slide8').style.pointerEvents = 'none';
-            
-            // Tampilkan Slide 9
-            document.getElementById('slide9').style.opacity = '1';
-            document.getElementById('slide9').style.pointerEvents = 'auto';
-            
-            generatePeriodicTable(); // Gambar tabel periodik saat slide 9 dibuka
-        }
-
-        // Fungsi membuat grafik kotak-kotak mirip Tabel Periodik Unsur
-        function generatePeriodicTable() {
-            const tableContainer = document.getElementById('periodicTableCanvas');
-            tableContainer.innerHTML = ''; // Bersihkan dulu
-            
-            // Membuat grid 18 kolom x 7 baris untuk mensimulasikan bentuk kasar TPU
-            for (let i = 0; i < 126; i++) {
-                let box = document.createElement('div');
-                box.classList.add('element-box');
-                
-                // Menghapus elemen di ruang kosong (antara H dan He, dll)
-                if ((i > 0 && i < 17) || (i > 19 && i < 29) || (i > 37 && i < 47)) {
-                    box.classList.add('empty');
-                } else {
-                    // Memberikan warna acak agar meriah
-                    let randomColor = Math.random();
-                    if (randomColor < 0.3) {
-                        box.classList.add('orange');
-                    } else if (randomColor < 0.6) {
-                        box.classList.add('blue');
-                    }
-                    box.innerText = "El"; // Teks dummy Element
-                }
-                tableContainer.appendChild(box);
-            }
-        }
-    </script>
 </body>
 </html>
