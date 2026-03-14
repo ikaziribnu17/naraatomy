@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modul 4: Pemisahan Campuran - X-MATTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Modul 4: Pemisahan Campuran - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -16,6 +16,14 @@
             --bg-white: #F2F3F6;
         }
 
+        /* Mencegah zoom otomatis di HP */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,150 +32,219 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db;
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow: hidden;
         }
 
-        /* Container 16:9 */
+        /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; 
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            background-color: var(--bg-white);
-            background-image: radial-gradient(circle at 50% 10%, rgba(38, 165, 203, 0.08) 0%, transparent 50%);
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
-            padding: 40px 50px;
         }
 
-        /* Bagian Header */
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.85); /* Sedikit lebih gelap agar teks terbaca */
+            z-index: 1;
+        }
+
+        /* Area Konten Utama */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        /* Header Materi */
         .header-section {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            flex-shrink: 0; 
         }
 
         .header-title {
-            color: var(--navy);
+            color: white;
             font-size: 30px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: inline-block;
-            border-bottom: 4px solid var(--accent-orange);
-            padding-bottom: 5px;
-        }
-
-        .instruction-text {
-            color: var(--blue-medium);
-            font-size: 16px;
-            font-weight: 500;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            display: inline-block;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border: 1px solid var(--blue-light);
-        }
-
-        .instruction-text strong {
-            color: var(--cyan);
-        }
-
-        /* Grid Layout untuk 4 Kartu Pemisahan */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            flex: 1;
-        }
-
-        /* Desain Kartu Informasi */
-        .info-card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            box-shadow: 0 10px 20px rgba(101, 134, 177, 0.1);
-            border-left: 6px solid var(--cyan);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Variasi warna border kiri untuk estetika */
-        .info-card:nth-child(2) { border-left-color: var(--accent-orange); }
-        .info-card:nth-child(3) { border-left-color: var(--navy); }
-        .info-card:nth-child(4) { border-left-color: var(--blue-medium); }
-
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(38, 165, 203, 0.15);
-        }
-
-        /* Ikon Besar */
-        .icon-box {
-            font-size: 45px;
-            background: var(--bg-white);
-            min-width: 80px;
-            height: 80px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 12px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
-        }
-
-        /* Konten Teks */
-        .text-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .text-content h3 {
-            color: var(--navy);
-            font-size: 20px;
-            font-weight: 700;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             margin-bottom: 5px;
         }
 
-        .text-content p.desc {
-            color: var(--navy);
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 12px;
+        .header-title span {
+            color: var(--cyan);
         }
 
-        .contoh-label {
-            background-color: rgba(239, 178, 91, 0.15);
-            color: var(--navy);
-            font-size: 13px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            border-left: 3px solid var(--accent-orange);
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 15px;
             font-weight: 500;
         }
 
-        .contoh-label span {
-            font-weight: 700;
+        /* AREA INTERAKTIF (KIRI: LIST, KANAN: DETAIL) */
+        .split-layout {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-height: 0; /* Penting untuk scroll dalam flex */
+            margin-bottom: 20px;
         }
 
-        /* Tombol Navigasi */
-        .btn-next {
-            position: absolute;
-            bottom: 30px;
-            right: 40px;
-            padding: 12px 25px;
-            background-color: var(--accent-orange);
+        /* Panel Kiri: List Kartu Menu */
+        .method-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .method-list::-webkit-scrollbar { width: 6px; }
+        .method-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .method-list::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+
+        .method-card {
+            background: rgba(255, 255, 255, 0.1);
             color: white;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .method-card:hover {
+            background: rgba(38, 165, 203, 0.3);
+            border-color: var(--cyan);
+            transform: translateX(5px);
+        }
+
+        .method-card.active {
+            background: var(--cyan);
+            border-color: white;
+            box-shadow: 0 4px 15px rgba(38, 165, 203, 0.5);
+            transform: translateX(5px);
+        }
+
+        .method-icon {
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Panel Kanan: Detail Penjelasan */
+        .method-detail {
+            flex: 1.5;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            border-left: 8px solid var(--cyan);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.4s ease;
+            overflow-y: auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--blue-light);
+            padding-bottom: 15px;
+        }
+
+        .detail-large-icon {
+            font-size: 45px;
+            background: rgba(38, 165, 203, 0.1);
+            width: 70px; height: 70px;
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 15px;
+            border: 2px solid var(--cyan);
+        }
+
+        .detail-title {
+            color: var(--navy);
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .detail-desc {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .detail-contoh-box {
+            background: rgba(239, 178, 91, 0.15);
+            border-left: 4px solid var(--accent-orange);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .detail-contoh-box strong {
+            display: block;
+            color: var(--navy);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .detail-contoh-box p {
+            color: #444;
+            font-size: 14.5px;
+            font-weight: 500;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0; 
+        }
+
+        .btn-action {
+            padding: 12px 25px;
             border: none;
             border-radius: 10px;
             font-family: 'Poppins', sans-serif;
@@ -175,85 +252,179 @@
             font-size: 15px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 0px #d49a4a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
+        }
+
+        .btn-next {
+            background-color: var(--accent-orange);
+            color: white;
+            box-shadow: 0 4px 0px #c48a30;
         }
 
         .btn-next:hover {
             background-color: #f2bc6b;
             transform: translateY(-2px);
-            box-shadow: 0 6px 0px #d49a4a;
+            box-shadow: 0 6px 0px #c48a30;
+        }
+
+        /* TAMPILAN KHUSUS HP (MOBILE RESPONSIVE) */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; border-radius: 0;
+            }
+            .main-content { padding: 15px 20px; }
+            .header-title { font-size: 24px; }
+            
+            .split-layout { flex-direction: column; gap: 10px; }
+            
+            /* Mengubah List Kiri menjadi Scroll Horizontal di HP */
+            .method-list {
+                flex: 0 0 auto;
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding-bottom: 10px;
+                padding-right: 0;
+            }
+            
+            .method-list::-webkit-scrollbar { height: 4px; }
+            
+            .method-card {
+                flex: 0 0 auto;
+                padding: 10px 15px;
+                min-width: 160px;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                gap: 5px;
+            }
+
+            .method-card:hover, .method-card.active {
+                transform: translateY(-3px);
+            }
+
+            .method-detail { flex: 1; padding: 20px; border-left: none; border-top: 6px solid var(--cyan); }
+            .detail-title { font-size: 20px; }
+            .detail-large-icon { width: 50px; height: 50px; font-size: 30px; }
+            .btn-action { padding: 10px 15px; font-size: 13px; }
         }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        
-        <div class="header-section">
-            <h1 class="header-title">Modul 4: Metode Pemisahan Campuran</h1>
-            <p class="instruction-text">"Pelajari alat laboratorium di bawah ini, <strong id="playerNameDisplay">Detektif</strong>, untuk mulai memisahkan zat!"</p>
-        </div>
-
-        <div class="grid-container">
+        <div class="main-content">
             
-            <div class="info-card">
-                <div class="icon-box">🌪️</div>
-                <div class="text-content">
-                    <h3>Filtrasi (Penyaringan)</h3>
-                    <p class="desc">Memisahkan partikel padatan dari cairan dengan menggunakan alat penyaring berpori (kertas saring).</p>
-                    <div class="contoh-label">
-                        <span>Contoh:</span> Memisahkan pasir kotor dari air.
-                    </div>
-                </div>
+            <div class="header-section">
+                <h1 class="header-title">Modul 4 <span>Teknik Pemisahan Campuran</span></h1>
+                <p class="header-subtitle">Pilih kartu di bawah untuk melihat cara memisahkan zat!</p>
             </div>
 
-            <div class="info-card">
-                <div class="icon-box">♨️</div>
-                <div class="text-content">
-                    <h3>Evaporasi (Penguapan)</h3>
-                    <p class="desc">Memisahkan zat padat yang terlarut dalam cairan dengan cara memanaskannya hingga pelarutnya menguap habis.</p>
-                    <div class="contoh-label">
-                        <span>Contoh:</span> Mendapatkan garam dari air laut.
+            <div class="split-layout">
+                
+                <div class="method-list" id="cardList">
+                    </div>
+
+                <div class="method-detail" id="detailBox">
+                    <div class="detail-header">
+                        <div class="detail-large-icon" id="dIcon">🚰</div>
+                        <h2 class="detail-title" id="dTitle">Filtrasi (Penyaringan)</h2>
+                    </div>
+                    <p class="detail-desc" id="dDesc">Memisahkan padatan tidak larut dari cairan berdasarkan perbedaan ukuran partikel.</p>
+                    <div class="detail-contoh-box">
+                        <strong>Contoh Penerapan:</strong>
+                        <p id="dContoh">Menyaring pasir dari air.</p>
                     </div>
                 </div>
+
             </div>
 
-            <div class="info-card">
-                <div class="icon-box">⚗️</div>
-                <div class="text-content">
-                    <h3>Distilasi (Penyulingan)</h3>
-                    <p class="desc">Memisahkan zat cair dari campurannya berdasarkan perbedaan titik didih menggunakan kondensor.</p>
-                    <div class="contoh-label">
-                        <span>Contoh:</span> Memisahkan air murni dari larutan alkohol.
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <div class="icon-box">🌈</div>
-                <div class="text-content">
-                    <h3>Kromatografi</h3>
-                    <p class="desc">Memisahkan campuran berdasarkan perbedaan kecepatan merambat atau meresapnya zat pada suatu medium (seperti kertas).</p>
-                    <div class="contoh-label">
-                        <span>Contoh:</span> Memisahkan warna pada tinta spidol.
-                    </div>
-                </div>
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='menu 3 materi 5 modul.html'">
+                    ⬅ MENU UTAMA
+                </button>
+                
+                <button class="btn-action btn-next" onclick="window.location.href='modul 5 studi kasus.html'">
+                    STUDI KASUS ➔
+                </button>
             </div>
 
         </div>
-
-        <button class="btn-next" onclick="alert('Melanjutkan ke Tantangan Nyata!')">LANJUT ➔</button>
-
     </div>
 
     <script>
-        // Mengambil nama pemain dari SessionStorage
-        document.addEventListener("DOMContentLoaded", function() {
-            const savedName = sessionStorage.getItem('xmatter_name');
-            if (savedName) {
-                document.getElementById('playerNameDisplay').innerText = savedName;
-            }
-        });
+        // Database Materi Pemisahan Campuran
+        const methodsData = [
+            { id: 'filtrasi', icon: '🚰', title: 'Filtrasi (Penyaringan)', short: 'Filtrasi', desc: 'Memisahkan padatan tidak larut dari cairan berdasarkan perbedaan ukuran partikel.', contoh: 'Menyaring pasir dari air kotor, atau menyaring ampas kopi.' },
+            { id: 'distilasi', icon: '⚗️', title: 'Distilasi (Penyulingan)', short: 'Distilasi', desc: 'Memisahkan campuran cair-cair berdasarkan perbedaan titik didih menggunakan pemanasan dan kondensasi.', contoh: 'Pemisahan air murni dari air laut atau pengolahan minyak bumi.' },
+            { id: 'evaporasi', icon: '☀️', title: 'Evaporasi (Penguapan)', short: 'Evaporasi', desc: 'Memisahkan padatan terlarut dari pelarutnya dengan memanaskan campuran hingga seluruh cairan habis menguap.', contoh: 'Membuat kristal garam dari air laut.' },
+            { id: 'sublimasi', icon: '🌫️', title: 'Sublimasi', short: 'Sublimasi', desc: 'Memisahkan komponen yang dapat menyublim (berubah langsung dari wujud padat ke gas) dari campuran padat lainnya.', contoh: 'Memisahkan kapur barus (kamper) dari campuran pasir.' },
+            { id: 'kromatografi', icon: '🌈', title: 'Kromatografi', short: 'Kromatografi', desc: 'Memisahkan komponen berdasarkan perbedaan kecepatan rambat zat pada fasa diam dan fasa gerak.', contoh: 'Memisahkan warna penyusun pada sebuah titik tinta spidol.' },
+            { id: 'sentrifugasi', icon: '🌀', title: 'Sentrifugasi', short: 'Sentrifugasi', desc: 'Memisahkan partikel padat sangat halus dalam jumlah cairan sedikit dengan menggunakan gaya putaran yang sangat tinggi.', contoh: 'Pemisahan sel darah merah dari plasma darah di laboratorium.' },
+            { id: 'dekantasi', icon: '🥛', title: 'Dekantasi', short: 'Dekantasi', desc: 'Cara paling sederhana memisahkan cairan dan padatan yang mengendap dengan menuang cairan bagian atas secara hati-hati.', contoh: 'Memisahkan pasir kasar yang mengendap di dasar gelas berisi air.' },
+            { id: 'magnetik', icon: '🧲', title: 'Pemisahan Magnetik', short: 'Magnetik', desc: 'Menggunakan gaya tarik magnet untuk memisahkan material yang bersifat magnetik dari campuran non-magnetik.', contoh: 'Memisahkan serbuk besi yang bercampur dengan tumpukan pasir.' }
+        ];
+
+        const cardListContainer = document.getElementById('cardList');
+
+        // Fungsi Render Kartu ke HTML
+        function renderCards() {
+            methodsData.forEach((data, index) => {
+                const isActive = index === 0 ? 'active' : ''; // Default Filtrasi aktif
+                
+                const cardHTML = `
+                    <div class="method-card ${isActive}" onclick="showDetail(${index}, this)">
+                        <div class="method-icon">${data.icon}</div>
+                        <span>${data.short}</span>
+                    </div>
+                `;
+                cardListContainer.innerHTML += cardHTML;
+            });
+        }
+
+        // Fungsi saat kartu diklik
+        function showDetail(index, element) {
+            // Hapus status active dari semua kartu
+            const allCards = document.querySelectorAll('.method-card');
+            allCards.forEach(card => card.classList.remove('active'));
+
+            // Tambahkan status active ke kartu yang diklik
+            element.classList.add('active');
+
+            // Ambil data yang sesuai
+            const data = methodsData[index];
+
+            // Animasi transisi detail (hilang sejenak lalu muncul)
+            const detailBox = document.getElementById('detailBox');
+            detailBox.style.animation = 'none';
+            detailBox.offsetHeight; // Trigger reflow
+            detailBox.style.animation = 'fadeIn 0.4s ease';
+
+            // Update isi teks di kanan
+            document.getElementById('dIcon').innerText = data.icon;
+            document.getElementById('dTitle').innerText = data.title;
+            document.getElementById('dDesc').innerText = data.desc;
+            document.getElementById('dContoh').innerText = data.contoh;
+        }
+
+        // Jalankan saat halaman dimuat
+        window.onload = renderCards;
+
     </script>
 </body>
 </html>
