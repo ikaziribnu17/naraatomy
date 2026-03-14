@@ -16,6 +16,14 @@
             --bg-white: #F2F3F6;
         }
 
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -28,21 +36,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh; /* AMAN UNTUK HP */
+            overflow: hidden;
         }
 
         /* Container 16:9 */
         .canvas {
-            width: 100%;
+            width: 95vw; /* Beri sedikit jarak bernapas di kanan-kiri */
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            /* Background image diatur di sini */
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            
-            /* Layout Kiri & Kanan */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -53,7 +60,7 @@
             border-radius: 12px;
         }
 
-        /* Overlay gelap agar teks & form lebih terbaca di atas gambar background */
+        /* Overlay gelap agar teks & form lebih terbaca */
         .canvas::before {
             content: "";
             position: absolute;
@@ -92,6 +99,7 @@
         .login-card {
             background: white;
             width: 400px;
+            max-width: 100%; /* Mencegah kotak jebol di HP */
             padding: 40px;
             border-radius: 20px;
             border-top: 8px solid var(--navy);
@@ -180,16 +188,37 @@
             box-shadow: 0 0px 0px #d49a4a;
         }
         
-        @media (max-width: 900px) {
+        /* PERBAIKAN TOTAL UNTUK HP */
+        @media (max-width: 768px) {
+            body {
+                overflow: auto; /* Izinkan scroll di body jika butuh */
+            }
             .canvas {
+                width: 100vw;
+                min-height: 100vh;
+                min-height: 100dvh;
+                aspect-ratio: auto; /* MATIKAN 16:9 DI HP */
                 flex-direction: column;
                 justify-content: center;
-                padding: 40px;
+                padding: 30px 20px;
+                border-radius: 0;
+                gap: 30px;
             }
             .hero-text {
                 max-width: 100%;
                 text-align: center;
-                margin-bottom: 30px;
+                margin-bottom: 0;
+            }
+            .hero-text .main-title {
+                font-size: 48px; /* Kecilkan judul sedikit */
+            }
+            .hero-text .sub-title {
+                font-size: 18px;
+            }
+            .login-card {
+                padding: 30px 20px;
+                width: 100%;
+                max-width: 400px;
             }
         }
     </style>
@@ -230,10 +259,10 @@
                 return;
             }
 
+            // Menyimpan nama dan sekolah agar bisa dibaca di halaman lain
             sessionStorage.setItem('xmatter_name', name);
             sessionStorage.setItem('xmatter_school', school);
 
-            // GANTI "nama_file_selanjutnya.html" DENGAN NAMA FILE HTML TUJUANMU
             window.location.href = "halaman beranda.html";
         }
     </script>
