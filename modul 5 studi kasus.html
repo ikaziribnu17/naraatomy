@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modul 5: Tantangan Nyata - X-MATTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Modul 5: Studi Kasus - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -16,6 +16,14 @@
             --bg-white: #F2F3F6;
         }
 
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,146 +32,191 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db;
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh; 
+            overflow: hidden;
         }
 
-        /* Container 16:9 */
+        /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; 
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            background-color: var(--bg-white);
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
         }
 
-        /* Panel Kiri: Judul dan Iframe Foto */
-        .left-panel {
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.75);
+            z-index: 1;
+        }
+
+        /* Area Konten Utama */
+        .main-content {
             flex: 1;
-            padding: 40px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        /* Header Materi */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+            flex-shrink: 0; 
         }
 
         .header-title {
-            color: var(--navy);
+            color: white;
             font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.2;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
         }
 
         .header-title span {
             color: var(--accent-orange);
-            display: block;
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 5px;
         }
 
-        .iframe-container {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            border: 4px solid var(--blue-light);
-            border-radius: 12px;
-            background-color: #ccc;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(101, 134, 177, 0.2);
-            position: relative;
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 500;
         }
 
-        /* Styling untuk Iframe agar pas di dalam kontainer */
-        .iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            object-fit: cover;
+        /* AREA TEKS MATERI YANG BISA DI-SCROLL */
+        .scrollable-area {
+            flex: 1;
+            min-height: 0; 
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-bottom: 20px;
         }
 
-        /* Panel Kanan: Uraian Kasus & Input Siswa */
-        .right-panel {
+        .scrollable-area::-webkit-scrollbar { width: 8px; }
+        .scrollable-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb:hover { background: var(--accent-orange); }
+
+        /* Layout Split 2 Kolom */
+        .split-layout {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; 
+        }
+
+        .left-col {
             flex: 1.2;
-            background-color: var(--navy);
-            padding: 40px 50px;
+            min-width: 300px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            color: white;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            gap: 15px;
         }
 
-        .case-box {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-left: 4px solid var(--accent-orange);
-            padding: 20px;
-            border-radius: 0 12px 12px 0;
-            margin-bottom: 25px;
+        .right-col {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .case-box h3 {
-            color: var(--cyan);
-            font-size: 18px;
-            margin-bottom: 10px;
+        /* Gambar Ilustrasi Kasus */
+        .case-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 4px solid var(--cyan);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Kartu Materi Pembungkus */
+        .card-materi {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-left: 6px solid var(--accent-orange);
+            color: var(--navy);
+            line-height: 1.6;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-materi h2 {
+            font-size: 19px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            font-weight: 800;
+            border-bottom: 2px solid var(--blue-light);
+            padding-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .case-box p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--bg-white);
+        .card-materi p {
+            margin-bottom: 15px;
+            font-size: 14.5px;
+            font-weight: 500;
+            text-align: justify;
         }
 
-        /* Text Area (Kolom Ketik Siswa) */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .input-group label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--blue-light);
-        }
-
-        .student-answer {
+        /* Area Input Textarea */
+        .answer-box {
             width: 100%;
-            height: 140px;
+            flex: 1; /* Mengisi sisa ruang di kolom kanan */
+            min-height: 180px;
             padding: 15px;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 2px solid var(--blue-medium);
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: #f8fafc;
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
             color: var(--navy);
-            resize: none;
-            transition: all 0.3s;
+            resize: vertical; /* Hanya bisa ditarik ke bawah */
+            transition: all 0.3s ease;
         }
 
-        .student-answer:focus {
+        .answer-box:focus {
             outline: none;
             border-color: var(--cyan);
-            box-shadow: 0 0 15px rgba(38, 165, 203, 0.4);
             background-color: white;
+            box-shadow: 0 0 0 4px rgba(38, 165, 203, 0.1);
         }
 
-        /* Tombol Kirim */
-        .btn-submit {
-            align-self: flex-end;
-            margin-top: 20px;
-            padding: 12px 30px;
-            background-color: var(--accent-orange);
-            color: white;
+        .answer-box::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0; 
+        }
+
+        .btn-action {
+            padding: 12px 25px;
             border: none;
             border-radius: 10px;
             font-family: 'Poppins', sans-serif;
@@ -171,80 +224,120 @@
             font-size: 15px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 0px #d49a4a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
+        }
+
+        .btn-submit {
+            background-color: var(--cyan);
+            color: white;
+            box-shadow: 0 4px 0px #1a7a99;
         }
 
         .btn-submit:hover {
-            background-color: #f2bc6b;
+            background-color: #2ab7e1;
             transform: translateY(-2px);
-            box-shadow: 0 6px 0px #d49a4a;
+            box-shadow: 0 6px 0px #1a7a99;
         }
 
-        .btn-submit:active {
-            transform: translateY(2px);
-            box-shadow: 0 0px 0px #d49a4a;
+        /* TAMPILAN KHUSUS HP */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; border-radius: 0;
+            }
+            .main-content { padding: 15px 20px; }
+            .split-layout { flex-direction: column; }
+            .case-image { height: 160px; }
+            .card-materi { padding: 15px 20px; }
         }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        
-        <div class="left-panel">
-            <h1 class="header-title">
-                <span>Modul 5: Tantangan Nyata</span>
-                Krisis Air Bersih
-            </h1>
+        <div class="main-content">
             
-            <div class="iframe-container">
-                <iframe src="https://images.unsplash.com/photo-1599839619722-39751411ea63?q=80&w=600&auto=format&fit=crop" title="Foto Air Tercemar"></iframe>
+            <div class="header-section">
+                <h1 class="header-title">Tantangan <span>Nyata</span></h1>
+                <p class="header-subtitle">Terapkan ilmu pemisahan campuranmu di dunia nyata!</p>
             </div>
-            <p style="font-size: 11px; color: var(--blue-medium); margin-top: 10px; text-align: center;">
-                *Dokumentasi: Kondisi air sungai yang tercemar dan keruh.
-            </p>
+
+            <div class="scrollable-area">
+                
+                <div class="split-layout">
+                    
+                    <div class="left-col">
+                        <img src="https://waste4change.com/blog/wp-content/uploads/foto-limbah-8.jpg" alt="Sungai Tercemar" class="case-image">
+                        
+                        <div class="card-materi">
+                            <h2>🕵️‍♂️ Misi untuk <span id="namaDetektif" style="color: var(--accent-orange); margin-left: 5px;">Detektif</span></h2>
+                            <p>Sebuah pabrik tekstil dilaporkan membuang limbah sembarangan ke sungai desa. Warga mengeluh air berubah warna menjadi hitam pekat, berbau tajam, dan terdapat banyak serpihan kotoran padat yang mengapung serta serbuk logam yang mengendap.</p>
+                            <p>Desa meminta bantuanmu untuk menjernihkan kembali sampel air tersebut agar aman. Di laboratorium, kamu memiliki berbagai alat pemisahan campuran.</p>
+                        </div>
+                    </div>
+
+                    <div class="right-col">
+                        <div class="card-materi" style="border-left-color: var(--cyan);">
+                            <h2>📝 Rencana Pemisahan</h2>
+                            <p>Tuliskan <strong>langkah-langkah berurutan</strong> dan <strong>metode pemisahan</strong> (contoh: Filtrasi, Sentrifugasi, dll) yang akan kamu gunakan untuk mengubah air hitam tersebut menjadi air bening murni.</p>
+                            
+                            <textarea id="answerBox" class="answer-box" placeholder="Ketik jawabanmu di sini... &#10;(Contoh: Pertama, saya akan menggunakan metode filtrasi untuk menyaring kotoran padat yang mengapung...)"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='menu 3 materi 5 modul.html'">
+                    ⬅ MENU UTAMA
+                </button>
+                
+                <button class="btn-action btn-submit" onclick="submitAnswer()">
+                    KIRIM JAWABAN ➔
+                </button>
+            </div>
+
         </div>
-
-        <div class="right-panel">
-            
-            <div class="case-box">
-                <h3>🔍 Laporan Kasus:</h3>
-                <p>Halo Detektif <strong id="namaDetektif"></strong>! Sebuah desa sedang mengalami krisis. Sumber mata air mereka keruh, bercampur lumpur, pasir, dan sampah organik. Penduduk desa tidak bisa mengonsumsinya secara langsung.</p>
-                <br>
-                <p>Berdasarkan pemahamanmu tentang metode pemisahan campuran (seperti Filtrasi, Evaporasi, dll), <strong>bagaimana solusi dan langkah-langkah yang harus dilakukan untuk menjernihkan air tersebut agar layak digunakan?</strong></p>
-            </div>
-
-            <div class="input-group">
-                <label for="answerBox">Tuliskan solusi dan langkah-langkah analisamu di sini:</label>
-                <textarea id="answerBox" class="student-answer" placeholder="Ketik jawabanmu di sini... (Contoh: Pertama, saya akan menggunakan metode filtrasi dengan menyusun... )"></textarea>
-            </div>
-
-            <button class="btn-submit" onclick="submitAnswer()">KIRIM JAWABAN ➔</button>
-
-        </div>
-
     </div>
 
     <script>
         // Mengambil nama pemain dari SessionStorage
         document.addEventListener("DOMContentLoaded", function() {
             const savedName = sessionStorage.getItem('xmatter_name');
-            if (savedName) {
-                document.getElementById('namaDetektif').innerText = savedName;
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('namaDetektif').innerText = savedName + "!";
             } else {
-                document.getElementById('namaDetektif').innerText = "Materi";
+                document.getElementById('namaDetektif').innerText = "Detektif!";
             }
         });
 
-        // Simulasi fungsi simpan jawaban (Di Storyline ini setara dengan menyimpan ke variabel teks)
+        // Simulasi fungsi simpan jawaban
         function submitAnswer() {
             const answer = document.getElementById('answerBox').value;
             
             if (answer.trim() === "") {
-                alert("Detektif, kamu belum menuliskan solusinya! Kolom tidak boleh kosong.");
+                alert("Detektif, kamu belum menuliskan solusinya! Kolom jawaban tidak boleh kosong.");
             } else {
-                alert("Luar biasa! Solusimu telah terekam di sistem X-MATTER.\n\nMari kita uji pemahamanmu secara keseluruhan di menu Evaluasi!");
+                alert("Luar biasa! Solusimu telah terekam di sistem ATOMY.\n\nMari kita uji pemahamanmu secara keseluruhan di menu Evaluasi!");
+                
                 // Kode untuk pindah ke halaman Evaluasi/Kuis
-                // window.location.href = "kuis.html";
+                // window.location.href = "kuis 1 memasang atom.html";
             }
         }
     </script>
