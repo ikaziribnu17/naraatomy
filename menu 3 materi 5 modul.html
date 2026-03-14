@@ -38,6 +38,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh; /* Mencegah terpotong di HP */
             overflow: hidden;
         }
 
@@ -221,11 +222,12 @@
             .canvas {
                 width: 100vw;
                 height: 100vh;
+                height: 100dvh;
                 aspect-ratio: auto;
                 border-radius: 0;
             }
             .main-content {
-                padding: 15px 20px;
+                padding: 15px 20px 30px 20px;
             }
             .module-card {
                 width: 45%; /* Menjadi 2 kolom di HP */
@@ -251,7 +253,7 @@
             
             <div class="header-section">
                 <h1 class="header-title">Eksplorasi <span>Materi</span></h1>
-                <p class="header-subtitle" id="greetingText">Pilih modul yang ingin kamu pelajari, Detektif!</p>
+                <p class="header-subtitle" id="greetingText">Pilih modul yang ingin kamu pelajari, Pelajar!</p>
             </div>
 
             <div class="module-grid">
@@ -277,13 +279,19 @@
                 <div class="module-card" onclick="window.location.href='modul 4 pemisahan campuran.html'" id="mod4">
                     <div class="module-badge">MODUL 4</div>
                     <div class="module-icon">⚗️</div>
-                    <h3>Pemisahan<br><span class="sub-text">(Filtrasi, Distilasi, dll)</span></h3>
+                    <h3>Pemisahan<br><span class="sub-text">(Teori Pemisahan)</span></h3>
                 </div>
 
                 <div class="module-card" onclick="window.location.href='modul 5 studi kasus.html'" id="mod5">
                     <div class="module-badge">MODUL 5</div>
                     <div class="module-icon">🌍💡</div>
                     <h3>Tantangan Nyata<br><span class="sub-text">(Studi Kasus)</span></h3>
+                </div>
+
+                <div class="module-card" onclick="window.location.href='LAB MAYA filtrasi.html'" id="mod6">
+                    <div class="module-badge">MODUL 6</div>
+                    <div class="module-icon">🔬</div>
+                    <h3>Laboratorium Maya<br><span class="sub-text">(Simulasi Praktikum)</span></h3>
                 </div>
 
             </div>
