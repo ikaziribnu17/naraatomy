@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materi: Apa itu Atom? - X-MATTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Materi: Apa itu Atom? - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -16,6 +16,14 @@
             --bg-white: #F2F3F6;
         }
 
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,230 +32,210 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db;
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; 
+            overflow: hidden;
         }
 
-        /* Container 16:9 */
+        /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; 
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            background-color: var(--bg-white);
-            background-image: radial-gradient(circle at 50% 50%, rgba(38, 165, 203, 0.05) 0%, transparent 60%);
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
-            padding: 40px;
         }
 
-        /* Layout Utama Terbagi 2 Kolom */
-        .content-wrapper {
-            display: flex;
-            width: 100%;
-            gap: 40px;
-            align-items: center;
-            z-index: 10;
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.75);
+            z-index: 1;
         }
 
-        /* Kiri: Visual Atom */
-        .visual-panel {
+        /* Area Konten Utama */
+        .main-content {
             flex: 1;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            height: 100%;
-        }
-
-        /* CSS Animasi Model Atom */
-        .atom-container {
-            position: relative;
-            width: 250px;
-            height: 250px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* Efek melayang */
-            animation: float 4s ease-in-out infinite; 
-        }
-
-        .nucleus {
-            width: 50px;
-            height: 50px;
-            background: radial-gradient(circle, var(--accent-orange), #d49a4a);
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(239, 178, 91, 0.6);
-            z-index: 5;
-        }
-
-        .orbit {
-            position: absolute;
-            width: 250px;
-            height: 80px;
-            border: 3px solid rgba(38, 165, 203, 0.4);
-            border-radius: 50%;
-            box-sizing: border-box;
-        }
-
-        .orbit-1 { transform: rotate(0deg); animation: spin1 10s linear infinite; }
-        .orbit-2 { transform: rotate(60deg); animation: spin2 10s linear infinite; }
-        .orbit-3 { transform: rotate(120deg); animation: spin3 10s linear infinite; }
-
-        .electron {
-            width: 15px;
-            height: 15px;
-            background-color: var(--navy);
-            border-radius: 50%;
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 10px rgba(61, 84, 116, 0.8);
-        }
-
-        /* Keyframes untuk Atom */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-        @keyframes spin1 { 100% { transform: rotate(0deg) rotateZ(360deg); } }
-        @keyframes spin2 { 100% { transform: rotate(60deg) rotateZ(360deg); } }
-        @keyframes spin3 { 100% { transform: rotate(120deg) rotateZ(360deg); } }
-
-        /* Kanan: Teks Materi dengan efek Fade In */
-        .text-panel {
-            flex: 1.2;
-            display: flex;
             flex-direction: column;
-            justify-content: center;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        /* Header Materi */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+            flex-shrink: 0; 
         }
 
         .header-title {
-            color: var(--navy);
+            color: white;
             font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            border-bottom: 4px solid var(--cyan);
-            display: inline-block;
-            padding-bottom: 5px;
-            align-self: flex-start;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
         }
 
-        /* Kelas Animasi Fade In */
-        .fade-in-element {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 1s ease forwards;
+        .header-title span {
+            color: var(--accent-orange);
         }
 
-        .delay-1 { animation-delay: 1s; } /* Muncul setelah 1 detik */
-        .delay-2 { animation-delay: 2s; } /* Muncul setelah 2 detik */
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 500;
         }
 
-        .materi-text {
-            background-color: white;
-            border-left: 6px solid var(--navy);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(61, 84, 116, 0.1);
+        /* AREA TEKS MATERI YANG BISA DI-SCROLL */
+        .scrollable-area {
+            flex: 1;
+            min-height: 0; 
+            overflow-y: auto;
+            padding-right: 15px;
             margin-bottom: 20px;
         }
 
-        .materi-text p {
+        /* Kustomisasi Scrollbar */
+        .scrollable-area::-webkit-scrollbar { width: 8px; }
+        .scrollable-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb:hover { background: var(--accent-orange); }
+
+        /* Kartu Materi Pembungkus */
+        .card-materi {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-left: 6px solid var(--cyan);
             color: var(--navy);
-            font-size: 18px;
             line-height: 1.6;
-            font-weight: 500;
         }
 
-        .contoh-box {
-            background-color: rgba(239, 178, 91, 0.15);
-            border: 2px dashed var(--accent-orange);
-            padding: 20px;
-            border-radius: 12px;
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-        }
-
-        .contoh-icon {
-            font-size: 30px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-
-        .contoh-box p {
+        .card-materi h2 {
+            font-size: 20px;
             color: var(--navy);
-            font-size: 15px;
-            line-height: 1.6;
-            margin-top: 5px;
-        }
-
-        /* Area Maskot Atomy di Bawah */
-        .mascot-area {
-            position: absolute;
-            bottom: 30px;
-            left: 40px;
+            margin-bottom: 12px;
+            font-weight: 800;
+            border-bottom: 2px solid var(--blue-light);
+            padding-bottom: 8px;
             display: flex;
-            align-items: flex-end;
-            gap: 15px;
-            z-index: 20;
-        }
-
-        .atomy-mini {
-            width: 80px;
-            height: 80px;
-            background-color: var(--cyan);
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 5px 15px rgba(38, 165, 203, 0.3);
-            display: flex;
-            justify-content: center;
             align-items: center;
-            color: white;
-            font-weight: bold;
-            font-size: 12px;
-            text-align: center;
+            gap: 10px;
         }
 
-        .speech-bubble {
-            background: white;
-            border: 2px solid var(--blue-light);
-            border-radius: 16px 16px 16px 0;
-            padding: 15px 20px;
-            box-shadow: 0 5px 15px rgba(101, 134, 177, 0.15);
-            max-width: 350px;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
-            animation-delay: 3s; /* Dialog Atomy muncul paling akhir */
-        }
-
-        .speech-bubble p {
-            color: var(--navy);
-            font-size: 14px;
+        .card-materi p {
+            margin-bottom: 15px;
+            font-size: 15px;
             font-weight: 500;
-            margin: 0;
         }
 
-        /* Tombol Navigasi Bawah Kanan */
-        .btn-next {
+        /* Grid Partikel Atom */
+        .particles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .particle-box {
+            background: #f8fafc;
+            border: 2px solid var(--blue-light);
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .particle-box:hover {
+            border-color: var(--cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .particle-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px dashed #cbd5e1;
+        }
+
+        .particle-box ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .particle-box ul li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 6px;
+            font-size: 13.5px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .particle-box ul li::before {
+            content: "•";
             position: absolute;
-            bottom: 40px;
-            right: 40px;
+            left: 0;
+            color: var(--accent-orange);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Info Box untuk Rumus / Catatan */
+        .info-box {
+            background: rgba(38, 165, 203, 0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-orange);
+            margin-top: 10px;
+        }
+
+        .info-box ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .info-box ul li {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+
+        .info-box ul li span {
+            color: var(--accent-orange);
+            font-weight: 800;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0; 
+        }
+
+        .btn-action {
             padding: 12px 25px;
-            background-color: var(--accent-orange);
-            color: white;
             border: none;
             border-radius: 10px;
             font-family: 'Poppins', sans-serif;
@@ -255,70 +243,142 @@
             font-size: 15px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 0px #d49a4a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
+        }
+
+        .btn-next {
+            background-color: var(--accent-orange);
+            color: white;
+            box-shadow: 0 4px 0px #c48a30;
         }
 
         .btn-next:hover {
             background-color: #f2bc6b;
             transform: translateY(-2px);
-            box-shadow: 0 6px 0px #d49a4a;
+            box-shadow: 0 6px 0px #c48a30;
+        }
+
+        /* TAMPILAN KHUSUS HP */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto; 
+                border-radius: 0;
+            }
+            .main-content {
+                padding: 15px 20px;
+            }
+            .particles-grid {
+                grid-template-columns: 1fr; /* 3 kolom menjadi 1 baris ke bawah di HP */
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        
-        <div class="content-wrapper">
+        <div class="main-content">
             
-            <div class="visual-panel">
-                <div class="atom-container">
-                    <div class="nucleus"></div>
-                    <div class="orbit orbit-1"><div class="electron"></div></div>
-                    <div class="orbit orbit-2"><div class="electron"></div></div>
-                    <div class="orbit orbit-3"><div class="electron"></div></div>
-                </div>
+            <div class="header-section">
+                <h1 class="header-title">Eksplorasi, <span id="playerNameDisplay">Pelajar</span>!</h1>
+                <p class="header-subtitle">Mari kita kenali partikel dasar penyusun alam semesta.</p>
             </div>
 
-            <div class="text-panel">
-                <h1 class="header-title">Materi: Apa itu Atom?</h1>
+            <div class="scrollable-area">
                 
-                <div class="materi-text fade-in-element delay-1">
-                    <p>"Atom adalah unit terkecil dari materi yang tidak dapat dibagi lagi dengan cara kimia biasa."</p>
+                <div class="card-materi">
+                    <h2>🔬 Apa itu Atom?</h2>
+                    <p><strong>Atom</strong> adalah partikel terkecil dari suatu unsur yang masih memiliki sifat-sifat unsur tersebut. Kata "atom" berasal dari bahasa Yunani <em>"atomos"</em> yang berarti <strong>tidak dapat dibagi</strong>.</p>
+                    <p>Namun, seiring perkembangan ilmu pengetahuan, para ilmuwan menemukan bahwa atom sebenarnya tersusun dari partikel-partikel yang lebih kecil lagi lho!</p>
                 </div>
 
-                <div class="contoh-box fade-in-element delay-2">
-                    <div class="contoh-icon">🧱</div>
-                    <div>
-                        <strong>Analogi:</strong>
-                        <p>Bayangkan atom seperti blok LEGO terkecil yang menyusun seluruh benda di dunia.</p>
+                <div class="card-materi" style="border-left-color: var(--accent-orange);">
+                    <h2>🧩 Partikel Penyusun Atom</h2>
+                    <p>Meskipun ukurannya sangat mungil, di dalam atom terdapat tiga sub-partikel utama:</p>
+                    
+                    <div class="particles-grid">
+                        <div class="particle-box">
+                            <h3 style="color: #e74c3c;">🔴 Proton (p⁺)</h3>
+                            <ul>
+                                <li>Bermuatan <strong>positif (+)</strong></li>
+                                <li>Terletak di inti atom (nukleus)</li>
+                                <li>Massa: 1 sma (satuan massa atom)</li>
+                                <li>Menentukan jenis unsur (nomor atom)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="particle-box">
+                            <h3 style="color: #7f8c8d;">⚪ Neutron (n⁰)</h3>
+                            <ul>
+                                <li><strong>Tidak bermuatan</strong> (netral)</li>
+                                <li>Terletak di inti atom (nukleus)</li>
+                                <li>Massa: 1 sma</li>
+                                <li>Menentukan isotop unsur</li>
+                            </ul>
+                        </div>
+
+                        <div class="particle-box">
+                            <h3 style="color: #3498db;">🔵 Elektron (e⁻)</h3>
+                            <ul>
+                                <li>Bermuatan <strong>negatif (-)</strong></li>
+                                <li>Bergerak mengelilingi inti</li>
+                                <li>Massa: sangat kecil (diabaikan)</li>
+                                <li>Menentukan sifat kimia unsur</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <div class="card-materi">
+                    <h2>🔢 Nomor Atom dan Nomor Massa</h2>
+                    <p>Setiap unsur memiliki identitasnya sendiri berdasarkan jumlah partikel di dalam inti atomnya. Berikut rumusnya:</p>
+                    
+                    <div class="info-box">
+                        <ul>
+                            <li><span>Nomor Atom (Z)</span> = Jumlah proton dalam inti atom</li>
+                            <li><span>Nomor Massa (A)</span> = Jumlah proton + Jumlah neutron</li>
+                            <li><span>Jumlah Elektron</span> = Jumlah proton (pada atom netral)</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='menu 3 materi 5 modul.html'">
+                    ⬅ KEMBALI
+                </button>
+                
+                <button class="btn-action btn-next" onclick="window.location.href='modul 1 2 unsur.html'">
+                    LANJUT MATERI ➔
+                </button>
             </div>
 
         </div>
-
-        <div class="mascot-area">
-            <div class="atomy-mini">Atomy</div>
-            <div class="speech-bubble">
-                <p id="audioText">Hai Detektif, segala sesuatu di alam semesta bermula dari si kecil Atom ini! 🎵</p>
-            </div>
-        </div>
-
-        <button class="btn-next" onclick="alert('Lanjut ke slide selanjutnya!')">LANJUT ➔</button>
-
     </div>
 
     <script>
-        // Mengambil nama pemain dari SessionStorage untuk dialog Atomy
+        // Mengambil nama pemain dari SessionStorage
         document.addEventListener("DOMContentLoaded", function() {
             const savedName = sessionStorage.getItem('xmatter_name');
-            const audioTextElement = document.getElementById('audioText');
-            
-            if (savedName) {
-                audioTextElement.innerHTML = `Hai <strong>${savedName}</strong>, segala sesuatu di alam semesta bermula dari si kecil Atom ini! 🎵`;
-            } else {
-                audioTextElement.innerHTML = `Hai <strong>Detektif</strong>, segala sesuatu di alam semesta bermula dari si kecil Atom ini! 🎵`;
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('playerNameDisplay').innerText = savedName;
             }
         });
     </script>
