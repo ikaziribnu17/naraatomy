@@ -415,10 +415,12 @@
         };
 
         function keluarAplikasi() {
-            if(confirm('Apakah Anda yakin ingin keluar dari aplikasi?')) {
-                // Menghapus data login
+        if(confirm('Apakah Anda yakin ingin keluar dari aplikasi ATOMY?')) {
+                // 1. Menghapus data sesi (nama & sekolah) agar harus login ulang
                 sessionStorage.clear();
-                window.location.href = "halaman login.html"; // Pastikan nama file loginmu benar
+                
+                // 2. Langsung arahkan kembali ke halaman login
+                window.location.href = "index.html"; 
             }
         }
     </script>
