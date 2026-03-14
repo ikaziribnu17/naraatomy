@@ -24,24 +24,22 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db; /* Sesuai dengan halaman lain */
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Ubah ke min-height agar lebih aman */
+            overflow: hidden;
         }
 
         /* Container 16:9 KONSISTEN dengan Home & Login */
         .canvas {
-            width: 100%;
+            width: 95vw; /* Gunakan vw agar ada jarak bernapas di kanan-kiri */
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            
-            /* Background Latar Belakang Baru */
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
             background-size: cover;
             background-position: center;
-            
             display: flex;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
@@ -49,12 +47,12 @@
             border-radius: 12px;
         }
 
-        /* Overlay gelap agar teks kontras */
+        /* Overlay gelap transparan */
         .canvas::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(20, 35, 55, 0.7); /* Biru gelap transparan */
+            background: rgba(20, 35, 55, 0.75); /* Sedikit digelapkan agar teks lebih terbaca */
             z-index: 1;
         }
 
@@ -63,126 +61,126 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 35px 45px;
+            padding: 25px 45px; 
             position: relative;
             z-index: 5;
+            overflow: hidden; /* Mencegah konten keluar dari main-content */
+        }
+
+        /* Header Pendahuluan */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+            flex-shrink: 0; /* Memastikan header tidak ikut menyusut saat layar sempit */
         }
 
         .header-title {
-            color: #ffffff;
-            font-size: 38px; /* Diperbesar dari aslinya */
+            color: white;
+            font-size: 32px;
             font-weight: 800;
-            margin-bottom: 5px;
-            border-bottom: 4px solid var(--accent-orange);
-            display: inline-block;
-            padding-bottom: 5px;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+        }
+
+        .header-title span {
+            color: var(--accent-orange);
         }
 
         .header-subtitle {
             color: #e2e8f0;
-            font-size: 18px; /* Diperbesar */
-            margin-bottom: 20px;
+            font-size: 16px;
             font-weight: 500;
         }
 
-        /* Grid Layout untuk 2 Kartu */
-        .content-grid {
-            display: flex;
-            gap: 25px;
-            flex: 1;
+        /* Area Teks Materi yang Bisa di-Scroll (PERBAIKAN UTAMA DI SINI) */
+        .scrollable-area {
+            flex: 1; /* Mengambil seluruh sisa ruang secara dinamis */
+            min-height: 0; /* Trik penting flexbox agar scroll berfungsi */
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-bottom: 20px;
         }
 
-        /* Kartu Apersepsi (Kiri) */
-        .card-apersepsi {
-            flex: 1;
+        /* Kustomisasi Scrollbar */
+        .scrollable-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        .scrollable-area::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1); 
+            border-radius: 10px;
+        }
+        .scrollable-area::-webkit-scrollbar-thumb {
+            background: var(--cyan); 
+            border-radius: 10px;
+        }
+        .scrollable-area::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-orange); 
+        }
+
+        /* Kartu Teks */
+        .card-materi {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            border-top: 8px solid var(--cyan);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .card-apersepsi h2 {
-            color: var(--cyan);
-            font-size: 24px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-        }
-
-        .card-apersepsi p {
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-left: 6px solid var(--cyan);
             color: var(--navy);
-            font-size: 16px;
             line-height: 1.6;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .highlight-box {
-            background-color: rgba(239, 178, 91, 0.15);
-            border-left: 5px solid var(--accent-orange);
-            padding: 15px;
-            border-radius: 0 8px 8px 0;
-            font-size: 17px;
-            color: #b46b0a;
-            font-style: italic;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        /* Kartu Materi (Kanan) */
-        .card-materi {
-            flex: 1;
-            background: rgba(61, 84, 116, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            color: white;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            border-top: 8px solid var(--accent-orange);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .card-materi h2 {
-            color: var(--accent-orange);
-            font-size: 24px;
-            margin-bottom: 15px;
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--blue-light);
+            padding-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 800;
         }
 
         .card-materi p {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #f8fafc;
             margin-bottom: 15px;
-            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .quote-box {
+            background: rgba(38, 165, 203, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            font-style: italic;
+            border-left: 4px solid var(--accent-orange);
+            margin-bottom: 15px;
         }
 
         .list-materi {
-            margin-left: 25px;
-            font-size: 17px;
-            line-height: 1.7;
-            color: #bae6fd;
-            font-weight: 500;
-            margin-bottom: auto;
+            list-style-type: none;
+            padding-left: 0;
         }
 
-        /* Area Tombol Bawah */
+        .list-materi li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .list-materi li::before {
+            content: "➔";
+            position: absolute;
+            left: 0;
+            color: var(--accent-orange);
+            font-weight: bold;
+        }
+
+        /* Area Tombol Navigasi Bawah */
         .bottom-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
+            flex-shrink: 0; /* Memastikan tombol tidak ikut menyusut */
         }
 
         .btn-action {
@@ -215,20 +213,30 @@
         .btn-next {
             background-color: var(--accent-orange);
             color: white;
-            box-shadow: 0 5px 0px #c48a30;
+            box-shadow: 0 4px 0px #c48a30;
         }
 
         .btn-next:hover {
             background-color: #f2bc6b;
             transform: translateY(-2px);
-            box-shadow: 0 7px 0px #c48a30;
+            box-shadow: 0 6px 0px #c48a30;
         }
 
-        .btn-next:active {
-            transform: translateY(3px);
-            box-shadow: 0 0px 0px #c48a30;
+        /* Safety Net: Media Query untuk HP jika Mode Web dimatikan */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto; /* Mematikan ratio 16:9 agar full layar HP vertikal */
+                border-radius: 0;
+            }
+            .main-content {
+                padding: 15px 20px;
+            }
+            body {
+                overflow: auto;
+            }
         }
-
     </style>
 </head>
 <body>
@@ -236,18 +244,18 @@
     <div class="canvas">
         <div class="main-content">
             
-            <div>
-                <h1 class="header-title">Pendahuluan</h1>
-                <p class="header-subtitle">Mari mengamati fenomena di sekitar kita sebelum masuk ke materi utama.</p>
+            <div class="header-section">
+                <h1 class="header-title">Misi Dimulai, <span id="playerNameDisplay">Pelajar</span>!</h1>
+                <p class="header-subtitle">Selamat datang di Laboratorium Penemuan ATOMY.</p>
             </div>
 
-            <div class="content-grid">
+            <div class="scrollable-area">
                 
-                <div class="card-apersepsi">
-                    <h2>💡 Tahukah Kamu?</h2>
-                    <p>Pernahkah kamu membiarkan es batu di udara terbuka? Perlahan es tersebut akan mencair. Atau melihat pagar besi yang rapuh karena berkarat?</p>
+                <div class="card-materi">
+                    <h2>🌍 PENDAHULUAN: Misteri Benda di Sekitar Kita</h2>
+                    <p>Pernahkah kamu memperhatikan mengapa es batu bisa mencair saat dibiarkan di meja, sementara kayu yang dibakar justru berubah menjadi abu dan asap?</p>
                     
-                    <div class="highlight-box">
+                    <div class="quote-box">
                         "Semua benda di sekitarmu, mulai dari air hingga besi dan kayu, bisa mengalami perubahan wujud dan sifat."
                     </div>
                     
@@ -281,5 +289,14 @@
         </div>
     </div>
 
+    <script>
+        // Mengambil nama pemain dari SessionStorage
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('playerNameDisplay').innerText = savedName;
+            }
+        });
+    </script>
 </body>
 </html>
