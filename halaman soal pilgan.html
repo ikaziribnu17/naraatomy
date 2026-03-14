@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluasi Pilihan Ganda - X-MATTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Evaluasi Akhir - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -13,306 +13,597 @@
             --blue-light: #82B2D8;
             --cyan: #26A5CB;
             --accent-orange: #EFB25B;
-            --bg-white: #F8F9FA;
-            --text-dark: #2C3E50;
+            --bg-white: #F2F3F6;
             --success-green: #2ecc71;
-            --border-light: #E0E6ED;
+            --warning-red: #e74c3c;
+        }
+
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db;
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh; 
+            overflow: hidden;
         }
 
-        /* Container 16:9 - Clean Layout */
+        /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; 
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            background-color: #ffffff;
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
         }
 
-        /* Header Soal */
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.85);
+            z-index: 1;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Kartu Kuis Utama */
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 750px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .quiz-card::-webkit-scrollbar { width: 6px; }
+        .quiz-card::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+
+        /* HEADER KUIS (Nama & Progress) */
         .quiz-header {
-            background-color: var(--navy);
-            color: white;
-            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            z-index: 10;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #cbd5e1;
+            padding-bottom: 15px;
         }
 
-        .question-number { font-size: 18px; font-weight: 700; color: var(--accent-orange); }
-        .module-badge { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 1px; }
-
-        /* Area Konten Utama */
-        .quiz-content {
+        .player-info {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
             display: flex;
-            flex-direction: column;
-            padding: 40px 60px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .player-info span { color: var(--accent-orange); }
+
+        .question-counter {
+            background: var(--navy);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--cyan);
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+
+        /* Area Pertanyaan */
+        .question-area {
             flex: 1;
-            position: relative;
+            animation: fadeIn 0.4s ease;
         }
 
-        /* Teks Pertanyaan */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         .question-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--text-dark);
+            font-size: 18px;
+            color: var(--navy);
+            font-weight: 700;
             line-height: 1.5;
-            margin-bottom: 30px;
-            max-width: 900px;
+            margin-bottom: 20px;
         }
 
-        /* Opsi Jawaban (Pilihan Ganda) */
-        .options-container {
+        .tag-badge {
+            display: inline-block;
+            background: rgba(239, 178, 91, 0.2);
+            color: var(--accent-orange);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Opsi Jawaban */
+        .options-grid {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            max-width: 800px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .option-btn {
-            background-color: var(--bg-white);
-            border: 2px solid var(--border-light);
-            border-radius: 12px;
-            padding: 15px 25px;
+            background: #f8fafc;
+            border: 2px solid var(--blue-light);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--navy);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: left;
-            position: relative;
+            gap: 15px;
+        }
+
+        .option-btn::before {
+            content: "";
+            display: inline-block;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--blue-medium);
+            flex-shrink: 0;
+            transition: 0.2s;
         }
 
         .option-btn:hover {
             border-color: var(--cyan);
-            background-color: #f0f9fb;
+            background: rgba(38, 165, 203, 0.05);
             transform: translateX(5px);
         }
 
-        /* State saat opsi dipilih */
         .option-btn.selected {
-            border-color: var(--accent-orange);
-            background-color: rgba(239, 178, 91, 0.1);
-            box-shadow: 0 4px 15px rgba(239, 178, 91, 0.2);
+            background: rgba(38, 165, 203, 0.1);
+            border-color: var(--cyan);
         }
 
-        .option-letter {
-            background-color: var(--navy);
-            color: white;
-            width: 35px;
-            height: 35px;
-            display: flex;
+        .option-btn.selected::before {
+            background: var(--cyan);
+            border-color: var(--cyan);
+            box-shadow: inset 0 0 0 4px white;
+        }
+
+        /* Opsi Benar/Salah Khusus */
+        .tf-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .tf-btn {
+            text-align: center;
             justify-content: center;
-            align-items: center;
-            border-radius: 8px;
-            font-weight: 700;
             font-size: 16px;
-            flex-shrink: 0;
-            transition: background-color 0.2s;
         }
+        .tf-btn::before { display: none; } /* Hilangkan bulat radio */
 
-        .option-btn.selected .option-letter {
-            background-color: var(--accent-orange);
-        }
+        .tf-btn.selected.true-opt { background: var(--success-green); color: white; border-color: var(--success-green); }
+        .tf-btn.selected.false-opt { background: var(--warning-red); color: white; border-color: var(--warning-red); }
 
-        .option-text {
-            color: var(--text-dark);
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 1.4;
-        }
-
-        /* Navigasi Bawah */
+        /* Footer & Tombol Lanjut */
         .quiz-footer {
-            margin-top: auto;
             display: flex;
             justify-content: flex-end;
-            align-items: center;
-            border-top: 1px solid var(--border-light);
+            margin-top: 10px;
+            border-top: 2px solid #f1f5f9;
             padding-top: 20px;
         }
 
-        .btn-submit {
-            padding: 12px 35px;
-            background-color: var(--navy);
+        .btn-next {
+            background-color: var(--accent-orange);
             color: white;
             border: none;
+            padding: 12px 30px;
             border-radius: 10px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: not-allowed;
-            opacity: 0.5;
-            transition: all 0.3s;
             font-family: 'Poppins', sans-serif;
-        }
-
-        /* Aktif jika ada jawaban yang dipilih */
-        .btn-submit.active {
-            background-color: var(--cyan);
+            font-weight: 800;
+            font-size: 15px;
             cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 0px #c48a30;
+            opacity: 0.5;
+            pointer-events: none; /* Disable sampai opsi dipilih */
+        }
+
+        .btn-next.active {
             opacity: 1;
-            box-shadow: 0 4px 0px #1c82a3;
+            pointer-events: auto;
         }
 
-        .btn-submit.active:hover { background-color: #2ab6df; transform: translateY(-2px); box-shadow: 0 6px 0px #1c82a3; }
-        .btn-submit.active:active { transform: translateY(2px); box-shadow: 0 0px 0px #1c82a3; }
+        .btn-next.active:hover {
+            background-color: #f2bc6b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #c48a30;
+        }
 
-        /* Mascot Penyemangat (Atomy) di pojok kiri bawah */
-        .mascot-corner {
-            position: absolute;
-            bottom: 30px;
-            left: 40px;
+        /* --- LAYAR HASIL (RESULT SCREEN) --- */
+        #result-screen {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .score-circle {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: white;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 15px;
-            opacity: 0.8;
+            font-size: 40px;
+            font-weight: 800;
+            margin: 0 auto 15px auto;
+            border: 6px solid var(--cyan);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .mascot-emoji {
-            font-size: 60px;
-            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.2));
-            animation: bounce 2s infinite;
+        .result-title { color: var(--navy); font-size: 24px; font-weight: 800; margin-bottom: 5px; }
+        .result-msg { color: var(--accent-orange); font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+
+        .analysis-box {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
 
-        .mascot-bubble {
-            background: var(--bg-white);
-            padding: 10px 15px;
-            border-radius: 15px;
-            border-bottom-left-radius: 0;
-            border: 1px solid var(--border-light);
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--navy);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        .analysis-box h4 { color: var(--navy); margin-bottom: 10px; font-size: 15px; }
+        .strong-point { color: var(--success-green); font-weight: 600; margin-bottom: 5px; }
+        .weak-point { color: var(--warning-red); font-weight: 600; margin-bottom: 5px; }
+
+        .btn-home {
+            background-color: var(--navy);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            border: none; cursor: pointer;
         }
 
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
+        /* TAMPILAN KHUSUS HP */
+        @media (max-width: 768px) {
+            .canvas { width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; border-radius: 0; }
+            .main-content { padding: 15px 15px; }
+            .quiz-card { padding: 20px; }
+            .question-text { font-size: 15px; }
+            .option-btn { font-size: 13.5px; padding: 12px 15px; }
+            .tf-grid { grid-template-columns: 1fr; } /* Benar Salah turun ke bawah di HP */
+            .btn-next { width: 100%; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        
-        <div class="quiz-header">
-            <div class="question-number">SOAL 1 DARI 20</div>
-            <div class="module-badge">MODUL: PEMISAHAN CAMPURAN (C4)</div>
-        </div>
-
-        <div class="quiz-content">
-            <div class="question-text">
-                Di sebuah laboratorium investigasi, Detektif menemukan cairan bening yang merupakan campuran homogen antara air dan alkohol. Jika Detektif ingin memisahkan alkohol murni dari air tersebut, metode pemisahan apa yang paling tepat digunakan dan apa prinsip dasar yang melandasinya?
-            </div>
-
-            <div class="options-container" id="optionsContainer">
+        <div class="main-content">
+            
+            <div class="quiz-card" id="quiz-container">
+                
+                <div class="quiz-header">
+                    <div class="player-info">👤 <span id="playerName">Detektif</span></div>
+                    <div class="question-counter">Soal <span id="q-current">1</span>/<span id="q-total">25</span></div>
                 </div>
 
-            <div class="quiz-footer">
-                <button class="btn-submit" id="btnSubmit" onclick="submitAnswer()" disabled>SIMPAN & LANJUT ➔</button>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <div class="question-area" id="questionArea">
+                    <div class="tag-badge" id="q-tag">Tingkat: Mudah</div>
+                    <div class="question-text" id="q-text">Memuat pertanyaan...</div>
+                    
+                    <div class="options-grid" id="options-container">
+                        </div>
+                </div>
+
+                <div class="quiz-footer">
+                    <button class="btn-next" id="btnNext" onclick="nextQuestion()">Selanjutnya ➔</button>
+                </div>
+
             </div>
 
-            <div class="mascot-corner">
-                <div class="mascot-emoji">🕵️‍♂️</div>
-                <div class="mascot-bubble">"Baca dengan teliti, perhatikan<br>kata kunci pertanyaannya!"</div>
+            <div class="quiz-card" id="result-screen">
+                <div class="score-circle" id="score-display">0</div>
+                <h2 class="result-title">Evaluasi Selesai!</h2>
+                <div class="result-msg" id="result-message">Memproses hasil...</div>
+
+                <div class="analysis-box">
+                    <h4>📊 Analisis Detektif:</h4>
+                    <div id="analysis-content">
+                        </div>
+                </div>
+
+                <button class="btn-home" onclick="window.location.href='halaman beranda.html'">Kembali ke Beranda</button>
             </div>
+
         </div>
-
     </div>
 
     <script>
-        // Data Soal dan Jawaban (Bisa diganti-ganti)
-        const questionData = [
-            { id: 'correct', text: "Distilasi, karena metode ini didasarkan pada perbedaan titik didih antara alkohol dan air." },
-            { id: 'wrong1', text: "Evaporasi, karena metode ini didasarkan pada proses penguapan zat padat dari pelarutnya." },
-            { id: 'wrong2', text: "Filtrasi, karena metode ini didasarkan pada perbedaan ukuran partikel zat cair." },
-            { id: 'wrong3', text: "Kromatografi, karena metode ini didasarkan pada perbedaan kecepatan merambat antar partikel." }
+        // Mengambil nama pemain
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedName = sessionStorage.getItem('xmatter_name');
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('playerName').innerText = savedName;
+            }
+        });
+
+        // ================= BANK SOAL (25 SOAL) =================
+        // Kategori: atom, unsur_senyawa, campuran, pemisahan, sifat_zat
+        const questions = [
+            // MUDAH (Pilihan Ganda)
+            { type: 'mcq', cat: 'atom', tag: 'Mudah', text: 'Partikel terkecil penyusun suatu materi yang tidak dapat dibagi lagi dinamakan...', options: ['Molekul', 'Atom', 'Senyawa', 'Campuran'], answer: 1 },
+            { type: 'mcq', cat: 'unsur_senyawa', tag: 'Mudah', text: 'Zat tunggal yang tidak dapat diuraikan lagi menjadi zat yang lebih sederhana disebut...', options: ['Campuran', 'Senyawa', 'Larutan', 'Unsur'], answer: 3 },
+            { type: 'mcq', cat: 'campuran', tag: 'Mudah', text: 'Campuran yang partikel penyusunnya tidak dapat dibedakan lagi (serba sama) disebut campuran...', options: ['Heterogen', 'Homogen', 'Koloid', 'Suspensi'], answer: 1 },
+            { type: 'mcq', cat: 'unsur_senyawa', tag: 'Mudah', text: 'Berikut ini yang merupakan contoh senyawa adalah...', options: ['Emas', 'Oksigen', 'Air (H₂O)', 'Udara'], answer: 2 },
+            { type: 'mcq', cat: 'sifat_zat', tag: 'Mudah', text: 'Es yang mencair menjadi air merupakan contoh dari perubahan...', options: ['Fisika', 'Kimia', 'Biologi', 'Alami'], answer: 0 },
+            
+            // SEDANG (Pilihan Ganda)
+            { type: 'mcq', cat: 'atom', tag: 'Sedang', text: 'Inti atom (Nukleus) terdiri dari partikel bermuatan yang disebut...', options: ['Proton dan Elektron', 'Elektron dan Neutron', 'Proton dan Neutron', 'Hanya Proton'], answer: 2 },
+            { type: 'mcq', cat: 'pemisahan', tag: 'Sedang', text: 'Metode yang paling tepat untuk memisahkan campuran air dan pasir adalah...', options: ['Distilasi', 'Kromatografi', 'Evaporasi', 'Filtrasi'], answer: 3 },
+            { type: 'mcq', cat: 'pemisahan', tag: 'Sedang', text: 'Pemisahan zat warna pada tinta spidol dapat dilakukan dengan metode...', options: ['Kromatografi', 'Sentrifugasi', 'Distilasi', 'Sublimasi'], answer: 0 },
+            { type: 'mcq', cat: 'sifat_zat', tag: 'Sedang', text: 'Peristiwa besi yang berkarat karena bereaksi dengan oksigen adalah contoh dari sifat...', options: ['Fisika', 'Mekanik', 'Kimia', 'Magnetik'], answer: 2 },
+            { type: 'mcq', cat: 'campuran', tag: 'Sedang', text: 'Susu, santan, dan asap merupakan contoh campuran heterogen jenis...', options: ['Suspensi', 'Larutan', 'Koloid', 'Paduan'], answer: 2 },
+            { type: 'mcq', cat: 'unsur_senyawa', tag: 'Sedang', text: 'Rumus kimia dari garam dapur yang biasa kita konsumsi adalah...', options: ['H₂O', 'CO₂', 'NaCl', 'C₆H₁₂O₆'], answer: 2 },
+            { type: 'mcq', cat: 'pemisahan', tag: 'Sedang', text: 'Untuk memisahkan serbuk besi dari tumpukan tanah, alat yang paling efektif digunakan adalah...', options: ['Kertas Saring', 'Magnet', 'Corong Kaca', 'Pemanas Bunsen'], answer: 1 },
+
+            // SULIT (Pilihan Ganda)
+            { type: 'mcq', cat: 'pemisahan', tag: 'Sulit', text: 'Pemisahan minyak bumi menjadi fraksi-fraksinya (bensin, solar, aspal) menggunakan prinsip perbedaan titik didih. Metode ini disebut...', options: ['Distilasi Bertingkat', 'Kromatografi Kertas', 'Sentrifugasi', 'Dekantasi'], answer: 0 },
+            { type: 'mcq', cat: 'pemisahan', tag: 'Sulit', text: 'Pemisahan sel darah merah dari plasma darah di laboratorium rumah sakit dilakukan dengan cara diputar pada kecepatan sangat tinggi. Metode ini adalah...', options: ['Evaporasi', 'Sublimasi', 'Sentrifugasi', 'Filtrasi'], answer: 2 },
+            { type: 'mcq', cat: 'unsur_senyawa', tag: 'Sulit', text: 'Ciri utama dari senyawa yang membedakannya dengan campuran adalah...', options: ['Terbentuk dari reaksi fisika', 'Perbandingan massa unsur penyusunnya selalu tetap', 'Sifat unsur penyusunnya masih terlihat', 'Dapat dipisahkan dengan kertas saring'], answer: 1 },
+            { type: 'mcq', cat: 'campuran', tag: 'Sulit', text: 'Campuran antara dua zat cair yang tidak saling melarutkan (seperti minyak dan air) disebut...', options: ['Emulsi', 'Aerosol', 'Buih', 'Sol'], answer: 0 },
+            { type: 'mcq', cat: 'sifat_zat', tag: 'Sulit', text: 'Berikut ini yang BUKAN merupakan tanda-tanda terjadinya reaksi/perubahan kimia adalah...', options: ['Timbulnya gas', 'Perubahan ukuran dan bentuk', 'Terbentuknya endapan', 'Perubahan suhu'], answer: 1 },
+            { type: 'mcq', cat: 'atom', tag: 'Sulit', text: 'Partikel sub-atomik yang mengelilingi inti atom dan bermuatan negatif disebut...', options: ['Proton', 'Neutron', 'Elektron', 'Positron'], answer: 2 },
+            { type: 'mcq', cat: 'pemisahan', tag: 'Sulit', text: 'Memisahkan campuran kapur barus (kamper) dengan pasir paling efektif menggunakan metode...', options: ['Sublimasi', 'Distilasi', 'Dekantasi', 'Kromatografi'], answer: 0 },
+            { type: 'mcq', cat: 'unsur_senyawa', tag: 'Sulit', text: 'Emas (Au), Perak (Ag), dan Besi (Fe) diklasifikasikan ke dalam kelompok...', options: ['Unsur Non-Logam', 'Senyawa Biner', 'Unsur Logam', 'Campuran Homogen'], answer: 2 },
+
+            // BENAR ATAU SALAH (5 Soal)
+            { type: 'tf', cat: 'campuran', tag: 'Benar / Salah', text: 'Udara yang kita hirup sehari-hari adalah contoh senyawa murni, bukan campuran.', answer: false },
+            { type: 'tf', cat: 'pemisahan', tag: 'Benar / Salah', text: 'Evaporasi (penguapan) dapat digunakan untuk memisahkan air laut menjadi air murni dan kristal garam.', answer: true },
+            { type: 'tf', cat: 'unsur_senyawa', tag: 'Benar / Salah', text: 'Perunggu dan Kuningan adalah contoh unsur murni yang ada di alam.', answer: false },
+            { type: 'tf', cat: 'atom', tag: 'Benar / Salah', text: 'Sebuah atom secara keseluruhan bersifat netral karena jumlah proton selalu sama dengan jumlah elektronnya.', answer: true },
+            { type: 'tf', cat: 'sifat_zat', tag: 'Benar / Salah', text: 'Kertas yang dibakar menjadi abu adalah contoh perubahan fisika karena wujudnya berubah.', answer: false }
         ];
 
-        let selectedAnswer = null;
-        const container = document.getElementById('optionsContainer');
-        const submitBtn = document.getElementById('btnSubmit');
+        // ================= VARIABEL STATE =================
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = []; // Simpan data: { cat, isCorrect }
+        let selectedOption = null;
 
-        // Fungsi Mengacak Array (Fisher-Yates Shuffle)
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        const qTotal = questions.length;
+        document.getElementById('q-total').innerText = qTotal;
+
+        // ================= FUNGSI RENDER SOAL =================
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('q-current').innerText = currentQuestion + 1;
+            document.getElementById('progressBar').style.width = `${((currentQuestion) / qTotal) * 100}%`;
+            
+            // Set Text & Tag
+            document.getElementById('q-tag').innerText = q.tag;
+            document.getElementById('q-text').innerText = q.text;
+
+            const optContainer = document.getElementById('options-container');
+            optContainer.innerHTML = '';
+            optContainer.className = q.type === 'tf' ? 'tf-grid' : 'options-grid';
+
+            selectedOption = null;
+            document.getElementById('btnNext').classList.remove('active');
+
+            if (q.type === 'mcq') {
+                document.getElementById('btnNext').innerText = "Selanjutnya ➔";
+                q.options.forEach((opt, index) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'option-btn';
+                    btn.innerText = opt;
+                    btn.onclick = () => selectOption(btn, index);
+                    optContainer.appendChild(btn);
+                });
+            } else if (q.type === 'tf') {
+                document.getElementById('btnNext').innerText = "Selanjutnya ➔";
+                
+                const btnTrue = document.createElement('div');
+                btnTrue.className = 'option-btn tf-btn true-opt';
+                btnTrue.innerText = '✅ BENAR';
+                btnTrue.onclick = () => selectOption(btnTrue, true);
+
+                const btnFalse = document.createElement('div');
+                btnFalse.className = 'option-btn tf-btn false-opt';
+                btnFalse.innerText = '❌ SALAH';
+                btnFalse.onclick = () => selectOption(btnFalse, false);
+
+                optContainer.appendChild(btnTrue);
+                optContainer.appendChild(btnFalse);
+            }
+
+            // Jika soal terakhir, ubah teks tombol
+            if (currentQuestion === qTotal - 1) {
+                document.getElementById('btnNext').innerText = "Kirim & Lihat Hasil 🚀";
+            }
+
+            // Animasi masuk
+            document.getElementById('questionArea').style.animation = 'none';
+            document.getElementById('questionArea').offsetHeight; 
+            document.getElementById('questionArea').style.animation = 'fadeIn 0.4s ease';
+        }
+
+        function selectOption(element, value) {
+            const allOpts = document.querySelectorAll('.option-btn');
+            allOpts.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            selectedOption = value;
+            document.getElementById('btnNext').classList.add('active');
+        }
+
+        function nextQuestion() {
+            if (selectedOption === null) return;
+
+            // Cek benar/salah dan simpan data kategori
+            const q = questions[currentQuestion];
+            const isCorrect = (selectedOption === q.answer);
+            
+            if(isCorrect) score += (100 / qTotal); // Tiap soal bernilai sama
+            
+            userAnswers.push({ category: q.cat, correct: isCorrect });
+
+            currentQuestion++;
+
+            if (currentQuestion < qTotal) {
+                loadQuestion();
+            } else {
+                showResults();
             }
         }
 
-        // Fungsi Render Jawaban ke HTML
-        function renderOptions() {
-            shuffleArray(questionData); // Acak jawaban
-            const letters = ['A', 'B', 'C', 'D'];
+        // ================= FUNGSI ANALISIS HASIL =================
+        function showResults() {
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
 
-            questionData.forEach((option, index) => {
-                const btn = document.createElement('div');
-                btn.className = 'option-btn';
-                btn.onclick = () => selectOption(btn, option.id);
+            let finalScore = Math.round(score);
+            document.getElementById('score-display').innerText = finalScore;
 
-                btn.innerHTML = `
-                    <div class="option-letter">${letters[index]}</div>
-                    <div class="option-text">${option.text}</div>
-                `;
-                container.appendChild(btn);
+            // Menentukan Lulus / Pesan Motivasi
+            const msgObj = document.getElementById('result-message');
+            if (finalScore >= 80) {
+                document.getElementById('score-display').style.borderColor = "var(--success-green)";
+                msgObj.innerText = "Luar Biasa! Kamu resmi menjadi Detektif Sains!";
+                msgObj.style.color = "var(--success-green)";
+            } else if (finalScore >= 60) {
+                msgObj.innerText = "Kerja bagus, tapi masih bisa ditingkatkan lagi!";
+            } else {
+                document.getElementById('score-display').style.borderColor = "var(--warning-red)";
+                msgObj.innerText = "Waduh! Jangan menyerah, ayo baca materi lagi!";
+                msgObj.style.color = "var(--warning-red)";
+            }
+
+            // Analisis Kategori
+            analyzeCategory();
+        }
+
+        function analyzeCategory() {
+            // Kamus Kategori
+            const catNames = {
+                'atom': 'Struktur Atom',
+                'unsur_senyawa': 'Unsur & Senyawa',
+                'campuran': 'Sifat Campuran',
+                'pemisahan': 'Metode Pemisahan Campuran',
+                'sifat_zat': 'Sifat & Perubahan Zat'
+            };
+
+            // Hitung total dan benar per kategori
+            let stats = {};
+            userAnswers.forEach(ans => {
+                if(!stats[ans.category]) stats[ans.category] = { total: 0, correct: 0 };
+                stats[ans.category].total += 1;
+                if(ans.correct) stats[ans.category].correct += 1;
             });
-        }
 
-        // Fungsi Memilih Jawaban
-        function selectOption(clickedElement, optionId) {
-            // Efek Suara Klik (Simulasi Articulate Storyline)
-            console.log("🔊 Sound Effect: Click/Select");
+            let strongList = [];
+            let weakList = [];
 
-            // Reset semua pilihan
-            const allOptions = document.querySelectorAll('.option-btn');
-            allOptions.forEach(opt => opt.classList.remove('selected'));
+            // Jika akurasi >= 60%, masuk kelebihan, jika di bawah masuk kelemahan
+            for (const [cat, data] of Object.entries(stats)) {
+                let accuracy = data.correct / data.total;
+                if (accuracy >= 0.6) {
+                    strongList.push(catNames[cat]);
+                } else {
+                    weakList.push(catNames[cat]);
+                }
+            }
 
-            // Set pilihan aktif
-            clickedElement.classList.add('selected');
-            selectedAnswer = optionId;
-
-            // Aktifkan tombol Submit
-            submitBtn.classList.add('active');
-            submitBtn.disabled = false;
-        }
-
-        // Fungsi Simpan Jawaban
-        function submitAnswer() {
-            if (!selectedAnswer) return;
-
-            // Efek Suara Submit
-            console.log("🔊 Sound Effect: Submit");
-
-            // Karena ini Graded Question tipe Summative, kita biasanya tidak menampilkan pop-up 
-            // benar/salah secara langsung, melainkan menyimpannya ke variabel skor.
+            // Render ke HTML
+            let htmlStr = "";
             
-            // Simulasi Logika Articulate:
-            // if (selectedAnswer === 'correct') { addScore(5); }
-            // jumpToSlide('Next Slide');
+            if (strongList.length > 0) {
+                htmlStr += `<div class="strong-point">✅ Sangat Menguasai:</div>`;
+                htmlStr += `<ul style="margin-left: 20px; margin-bottom: 10px; color: var(--navy);">`;
+                strongList.forEach(item => htmlStr += `<li>${item}</li>`);
+                htmlStr += `</ul>`;
+            }
 
-            alert("Jawaban disimpan! (Mekanisme Articulate akan memindahkan Anda ke Soal 2).");
+            if (weakList.length > 0) {
+                htmlStr += `<div class="weak-point">⚠️ Perlu Dipelajari Lagi:</div>`;
+                htmlStr += `<ul style="margin-left: 20px; color: var(--navy);">`;
+                weakList.forEach(item => htmlStr += `<li>${item}</li>`);
+                htmlStr += `</ul>`;
+            } else {
+                htmlStr += `<div class="strong-point">🌟 Sempurna! Kamu menguasai semua materi tanpa titik lemah!</div>`;
+            }
+
+            document.getElementById('analysis-content').innerHTML = htmlStr;
         }
 
-        // Inisialisasi saat halaman dimuat
-        window.onload = renderOptions;
-
+        // Mulai kuis pertama kali
+        window.onload = loadQuestion;
     </script>
 </body>
 </html>
