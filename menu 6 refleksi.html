@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cermin Belajar (Refleksi) - X-MATTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Cermin Belajar (Refleksi) - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -13,335 +13,436 @@
             --blue-light: #82B2D8;
             --cyan: #26A5CB;
             --accent-orange: #EFB25B;
-            --bg-white: #F8F9FA;
-            --text-dark: #2C3E50;
-            --border-light: #E0E6ED;
+            --bg-white: #F2F3F6;
+            --success-green: #2ecc71;
+        }
+
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db;
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh; 
+            overflow: hidden;
         }
 
-        /* Container 16:9 - Dominan Cerah */
+        /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; 
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            /* Latar belakang cerah: gradasi putih ke cyan sangat muda */
-            background: linear-gradient(135deg, #ffffff 0%, #e0f2f7 100%);
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
-            padding: 40px;
         }
 
-        /* Efek Modern Digital Lab yang Blur di Background */
-        .bg-ornament {
+        .canvas::before {
+            content: "";
             position: absolute;
-            top: -100px;
-            left: -100px;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(38, 165, 203, 0.1) 0%, transparent 60%);
-            border-radius: 50%;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.85);
             z-index: 1;
-            filter: blur(20px);
         }
 
-        .bg-ornament-2 {
-            position: absolute;
-            bottom: -150px;
-            right: -100px;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(239, 178, 91, 0.1) 0%, transparent 60%);
-            border-radius: 50%;
-            z-index: 1;
-            filter: blur(30px);
-        }
-
-        /* Wrapper Konten Utama (Refleksi Card) */
-        .content-wrapper {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            border: 2px solid white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(101, 134, 177, 0.15);
-            backdrop-filter: blur(10px);
-            z-index: 10;
-            overflow: hidden;
-        }
-
-        /* Panel Kiri: Mascot Atomy */
-        .mascot-panel {
-            flex: 0.8;
-            background-color: white;
-            color: var(--navy);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 50px;
-            text-align: center;
-            position: relative;
-            border-right: 2px solid #E0E6ED;
-        }
-
-        .mascot-icon {
-            font-size: 110px;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .speech-bubble {
-            background: var(--bg-white);
-            padding: 20px 25px;
-            border-radius: 20px;
-            border-bottom-left-radius: 0;
-            border: 1px solid var(--border-light);
-            font-size: 15px;
-            color: var(--text-dark);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            position: relative;
-        }
-
-        .speech-bubble strong { color: var(--cyan); }
-
-        .vo-subtext {
-            font-size: 12px;
-            color: var(--blue-medium);
-            margin-top: 10px;
-            font-weight: 500;
-        }
-
-        /* Panel Kanan: Pertanyaan Refleksi */
-        .info-panel {
-            flex: 1.2;
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        .header-title {
-            color: var(--navy);
-            font-size: 34px;
-            font-weight: 800;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-
-        .title-underline {
-            width: 70px;
-            height: 5px;
-            background-color: var(--accent-orange);
-            border-radius: 5px;
-            margin-bottom: 30px;
-        }
-
-        /* Kartu Pertanyaan */
-        .question-container {
+        .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative;
-        }
-
-        .question-item {
-            display: flex;
             align-items: center;
-            gap: 20px;
-            background: white;
-            padding: 20px 25px;
-            border-radius: 12px;
-            border: 2px solid var(--border-light);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0; /* Mulai tersembunyi */
-            position: absolute; /* Bertumpuk di satu posisi */
-            top: 0; left: 0; width: 100%;
-            transform: translateY(15px);
-            pointer-events: none;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            height: 100%;
         }
 
-        /* State Aktif (Awal & Fade In) */
-        .question-item.active {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-            position: relative; /* Menjadi relatif agar muat di container */
+        /* Kartu Refleksi Utama */
+        .reflection-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 35px 40px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-top: 8px solid var(--cyan);
+            max-height: 100%;
+            overflow-y: auto;
         }
 
-        /* Animasi Fade In */
+        .reflection-card::-webkit-scrollbar { width: 6px; }
+        .reflection-card::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+
+        /* Header */
+        .card-header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #cbd5e1;
+            padding-bottom: 15px;
+        }
+
+        .header-title {
+            color: var(--navy);
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .header-title span { color: var(--accent-orange); }
+
+        .header-subtitle {
+            color: var(--blue-medium);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--cyan);
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+
+        /* Area Pertanyaan & Input */
+        .question-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.4s ease;
+        }
+
         @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .q-icon {
-            font-size: 30px;
+        .question-badge {
+            align-self: flex-start;
+            background: rgba(239, 178, 91, 0.2);
             color: var(--accent-orange);
-            background: rgba(239, 178, 91, 0.1);
-            width: 55px; height: 55px;
-            display: flex; justify-content: center; align-items: center;
-            border-radius: 50%;
-            flex-shrink: 0;
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
         }
 
-        .question-item p {
+        .question-text {
+            font-size: 18px;
             color: var(--navy);
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.6;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 20px;
         }
 
-        /* Tombol Aksi */
-        .action-buttons {
-            display: flex;
-            gap: 20px;
+        .answer-box {
             width: 100%;
-            justify-content: flex-end;
-            margin-top: 30px;
+            min-height: 120px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--blue-medium);
+            background-color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14.5px;
+            color: var(--navy);
+            resize: vertical;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
 
-        .btn {
-            padding: 12px 30px;
+        .answer-box:focus {
+            outline: none;
+            border-color: var(--cyan);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(38, 165, 203, 0.1);
+        }
+
+        /* Area Tombol Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .btn-action {
+            padding: 12px 25px;
             border: none;
             border-radius: 10px;
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(61, 84, 116, 0.1);
+            color: var(--navy);
+            border: 2px solid var(--navy);
+        }
+
+        .btn-back:hover {
+            background-color: var(--navy);
+            color: white;
         }
 
         .btn-next {
-            background-color: var(--accent-orange);
-            color: white;
-            box-shadow: 0 4px 0px #c99347;
-        }
-        .btn-next:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 6px 0px #c99347; }
-        .btn-next:active { transform: translateY(2px); box-shadow: 0 2px 0px #c99347; }
-
-        .btn-home {
             background-color: var(--cyan);
             color: white;
-            box-shadow: 0 4px 0px #1c82a3;
-            display: none; /* Disembunyikan di awal */
+            box-shadow: 0 4px 0px #1a7a99;
         }
-        .btn-home:hover { background-color: #2ab6df; transform: translateY(-2px); box-shadow: 0 6px 0px #1c82a3; }
-        .btn-home:active { transform: translateY(2px); box-shadow: 0 2px 0px #1c82a3; }
 
+        .btn-next:hover {
+            background-color: #2ab7e1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #1a7a99;
+        }
+
+        .btn-finish {
+            background-color: var(--success-green);
+            color: white;
+            box-shadow: 0 4px 0px #27ae60;
+        }
+
+        .btn-finish:hover {
+            background-color: #2ecc71;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #27ae60;
+        }
+
+        /* --- LAYAR SELESAI (COMPLETION SCREEN) --- */
+        #completion-screen {
+            display: none;
+            text-align: center;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .trophy-icon {
+            font-size: 70px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+        }
+
+        .completion-title {
+            color: var(--navy);
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .completion-text {
+            color: #444;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .completion-text strong { color: var(--accent-orange); }
+
+        .btn-home {
+            background-color: var(--navy);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            border: none; 
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 0px #2c3e50;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #2c3e50;
+        }
+
+        /* TAMPILAN KHUSUS HP */
+        @media (max-width: 768px) {
+            .canvas { width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; border-radius: 0; }
+            .main-content { padding: 15px; }
+            .reflection-card { padding: 25px 20px; }
+            .header-title { font-size: 24px; }
+            .question-text { font-size: 16px; }
+            .answer-box { min-height: 100px; font-size: 13.5px; }
+            .bottom-actions { flex-direction: column-reverse; gap: 10px; }
+            .btn-action { width: 100%; text-align: center; padding: 12px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        <div class="bg-ornament"></div>
-        <div class="bg-ornament-2"></div>
-        
-        <div class="content-wrapper">
+        <div class="main-content">
             
-            <div class="mascot-panel">
-                <div class="mascot-icon">🧑‍🏫</div>
-                <div class="speech-bubble">
-                    <p>Luar biasa, Detektif <strong id="playerNameDisplay"></strong>! Kamu telah menyelesaikan misi.</p>
-                    <div class="vo-subtext"><em>(Mari sejenak berkaca, ceritakan jawabanmu pada Bapak/Ibu Guru ya!)</em></div>
+            <div class="reflection-card" id="reflection-container">
+                
+                <div class="card-header">
+                    <h1 class="header-title">Cermin <span>Belajar</span></h1>
+                    <p class="header-subtitle">Mari sejenak merenungkan perjalananmu, <strong id="playerNameDisplay" style="color: var(--cyan);">Detektif</strong>!</p>
                 </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <div class="question-area" id="questionArea">
+                    <div class="question-badge" id="q-badge">PERTANYAAN 1 DARI 8</div>
+                    <div class="question-text" id="q-text">Memuat pertanyaan...</div>
+                    
+                    <textarea class="answer-box" id="answerInput" placeholder="Ketik jawaban refleksimu di sini..."></textarea>
+                </div>
+
+                <div class="bottom-actions">
+                    <button class="btn-action btn-back" onclick="window.location.href='halaman beranda.html'">
+                        ⬅ KEMBALI KE BERANDA
+                    </button>
+                    
+                    <button class="btn-action btn-next" id="btnNext" onclick="nextQuestion()">
+                        SELANJUTNYA ➔
+                    </button>
+                </div>
+
             </div>
 
-            <div class="info-panel">
-                <h1 class="header-title">Cermin Belajar</h1>
-                <div class="title-underline"></div>
+            <div class="reflection-card" id="completion-screen">
+                <div class="trophy-icon">🎓✨</div>
+                <h2 class="completion-title">Selamat & Terima Kasih!</h2>
+                
+                <p class="completion-text">
+                    Luar biasa, <strong><span id="finalName">Detektif</span></strong>! Kamu telah menyelesaikan seluruh rangkaian petualangan belajar di ATOMY.<br><br>
+                    Terima kasih telah belajar dengan penuh semangat dan rasa ingin tahu yang tinggi. Jadikan ilmu tentang Unsur, Senyawa, dan Campuran ini sebagai bekal berhargamu untuk menerangi masa depan. 
+                    <br><br><em>Tetaplah menjadi pembelajar yang hebat dan teruslah bereksplorasi!</em> 🚀
+                </p>
 
-                <div class="question-container" id="questionContainer">
-                    
-                    <div class="question-item active fade-in-element">
-                        <div class="q-icon">🤔</div>
-                        <p>1. Apa hal paling mengejutkan yang kamu temukan tentang atom?</p>
-                    </div>
-
-                    <div class="question-item">
-                        <div class="q-icon">🏔️</div>
-                        <p>2. Dari 5 modul, mana yang paling menantang bagimu? Mengapa?</p>
-                    </div>
-
-                    <div class="question-item">
-                        <div class="q-icon">🌍</div>
-                        <p>3. Bagaimana ilmu kimia ini bisa membantumu menjaga lingkungan?</p>
-                    </div>
-
-                    <div class="question-item">
-                        <div class="q-icon">🕵️‍♂️</div>
-                        <p>4. Bagaimana perasaanmu setelah menjadi 'Detektif Materi'?</p>
-                    </div>
-
-                </div>
-
-                <div class="action-buttons">
-                    <button class="btn btn-next" id="btnNext" onclick="showNextQuestion()">Pertanyaan Selanjutnya ➔</button>
-                    <button class="btn btn-home" id="btnHome" onclick="alert('Kembali ke Menu Utama...')">Kembali ke Beranda 🏠</button>
-                </div>
-
+                <button class="btn-home" onclick="window.location.href='halaman beranda.html'">
+                    🏠 KEMBALI KE MENU UTAMA
+                </button>
             </div>
 
         </div>
     </div>
 
     <script>
-        // Memuat nama pemain untuk ditampilkan
+        // Mengambil nama pemain
         document.addEventListener("DOMContentLoaded", function() {
-            const savedName = sessionStorage.getItem('xmatter_name') || "Materi";
+            const savedName = sessionStorage.getItem('xmatter_name') || 'Detektif';
             document.getElementById('playerNameDisplay').innerText = savedName;
+            document.getElementById('finalName').innerText = savedName;
         });
 
-        // Logika Menampilkan Pertanyaan Satu per Satu
-        let currentQuestionIndex = 0;
-        const questions = document.querySelectorAll('.question-item');
+        // 8 Daftar Pertanyaan Refleksi
+        const questions = [
+            "Apa bagian dari materi ATOMY yang paling menarik atau berkesan bagimu hari ini?",
+            "Konsep mana (Unsur, Senyawa, Campuran, dsb) yang awalnya terasa sulit, tapi sekarang kamu sudah berhasil memahaminya?",
+            "Bagaimana perasaanmu saat melakukan simulasi praktikum secara virtual di Laboratorium Maya?",
+            "Jika kamu adalah seorang ilmuwan, metode pemisahan campuran mana yang menurutmu paling berguna untuk mengatasi masalah pencemaran lingkungan?",
+            "Apa hal baru yang sama sekali belum pernah kamu ketahui sebelum belajar menggunakan aplikasi ini?",
+            "Bagian mana dari Evaluasi Pilihan Ganda yang menurutmu paling menantang untuk dijawab?",
+            "Menurutmu, bagaimana ilmu tentang perubahan fisika dan kimia bisa membantumu dalam kehidupan sehari-hari?",
+            "Dari skala 1-10, seberapa siap kamu untuk menjadi ilmuwan atau detektif sains masa depan? Mengapa?"
+        ];
+
+        let currentQuestion = 0;
+        const totalQuestions = questions.length;
+
+        const qBadge = document.getElementById('q-badge');
+        const qText = document.getElementById('q-text');
+        const answerInput = document.getElementById('answerInput');
+        const progressBar = document.getElementById('progressBar');
         const btnNext = document.getElementById('btnNext');
-        const btnHome = document.getElementById('btnHome');
+        const questionArea = document.getElementById('questionArea');
 
-        function showNextQuestion() {
-            // Simulasi Suara Klik UI
-            console.log("🎵 Sound Effect: Click/Fade");
+        // Fungsi Load Pertanyaan
+        function loadQuestion() {
+            qBadge.innerText = `PERTANYAAN ${currentQuestion + 1} DARI ${totalQuestions}`;
+            qText.innerText = questions[currentQuestion];
+            
+            // Hitung Progress Bar
+            let progress = ((currentQuestion) / totalQuestions) * 100;
+            progressBar.style.width = `${progress}%`;
 
-            // Matikan state aktif pertanyaan saat ini
-            questions[currentQuestionIndex].classList.remove('active');
+            // Reset Textarea
+            answerInput.value = "";
 
-            // Tambahkan index
-            currentQuestionIndex++;
+            // Animasi transisi
+            questionArea.style.animation = 'none';
+            questionArea.offsetHeight; // Trigger reflow
+            questionArea.style.animation = 'fadeIn 0.4s ease';
 
-            // Jika masih ada pertanyaan
-            if (currentQuestionIndex < questions.length) {
-                // Tampilkan pertanyaan berikutnya dengan animasi Fade In
-                questions[currentQuestionIndex].classList.add('active');
-                
-                // Jika sudah mencapai pertanyaan terakhir
-                if (currentQuestionIndex === questions.length - 1) {
-                    btnNext.style.display = 'none'; // Sembunyikan tombol "Next"
-                    btnHome.style.display = 'flex'; // Tampilkan tombol "Home"
-                }
+            // Ubah tombol jika di soal terakhir
+            if (currentQuestion === totalQuestions - 1) {
+                btnNext.innerText = "SELESAI ✅";
+                btnNext.classList.remove('btn-next');
+                btnNext.classList.add('btn-finish');
             }
         }
+
+        // Fungsi Tombol Selanjutnya/Selesai
+        function nextQuestion() {
+            // (Opsional) Validasi apakah siswa sudah mengetik atau belum
+            // if(answerInput.value.trim() === "") {
+            //     alert("Silakan ketik refleksimu terlebih dahulu ya!");
+            //     return;
+            // }
+
+            currentQuestion++;
+
+            if (currentQuestion < totalQuestions) {
+                loadQuestion();
+            } else {
+                showCompletion();
+            }
+        }
+
+        // Fungsi Menampilkan Layar Selesai
+        function showCompletion() {
+            document.getElementById('reflection-container').style.display = 'none';
+            document.getElementById('completion-screen').style.display = 'block';
+        }
+
+        // Jalankan saat halaman pertama kali dibuka
+        window.onload = loadQuestion;
     </script>
 </body>
 </html>
