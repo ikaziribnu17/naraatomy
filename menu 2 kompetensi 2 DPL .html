@@ -15,6 +15,14 @@
             --text-dark: #2C3E50;
         }
 
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -27,12 +35,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
         /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw;
             max-width: 1100px;
             aspect-ratio: 16 / 9;
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
@@ -41,15 +50,15 @@
             display: flex;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
-            overflow: hidden;
             border-radius: 12px;
+            overflow: hidden;
         }
 
         .canvas::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(20, 35, 55, 0.7); /* Overlay gelap transparan */
+            background: rgba(20, 35, 55, 0.75);
             z-index: 1;
         }
 
@@ -58,156 +67,204 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 25px 45px;
+            padding: 25px 45px; 
             position: relative;
             z-index: 5;
-            justify-content: space-between;
+            overflow: hidden;
         }
 
-        /* Split Layout untuk Konten Tengah */
-        .split-layout {
-            display: flex;
-            gap: 40px;
-            align-items: center;
-            flex: 1;
-        }
-
-        /* Panel Kiri: Maskot Atomy */
-        .mascot-panel {
-            flex: 0.8;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .speech-bubble {
-            background: rgba(255, 255, 255, 0.95);
-            border: 4px solid var(--accent-orange);
-            border-radius: 20px;
-            padding: 20px;
+        /* Header / Judul */
+        .header-section {
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        /* Segitiga panah balon percakapan */
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -18px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 18px 15px 0;
-            border-style: solid;
-            border-color: var(--accent-orange) transparent transparent transparent;
-            display: block;
-            width: 0;
-        }
-
-        .speech-bubble p {
-            color: var(--navy);
-            font-weight: 600;
-            font-size: 18px; /* Diperbesar agar mudah dibaca */
-            line-height: 1.5;
-        }
-
-        .speech-bubble strong {
-            color: var(--cyan);
-            font-weight: 800;
-        }
-
-        /* Maskot Gambar Animasi */
-        .mascot-img {
-            width: 180px;
-            height: auto;
-            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3));
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* Panel Kanan: Konten Profil Lulusan */
-        .profil-panel {
-            flex: 1.5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            margin-bottom: 20px;
+            flex-shrink: 0;
         }
 
         .header-title {
-            color: #ffffff;
-            font-size: 34px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            border-bottom: 4px solid var(--accent-orange);
-            display: inline-block;
-            padding-bottom: 5px;
-            align-self: flex-start;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-        }
-
-        /* Grid untuk 3 Ikon Besar */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        /* Kartu Profil Lulusan Interaktif */
-        .profil-card {
-            background: rgba(61, 84, 116, 0.95); /* Warna navy transparan */
-            border-top: 8px solid var(--cyan);
-            border-radius: 16px;
-            padding: 30px 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 220px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             color: white;
-        }
-
-        .profil-card:hover {
-            border-top-color: var(--accent-orange);
-            transform: translateY(-8px);
-            background-color: rgba(255, 255, 255, 0.95);
-            color: var(--navy);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-            transition: transform 0.3s;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-        }
-
-        .profil-card:hover .icon {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .profil-card h3 {
-            font-size: 20px;
+            font-size: 32px;
             font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             margin-bottom: 5px;
         }
 
-        /* Area Tombol Navigasi Bawah */
+        .header-title span { color: var(--accent-orange); }
+
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Area Daftar Dimensi yang bisa di-scroll */
+        .content-scroll {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Kustomisasi Scrollbar */
+        .content-scroll::-webkit-scrollbar { width: 8px; }
+        .content-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .content-scroll::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+
+        /* Tata letak grid atas: Pengantar (Kiri) & Daftar (Kanan) */
+        .top-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .left-panel {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 6px solid var(--accent-orange);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            color: var(--navy);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left-panel h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .left-panel p {
+            font-size: 15px;
+            line-height: 1.6;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .right-panel {
+            flex: 1.5;
+            min-width: 300px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        /* Kartu Profil Lulusan */
+        .dpl-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 5px solid var(--cyan);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .dpl-card:hover {
+            transform: translateY(-5px);
+            background: #ffffff;
+            border-left-color: var(--accent-orange);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .dpl-icon {
+            font-size: 30px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .dpl-text h3 {
+            font-size: 15px;
+            color: var(--navy);
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .dpl-text span {
+            font-size: 12px;
+            color: var(--blue-medium);
+            font-weight: 600;
+            display: block;
+        }
+
+        /* Modal Pop-up (Tetap sama) */
+        .modal-overlay {
+            display: none; 
+            position: fixed;
+            z-index: 100;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Agar tidak mentok di ujung layar HP */
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border-top: 8px solid var(--accent-orange);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover { color: var(--navy); }
+
+        .modal-title {
+            color: var(--navy);
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 800;
+            border-bottom: 2px dashed #ddd;
+            padding-bottom: 10px;
+        }
+
+        .modal-desc {
+            color: var(--text-dark);
+            font-size: 15px;
+            line-height: 1.6;
+            font-weight: 500;
+            text-align: justify;
+        }
+
+        /* Area Tombol Bawah */
         .bottom-actions {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
-            margin-top: 20px;
+            flex-shrink: 0;
         }
 
         .btn-action {
@@ -216,7 +273,7 @@
             border-radius: 10px;
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -237,87 +294,23 @@
             transform: translateX(-3px);
         }
 
-        .btn-next {
-            background-color: var(--accent-orange);
-            color: white;
-            box-shadow: 0 5px 0px #c48a30;
-        }
-
-        .btn-next:hover {
-            background-color: #f2bc6b;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 0px #c48a30;
-        }
-
-        .btn-next:active {
-            transform: translateY(3px);
-            box-shadow: 0 0px 0px #c48a30;
-        }
-
-        /* STYLING UNTUK POP-UP MODAL */
-        .modal-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 30, 50, 0.8);
-            z-index: 100;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: #ffffff;
-            width: 500px;
-            padding: 35px;
-            border-radius: 20px;
-            border-top: 10px solid var(--cyan);
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            position: relative;
-            animation: popUpAnim 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes popUpAnim {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px; right: 20px;
-            font-size: 32px;
-            font-weight: 700;
-            color: #94a3b8;
-            cursor: pointer;
-            transition: 0.2s;
-            line-height: 1;
-        }
-
-        .close-btn:hover {
-            color: #e74c3c;
-            transform: scale(1.1);
-        }
-
-        .modal-title {
-            color: var(--navy);
-            font-size: 26px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .modal-desc {
-            color: var(--text-dark);
-            font-size: 18px;
-            line-height: 1.6;
-            font-weight: 500;
-            background: rgba(38, 165, 203, 0.1);
-            padding: 20px;
-            border-radius: 12px;
+        /* TAMPILAN KHUSUS HP */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto;
+                border-radius: 0;
+            }
+            .main-content {
+                padding: 15px 20px;
+            }
+            .top-row {
+                flex-direction: column; /* Panel numpuk ke bawah di HP */
+            }
+            .right-panel {
+                grid-template-columns: 1fr; /* Kartu jadi 1 kolom di HP */
+            }
         }
     </style>
 </head>
@@ -326,45 +319,64 @@
     <div class="canvas">
         <div class="main-content">
             
-            <div class="split-layout">
-                <div class="mascot-panel">
-                    <div class="speech-bubble">
-                        <p>Halo <strong id="userNameDisplay">Pelajar</strong>! 👋<br>Dalam misi kali ini, kita akan melatih <strong>3 Dimensi Profil Lulusan</strong>. Coba klik ikon di sebelah kanan!</p>
-                    </div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Atom_animation.gif" alt="Animasi Struktur Atom" class="mascot-img">
-                </div>
+            <div class="header-section">
+                <h1 class="header-title">Dimensi Profil <span>Lulusan</span></h1>
+                <p class="header-subtitle">Apa yang akan kamu capai setelah menguasai materi ini?</p>
+            </div>
 
-                <div class="profil-panel">
-                    <h1 class="header-title">Dimensi Profil Lulusan</h1>
+            <div class="content-scroll">
+                
+                <div class="top-row">
                     
-                    <div class="cards-container">
+                    <div class="left-panel">
+                        <h2>🎓 Halo, <span id="userNameDisplay" style="color: var(--accent-orange); margin-left: 5px;">Pelajar!</span></h2>
+                        <p>Setelah menuntaskan petualangan di modul ATOMY ini, kamu tidak hanya akan paham tentang zat dan campurannya.</p>
+                        <p>Lebih dari itu, kamu diharapkan dapat mengembangkan berbagai karakter hebat sebagai bekal di dunia nyata.</p>
+                        <p><i>Silakan klik setiap kartu di samping untuk melihat penjelasannya.</i></p>
+                    </div>
+
+                    <div class="right-panel">
                         
-                        <div class="profil-card" onclick="bukaModal('🎒 Mandiri', 'Mampu belajar dan mengeksplorasi materi dengan kecepatanmu sendiri (Self-paced) serta bertanggung jawab atas proses belajar.')">
-                            <div class="icon">🎒</div>
-                            <h3>Mandiri</h3>
+                        <div class="dpl-card" onclick="bukaModal('Berpikir Kritis', 'Kamu akan mampu menganalisis permasalahan tentang pemisahan campuran, mengevaluasi data dari percobaan, dan mengambil keputusan atau kesimpulan berdasarkan fakta ilmiah secara objektif.')">
+                            <div class="dpl-icon">🧠</div>
+                            <div class="dpl-text">
+                                <h3>Berpikir Kritis</h3>
+                                <span>Analisis & Evaluasi</span>
+                            </div>
                         </div>
 
-                        <div class="profil-card" onclick="bukaModal('🧠 Bernalar Kritis', 'Melakukan eksperimen virtual, memproses informasi, dan menganalisis fenomena wujud zat secara objektif.')">
-                            <div class="icon">🧠</div>
-                            <h3>Bernalar Kritis</h3>
+                        <div class="dpl-card" onclick="bukaModal('Kreatif', 'Kamu dapat merancang ide-ide baru, mengusulkan metode pemisahan campuran yang inovatif dalam studi kasus, dan menemukan solusi alternatif untuk mengatasi masalah pencemaran lingkungan.')">
+                            <div class="dpl-icon">💡</div>
+                            <div class="dpl-text">
+                                <h3>Kreatif</h3>
+                                <span>Inovasi Solusi</span>
+                            </div>
                         </div>
 
-                        <div class="profil-card" onclick="bukaModal('💡 Kreatif', 'Mampu memecahkan masalah, menghasilkan gagasan orisinal, dan menemukan solusi dalam metode pemisahan campuran.')">
-                            <div class="icon">💡</div>
-                            <h3>Kreatif</h3>
+                        <div class="dpl-card" onclick="bukaModal('Mandiri', 'Kamu dilatih untuk bertanggung jawab atas proses belajarmu sendiri, mampu mencari sumber informasi tambahan, dan gigih dalam menyelesaikan setiap kuis atau studi kasus yang diberikan.')">
+                            <div class="dpl-icon">🚶‍♂️</div>
+                            <div class="dpl-text">
+                                <h3>Mandiri</h3>
+                                <span>Tanggung Jawab</span>
+                            </div>
+                        </div>
+
+                        <div class="dpl-card" onclick="bukaModal('Gotong Royong', 'Kamu akan terbiasa bekerja sama dalam kelompok (saat praktikum lab nyata), saling menghargai pendapat teman, dan berkolaborasi untuk mencapai tujuan bersama.')">
+                            <div class="dpl-icon">🤝</div>
+                            <div class="dpl-text">
+                                <h3>Gotong Royong</h3>
+                                <span>Kolaborasi Tim</span>
+                            </div>
                         </div>
 
                     </div>
                 </div>
+
             </div>
 
             <div class="bottom-actions">
                 <button class="btn-action btn-back" onclick="window.location.href='menu 2 kompetensi 1 CP ATP.html'">
                     ⬅ KEMBALI
-                </button>
-                
-                <button class="btn-action btn-next" onclick="window.location.href='menu 3 materi 5 modul.html'">
-                    LANJUT KE MATERI ➔
                 </button>
             </div>
 
@@ -386,7 +398,7 @@
             const savedName = sessionStorage.getItem('xmatter_name');
             if (savedName && savedName.trim() !== "") {
                 // Mengubah kata Pelajar menjadi nama yang diinput
-                document.getElementById('userNameDisplay').innerText = savedName;
+                document.getElementById('userNameDisplay').innerText = savedName + "!";
             }
         };
 
