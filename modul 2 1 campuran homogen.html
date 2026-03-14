@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materi: Campuran Homogen - X-MATTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Materi: Campuran Homogen - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -16,147 +16,300 @@
             --bg-white: #F2F3F6;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* Mencegah browser HP memperbesar ukuran font secara otomatis */
+        html, body {
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #d1d5db;
+            background-color: #d1d5db; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; 
+            overflow: hidden;
         }
 
+        /* Container 16:9 KONSISTEN */
         .canvas {
-            width: 100%;
+            width: 95vw; 
             max-width: 1100px;
             aspect-ratio: 16 / 9;
-            background-color: var(--bg-white);
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
             border-radius: 12px;
-            padding: 40px;
-            background-image: radial-gradient(circle at 80% 50%, rgba(239, 178, 91, 0.05) 0%, transparent 60%);
         }
 
-        .content-wrapper {
-            display: flex;
-            width: 100%;
-            gap: 40px;
-            align-items: center;
-            z-index: 10;
+        .canvas::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 35, 55, 0.75);
+            z-index: 1;
         }
 
-        /* Panel Kiri: Teks Materi */
-        .text-panel {
-            flex: 1.2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .header-title {
-            color: var(--navy);
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            border-bottom: 4px solid var(--accent-orange);
-            display: inline-block;
-            padding-bottom: 5px;
-            align-self: flex-start;
-        }
-
-        .materi-text {
-            background-color: white;
-            border-left: 6px solid var(--navy);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(61, 84, 116, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .materi-text p {
-            color: var(--navy);
-            font-size: 16px;
-            line-height: 1.7;
-            font-weight: 500;
-        }
-
-        .contoh-box {
-            background-color: rgba(38, 165, 203, 0.1);
-            border: 2px dashed var(--cyan);
-            padding: 15px 20px;
-            border-radius: 12px;
-        }
-
-        .contoh-box strong {
-            color: var(--navy);
-            display: block;
-            margin-bottom: 8px;
-            font-size: 15px;
-        }
-
-        .contoh-box p {
-            color: var(--navy);
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        /* Panel Kanan: Simulasi Gelas & Slider */
-        .visual-panel {
+        /* Area Konten Utama */
+        .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
+            padding: 25px 45px; 
+            position: relative;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        /* Header Materi */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+            flex-shrink: 0; 
+        }
+
+        .header-title {
+            color: white;
+            font-size: 32px;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+        }
+
+        .header-title span {
+            color: var(--accent-orange);
+        }
+
+        .header-subtitle {
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* AREA TEKS MATERI YANG BISA DI-SCROLL */
+        .scrollable-area {
+            flex: 1;
+            min-height: 0; 
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-bottom: 20px;
+        }
+
+        .scrollable-area::-webkit-scrollbar { width: 8px; }
+        .scrollable-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .scrollable-area::-webkit-scrollbar-thumb:hover { background: var(--accent-orange); }
+
+        /* Layout Grid untuk Bagian Atas */
+        .top-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Supaya turun ke bawah di HP */
+        }
+
+        .left-col {
+            flex: 1.2;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-col {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(101, 134, 177, 0.15);
-            border: 2px solid var(--blue-light);
+            background: rgba(20, 35, 55, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px dashed var(--accent-orange);
+        }
+
+        /* Kartu Materi Pembungkus */
+        .card-materi {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-left: 6px solid var(--cyan);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        .card-materi h2 {
+            font-size: 19px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            font-weight: 800;
+            border-bottom: 2px solid var(--blue-light);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-materi p {
+            margin-bottom: 15px;
+            font-size: 14.5px;
+            font-weight: 500;
+        }
+
+        .rules-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .rules-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            font-size: 14.5px;
+            font-weight: 600;
+        }
+
+        .rules-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            font-size: 14px;
+            top: 2px;
+        }
+
+        .contoh-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .contoh-item {
+            background: rgba(38, 165, 203, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border-left: 4px solid var(--cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* KOTAK SIMULASI GELAS (Diperbarui) */
+        .sim-title {
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .glass-area {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 30px;
+        }
+
+        /* Botol Sirup yang bisa beranimasi */
+        .bottle {
+            position: absolute;
+            font-size: 50px;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%) rotate(0deg);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        /* Aliran sirup jatuh */
+        .syrup-stream {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 100px;
+            background: #e74c3c;
+            opacity: 0;
+            transition: opacity 0.1s;
+            border-radius: 5px;
+            z-index: 5;
         }
 
         .glass-container {
             position: relative;
-            width: 140px;
-            height: 180px;
-            border: 4px solid rgba(101, 134, 177, 0.5);
+            width: 120px;
+            height: 140px;
+            border: 4px solid rgba(255, 255, 255, 0.7);
             border-top: none;
-            border-radius: 0 0 20px 20px;
+            border-radius: 0 0 15px 15px;
             overflow: hidden;
-            margin-bottom: 30px;
-            background: rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 6;
         }
 
         .liquid-base {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 75%;
-            background-color: #b3e5fc; /* Warna air murni */
+            height: 80%;
+            background-color: var(--blue-light); /* Air Murni */
+            transition: background-color 0.3s;
         }
 
         .liquid-syrup {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 75%;
-            background-color: #e53935; /* Warna sirup merah */
-            opacity: 0; /* Mulai dari transparan */
+            height: 80%;
+            background-color: #e74c3c; /* Sirup Merah */
+            opacity: 0; 
             transition: opacity 0.1s;
         }
 
-        /* Komponen Slider */
+        /* Status Text Simulasi */
+        .sim-status {
+            color: var(--accent-orange);
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-align: center;
+            height: 20px; /* Menjaga ukuran tetap saat teks kosong */
+        }
+
+        /* Slider Kustom */
         .slider-container {
             width: 100%;
             text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 12px;
         }
 
         .slider-label {
             color: var(--navy);
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 10px;
             display: block;
             font-size: 14px;
@@ -164,8 +317,8 @@
 
         input[type=range] {
             -webkit-appearance: none;
-            width: 80%;
-            margin: 10px 0;
+            width: 100%;
+            background: transparent;
         }
 
         input[type=range]:focus { outline: none; }
@@ -174,88 +327,204 @@
             width: 100%;
             height: 8px;
             cursor: pointer;
-            background: var(--blue-light);
+            background: #cbd5e1;
             border-radius: 5px;
         }
 
         input[type=range]::-webkit-slider-thumb {
-            height: 20px;
-            width: 20px;
+            height: 24px;
+            width: 24px;
             border-radius: 50%;
             background: var(--accent-orange);
             cursor: pointer;
             -webkit-appearance: none;
-            margin-top: -6px;
+            margin-top: -8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             transition: transform 0.2s;
         }
 
         input[type=range]::-webkit-slider-thumb:hover {
             transform: scale(1.2);
+            background: #d49a4a;
+        }
+
+        /* Area Tombol Navigasi Bawah */
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0; 
+        }
+
+        .btn-action {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-back:hover {
+            background-color: white;
+            color: var(--navy);
+            transform: translateX(-3px);
         }
 
         .btn-next {
-            position: absolute;
-            bottom: 40px; right: 40px;
-            padding: 12px 25px;
             background-color: var(--accent-orange);
             color: white;
-            border: none; border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700; font-size: 15px;
-            cursor: pointer;
-            box-shadow: 0 4px 0px #d49a4a;
+            box-shadow: 0 4px 0px #c48a30;
+        }
+
+        .btn-next:hover {
+            background-color: #f2bc6b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px #c48a30;
+        }
+
+        /* TAMPILAN KHUSUS HP */
+        @media (max-width: 768px) {
+            .canvas {
+                width: 100vw;
+                height: 100vh;
+                aspect-ratio: auto; 
+                border-radius: 0;
+            }
+            .main-content {
+                padding: 15px 20px;
+            }
+            .contoh-grid {
+                grid-template-columns: 1fr; /* 1 kolom contoh di HP */
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="canvas">
-        <div class="content-wrapper">
+        <div class="main-content">
             
-            <div class="text-panel">
-                <h1 class="header-title">Campuran Homogen</h1>
-                
-                <div class="materi-text">
-                    <p>"<strong>Campuran Homogen (Larutan)</strong> adalah campuran yang zat penyusunnya tercampur sempurna sehingga tidak dapat dibedakan lagi batas antara zat-zat penyusunnya."</p>
-                </div>
-
-                <div class="contoh-box">
-                    <strong>Contoh:</strong>
-                    <p>🍹 Air Sirup, 🌬️ Udara, dan 🥉 Perunggu.</p>
-                </div>
+            <div class="header-section">
+                <h1 class="header-title">Campuran <span>Homogen</span></h1>
+                <p class="header-subtitle">Zat-zat yang melebur dan bersatu dengan sempurna.</p>
             </div>
 
-            <div class="visual-panel">
-                <div class="glass-container">
-                    <div class="liquid-base"></div>
-                    <div class="liquid-syrup" id="syrupLayer"></div>
-                </div>
+            <div class="scrollable-area">
                 
-                <div class="slider-container">
-                    <span class="slider-label">Tuangkan Sirup ke dalam Air</span>
-                    <input type="range" min="0" max="100" value="0" id="mixSlider">
+                <div class="top-row">
+                    <div class="left-col">
+                        <div class="card-materi">
+                            <h2>🧊 Pengertian (Larutan)</h2>
+                            <p><strong>Campuran Homogen</strong> atau sering disebut Larutan, adalah campuran yang zat penyusunnya tercampur dengan sangat sempurna.</p>
+                            <p>Akibatnya, kita sudah <strong>tidak dapat lagi membedakan</strong> mana zat pelarut (seperti air) dan mana zat terlarutnya (seperti sirup/gula) hanya dengan melihatnya.</p>
+                        </div>
+
+                        <div class="card-materi" style="border-left-color: var(--accent-orange);">
+                            <h2>📋 Ciri-ciri & Contoh</h2>
+                            <ul class="rules-list">
+                                <li>Tidak dapat dibedakan antara pelarut & terlarut.</li>
+                                <li>Komposisi merata di seluruh bagian.</li>
+                                <li>Tampak hanya satu fase (satu wujud).</li>
+                                <li>Partikel tidak dapat disaring.</li>
+                            </ul>
+                            <div class="contoh-grid">
+                                <div class="contoh-item">💧 Air Garam</div>
+                                <div class="contoh-item">🍹 Sirup</div>
+                                <div class="contoh-item">🌬️ Udara</div>
+                                <div class="contoh-item">🥉 Perunggu</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-col">
+                        <div class="sim-title">🔬 Simulasi Campuran</div>
+                        
+                        <div class="glass-area">
+                            <div class="bottle" id="bottleEmoji">🍾</div>
+                            <div class="syrup-stream" id="syrupStream"></div>
+                            
+                            <div class="glass-container">
+                                <div class="liquid-base"></div>
+                                <div class="liquid-syrup" id="syrupLayer"></div>
+                            </div>
+                        </div>
+
+                        <div class="sim-status" id="simStatusText">Air Murni (0%)</div>
+
+                        <div class="slider-container">
+                            <span class="slider-label">Geser untuk Menuangkan Sirup</span>
+                            <input type="range" min="0" max="100" value="0" id="mixSlider">
+                        </div>
+                    </div>
                 </div>
+
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='menu 3 materi 5 modul.html'">
+                    ⬅ KEMBALI
+                </button>
+                
+                <button class="btn-action btn-next" onclick="window.location.href='modul 2 2 campuran heterogen.html'">
+                    LANJUT MATERI ➔
+                </button>
             </div>
 
         </div>
-
-        <button class="btn-next" onclick="alert('Pindah ke materi Heterogen!')">LANJUT ➔</button>
     </div>
 
     <script>
         const slider = document.getElementById('mixSlider');
         const syrupLayer = document.getElementById('syrupLayer');
+        const bottleEmoji = document.getElementById('bottleEmoji');
+        const syrupStream = document.getElementById('syrupStream');
+        const simStatusText = document.getElementById('simStatusText');
 
-        // Logika Slider Interaktif
+        // Logika Slider Interaktif & Animasi Penuangan
         slider.addEventListener('input', function() {
-            // Nilai opacity bergerak dari 0 (air) ke 1 (sirup merah)
-            let opacityValue = this.value / 100;
+            let val = parseInt(this.value);
+            
+            // Perubahan Warna di Gelas (Opacity)
+            let opacityValue = val / 100;
             syrupLayer.style.opacity = opacityValue;
             
-            // Simulasi Trigger Storyline jika mencapai 100%
-            if (this.value == 100) {
-                // Bisa memutar audio / mengganti state di sini
+            // Logika Animasi Menuang Sirup
+            if (val > 0 && val < 100) {
+                // Sedang menuang
+                bottleEmoji.style.opacity = '1';
+                bottleEmoji.style.transform = 'translateX(-80%) rotate(-45deg)'; // Botol miring ke gelas
+                syrupStream.style.opacity = '0.8';
+                simStatusText.innerText = `Menuangkan Sirup... (${val}%)`;
+                simStatusText.style.color = '#ffffff';
+            } 
+            else if (val === 0) {
+                // Kosong (Air Murni)
+                bottleEmoji.style.opacity = '0';
+                bottleEmoji.style.transform = 'translateX(-50%) rotate(0deg)';
+                syrupStream.style.opacity = '0';
+                simStatusText.innerText = "Air Murni (0%)";
+                simStatusText.style.color = 'var(--accent-orange)';
+            } 
+            else if (val === 100) {
+                // Selesai (Larutan Homogen)
+                bottleEmoji.style.opacity = '0';
+                bottleEmoji.style.transform = 'translateX(-50%) rotate(0deg)';
+                syrupStream.style.opacity = '0';
+                simStatusText.innerText = "✨ Sempurna! (Larutan Homogen)";
+                simStatusText.style.color = '#2ecc71'; // Warna hijau sukses
             }
         });
     </script>
