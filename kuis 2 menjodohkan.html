@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* CSS GLOBAL & LAYOUT ANTI-TERPOTONG */
         :root {
             --navy: #3D5474;
             --blue-medium: #6586B1;
@@ -26,30 +27,36 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            /* Anti-terpotong: Menggunakan min-height dinamis */
+            min-height: 100vh;
+            min-height: 100dvh; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 10px;
         }
 
-        /* Container 16:9 KONSISTEN */
         .canvas {
             width: 100%;
             max-width: 1100px;
-            aspect-ratio: 16 / 9;
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+            min-height: 90dvh;
+            max-height: 95dvh;
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
             background-size: cover;
             background-position: center;
-            display: flex;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
-            overflow: hidden;
             border-radius: 12px;
+            overflow: hidden;
         }
 
         .canvas::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(20, 35, 55, 0.75);
+            background: rgba(20, 35, 55, 0.8);
             z-index: 1;
         }
 
@@ -57,162 +64,134 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px 45px; 
+            padding: 15px 20px;
             position: relative;
             z-index: 5;
             justify-content: space-between;
+            height: 100%;
         }
 
-        /* Header Misi */
-        .header-section {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        .header-title {
-            color: white;
-            font-size: 28px;
-            font-weight: 800;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-            margin-bottom: 2px;
-        }
-
+        /* HEADER */
+        .header-section { text-align: center; margin-bottom: 10px; flex-shrink: 0; }
+        .header-title { color: white; font-size: 24px; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); margin-bottom: 2px; }
+        @media (min-width: 768px) { .header-title { font-size: 30px; } }
         .header-title span { color: var(--accent-orange); }
+        .header-subtitle { color: #e2e8f0; font-size: 14px; font-weight: 500; }
 
-        .header-subtitle {
-            color: #e2e8f0;
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        /* AREA GAME SORTIR */
+        /* AREA GAME SPLIT */
         .game-area {
             flex: 1;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 16px;
-            border-top: 6px solid var(--cyan);
-            padding: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        /* Keranjang Kelompok Materi */
-        .baskets-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            flex: 1;
-        }
-
-        .basket {
-            border: 3px dashed var(--blue-medium);
-            border-radius: 15px;
-            background-color: rgba(101, 134, 177, 0.05);
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .basket h3 {
-            text-align: center;
-            color: var(--navy);
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--blue-light);
+            flex-direction: column; /* HP: Atas-Bawah */
+            gap: 15px;
+            min-height: 0;
+            overflow-y: auto; /* Bisa di-scroll jika kepanjangan */
             padding-bottom: 5px;
         }
-
-        .basket-zone {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
+        @media (min-width: 768px) {
+            .game-area { flex-direction: row; /* Desktop: Kiri-Kanan */ }
         }
 
-        /* Item yang bisa ditarik (Drag Items) */
-        .items-bank {
-            background-color: #e2e8f0;
-            padding: 15px;
-            border-radius: 12px;
+        /* PANEL KIRI: ITEM MATERI */
+        .drag-container {
+            flex: 0.35;
+            background: var(--glass-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 6px solid var(--accent-orange);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            min-height: 80px;
+            flex-direction: column;
+            min-height: 150px;
+        }
+
+        .drag-container h2 {
+            font-size: 16px;
+            color: var(--navy);
+            font-weight: 800;
+            margin-bottom: 5px;
+            border-bottom: 2px dashed #cbd5e1;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+            min-height: 100px; /* Area tetap ada wujudnya walau kosong */
         }
 
         .drag-item {
-            background-color: var(--accent-orange);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: grab;
-            box-shadow: 0 4px 0px #c99347;
-            user-select: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.1s;
-        }
-
-        .drag-item:active {
-            cursor: grabbing;
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 2px 0px #c99347;
-        }
-
-        .item-icon {
-            font-size: 20px;
-        }
-
-        /* Area Tombol Bawah */
-        .bottom-actions {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .btn-action {
-            padding: 10px 20px;
-            border: none;
+            background: white;
+            border: 2px solid var(--blue-medium);
+            padding: 10px;
             border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            font-size: 13.5px;
             font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-back {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-back:hover {
-            background-color: white;
             color: var(--navy);
-            transform: translateX(-3px);
+            cursor: grab;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background-color 0.3s, border-color 0.3s;
+            touch-action: none; /* Penting untuk drag sentuh di HP */
+            user-select: none;
+        }
+        .drag-item:active { transform: scale(1.05); cursor: grabbing; box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+
+        /* PANEL KANAN: KERANJANG SORTIR */
+        .baskets-container {
+            flex: 0.65;
+            display: flex;
+            flex-direction: column; /* HP: Atas-Bawah */
+            gap: 15px;
+        }
+        @media (min-width: 768px) {
+            .baskets-container { flex-direction: row; /* Desktop: Sejajar */ }
         }
 
-        /* Animasi Salah */
-        .error-shake {
+        .basket {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px dashed var(--cyan);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: 0.3s;
+            min-height: 120px;
+        }
+
+        .basket-title {
+            background: var(--cyan);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: 800;
+            font-size: 15px;
+            letter-spacing: 1px;
+        }
+        
+        .basket-zone {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(38, 165, 203, 0.05);
+            transition: 0.3s;
+            min-height: 80px;
+        }
+        .basket-zone.hovered { background: rgba(46, 204, 113, 0.3); border-color: var(--success-green); }
+
+        /* ANIMASI SALAH */
+        .wrong-answer {
             animation: shake 0.4s;
-            background-color: var(--error-red) !important;
-            box-shadow: 0 4px 0px #b03a2e !important;
+            border-color: var(--error-red) !important;
+            background: rgba(231, 76, 60, 0.15) !important;
+            color: var(--error-red) !important;
         }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -220,60 +199,54 @@
             50% { transform: translateX(5px); }
         }
 
-        /* POPUP SUKSES */
-        .modal-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 30, 50, 0.85);
-            z-index: 100;
-            display: none;
+        /* TOMBOL BAWAH */
+        .bottom-actions { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 15px;
+            flex-shrink: 0;
+            padding-top: 10px;
+        }
+        @media (min-width: 768px) { .bottom-actions { justify-content: space-between; } }
+
+        .btn-action { 
+            padding: 12px 20px; 
+            border: none; 
+            border-radius: 10px; 
+            font-family: 'Poppins', sans-serif; 
+            font-weight: 700; 
+            font-size: 14px; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            display: flex; 
+            align-items: center; 
             justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            opacity: 0;
-            transition: opacity 0.4s;
+            width: auto;
+        }
+        
+        .btn-back { background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; backdrop-filter: blur(5px); }
+        .btn-back:hover { background-color: white; color: var(--navy); transform: translateY(-2px); }
+
+        .btn-check { background-color: var(--success-green); color: white; box-shadow: 0 4px 0px #27ae60; }
+        .btn-check:hover { background-color: #2ecc71; transform: translateY(-2px); box-shadow: 0 6px 0px #27ae60; }
+        .btn-check:active { transform: translateY(2px); box-shadow: 0 2px 0px #27ae60; }
+
+        @media (max-width: 768px) {
+            .bottom-actions { flex-direction: column-reverse; gap: 8px; }
+            .btn-action { width: 100%; }
         }
 
+        /* POPUP MODAL */
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 30, 50, 0.85); z-index: 100; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.4s; padding: 20px; }
         .modal-overlay.active { display: flex; opacity: 1; }
-
-        .modal-content {
-            background: #ffffff;
-            width: 450px;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transform: scale(0.8);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-top: 10px solid var(--success-green);
-        }
-
+        .modal-content { background: #ffffff; width: 100%; max-width: 450px; padding: 30px 20px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 10px solid var(--success-green); max-height: 90vh; overflow-y: auto; }
         .modal-overlay.active .modal-content { transform: scale(1); }
-
-        .modal-content h2 { color: var(--success-green); font-size: 28px; margin-bottom: 15px; font-weight: 800; }
-        .modal-content p { color: var(--navy); font-size: 16px; margin-bottom: 25px; font-weight: 500; }
-
-        .btn-next-quiz {
-            background-color: var(--accent-orange);
-            color: white;
-            padding: 14px 25px;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 5px 0px #c48a30;
-            transition: all 0.3s;
-        }
-
-        .btn-next-quiz:hover {
-            background-color: #f2bc6b;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 0px #c48a30;
-        }
-
+        .modal-content h2 { color: var(--success-green); font-size: 24px; margin-bottom: 10px; font-weight: 800; }
+        .modal-content p { color: var(--navy); font-size: 15px; margin-bottom: 25px; font-weight: 500; }
+        
+        .btn-primary { background-color: var(--accent-orange); color: white; padding: 14px 20px; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; box-shadow: 0 5px 0px #c48a30; transition: all 0.3s; }
+        .btn-primary:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 7px 0px #c48a30; }
     </style>
 </head>
 <body>
@@ -282,55 +255,51 @@
         <div class="main-content">
             
             <div class="header-section">
-                <h1 class="header-title">Sortir Materi, <span id="playerNameDisplay">Pelajar</span>!</h1>
-                <p class="header-subtitle">Tarik benda-benda di bawah ke dalam keranjang klasifikasi yang tepat.</p>
+                <h1 class="header-title">Sortir <span id="playerNameDisplay">Materi</span>!</h1>
+                <p class="header-subtitle">Masukkan semua kotak ke keranjang, lalu tekan "Periksa Jawaban"!</p>
             </div>
 
             <div class="game-area">
                 
-                <div class="baskets-container">
-                    <div class="basket" data-target="unsur" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <h3>Unsur</h3>
-                        <div class="basket-zone"></div>
-                    </div>
-                    
-                    <div class="basket" data-target="senyawa" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <h3>Senyawa</h3>
-                        <div class="basket-zone"></div>
-                    </div>
-                    
-                    <div class="basket" data-target="campuran" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <h3>Campuran</h3>
-                        <div class="basket-zone"></div>
+                <div class="drag-container" id="dragContainer">
+                    <h2>Rak Materi</h2>
+                    <div class="items-grid" id="itemsGrid" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="drag-item" draggable="true" id="item1" data-type="unsur">Oksigen (O₂)</div>
+                        <div class="drag-item" draggable="true" id="item2" data-type="campuran">Air Laut</div>
+                        <div class="drag-item" draggable="true" id="item3" data-type="senyawa">Air (H₂O)</div>
+                        <div class="drag-item" draggable="true" id="item4" data-type="unsur">Emas (Au)</div>
+                        <div class="drag-item" draggable="true" id="item5" data-type="senyawa">Garam (NaCl)</div>
+                        <div class="drag-item" draggable="true" id="item6" data-type="campuran">Udara</div>
                     </div>
                 </div>
 
-                <div class="items-bank">
-                    <div class="drag-item" id="item1" data-type="unsur" draggable="true" ondragstart="drag(event)">
-                        <span class="item-icon">🪙</span> Emas (Au)
+                <div class="baskets-container">
+                    
+                    <div class="basket" data-type="unsur">
+                        <div class="basket-title">UNSUR</div>
+                        <div class="basket-zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     </div>
-                    <div class="drag-item" id="item2" data-type="campuran" draggable="true" ondragstart="drag(event)">
-                        <span class="item-icon">☕</span> Kopi Hitam
+
+                    <div class="basket" data-type="senyawa">
+                        <div class="basket-title">SENYAWA</div>
+                        <div class="basket-zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     </div>
-                    <div class="drag-item" id="item3" data-type="senyawa" draggable="true" ondragstart="drag(event)">
-                        <span class="item-icon">💧</span> Air (H₂O)
+
+                    <div class="basket" data-type="campuran">
+                        <div class="basket-title">CAMPURAN</div>
+                        <div class="basket-zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     </div>
-                    <div class="drag-item" id="item4" data-type="unsur" draggable="true" ondragstart="drag(event)">
-                        <span class="item-icon">🔩</span> Besi (Fe)
-                    </div>
-                    <div class="drag-item" id="item5" data-type="campuran" draggable="true" ondragstart="drag(event)">
-                        <span class="item-icon">💨</span> Udara
-                    </div>
-                    <div class="drag-item" id="item6" data-type="senyawa" draggable="true" ondragstart="drag(event)">
-                        <span class="item-icon">🧂</span> Garam (NaCl)
-                    </div>
+
                 </div>
 
             </div>
 
             <div class="bottom-actions">
-                <button class="btn-action btn-back" onclick="window.location.href='kuis 1 memasang atom.html'">
-                    ⬅ KEMBALI KE MENU KUIS
+                <button class="btn-action btn-back" onclick="window.location.href='game 1 memasang atom.html'">
+                    ⬅ KEMBALI
+                </button>
+                <button class="btn-action btn-check" onclick="checkAnswers()">
+                    PERIKSA JAWABAN ✔️
                 </button>
             </div>
 
@@ -338,27 +307,42 @@
 
         <div class="modal-overlay" id="successPopup">
             <div class="modal-content">
-                <h2>🌟 Klasifikasi Sempurna!</h2>
-                <p>Kamu berhasil membedakan Unsur, Senyawa, dan Campuran dengan sangat teliti!</p>
-                <button class="btn-next-quiz" onclick="window.location.href='kuis 3 pemisahan campuran.html'">
-                    LANJUT KE KUIS 4 (PEMISAHAN) ➔
+                <h2>🏆 Hebat Sekali!</h2>
+                <p>Kamu berhasil membedakan Unsur, Senyawa, dan Campuran dengan sempurna!</p>
+                <button class="btn-primary" onclick="window.location.href='kuis 1 memasang atom.html'">
+                    KEMBALI KE MENU KUIS ➔
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Mengambil nama dari Halaman Login
         document.addEventListener("DOMContentLoaded", function() {
             const savedName = sessionStorage.getItem('xmatter_name');
             if (savedName && savedName.trim() !== "") {
                 document.getElementById('playerNameDisplay').innerText = savedName;
             }
+
+            // Acak urutan item saat dimuat
+            const grid = document.getElementById('itemsGrid');
+            for (let i = grid.children.length; i >= 0; i--) {
+                grid.appendChild(grid.children[Math.random() * i | 0]);
+            }
+
+            // Setup Event Drag Desktop
+            document.querySelectorAll('.drag-item').forEach(item => {
+                item.addEventListener('dragstart', drag);
+            });
+
+            // Setup Event Touch (HP) untuk seluruh area dokumen agar item di keranjang juga bisa ditarik
+            document.addEventListener('touchstart', handleTouchStart, {passive: false});
+            document.addEventListener('touchmove', handleTouchMove, {passive: false});
+            document.addEventListener('touchend', handleTouchEnd);
         });
 
-        let correctItems = 0;
-        const totalItems = 6; // Jumlah benda yang harus disortir
-
+        /* ==================================
+           LOGIKA DRAG & DROP (DESKTOP/MOUSE)
+           ================================== */
         function drag(ev) {
             ev.dataTransfer.setData("text", ev.target.id);
             ev.target.style.opacity = "0.5";
@@ -366,58 +350,179 @@
 
         function allowDrop(ev) {
             ev.preventDefault();
+            let zone = ev.target.closest('.basket-zone');
+            if(zone) zone.classList.add('hovered');
         }
+
+        document.addEventListener('dragleave', function(ev) {
+            if(ev.target.classList && ev.target.classList.contains('basket-zone')) {
+                ev.target.classList.remove('hovered');
+            }
+        });
 
         function drop(ev) {
             ev.preventDefault();
             const draggedId = ev.dataTransfer.getData("text");
             const draggedElement = document.getElementById(draggedId);
             
-            // Mencari elemen keranjang tempat benda dijatuhkan
+            if(!draggedElement) return;
+
+            // Jika dijatuhkan di keranjang
             const basket = ev.target.closest('.basket');
-            if (!basket) return;
+            // Jika dijatuhkan kembali ke rak/grid awal
+            const grid = ev.target.closest('.items-grid');
+            
+            if(basket) {
+                basket.querySelector('.basket-zone').classList.remove('hovered');
+                processDrop(draggedElement, basket.querySelector('.basket-zone'));
+            } else if (grid) {
+                processDrop(draggedElement, grid);
+            }
+        }
 
+        /* ==================================
+           LOGIKA DRAG & DROP (MOBILE/TOUCH)
+           ================================== */
+        let draggedItem = null;
+        let startX, startY;
+        let initialParent = null;
+
+        function handleTouchStart(e) {
+            if(e.target.classList.contains('drag-item') && e.target.getAttribute('draggable') === 'true') {
+                e.preventDefault(); 
+                draggedItem = e.target;
+                initialParent = draggedItem.parentElement; // Simpan asalnya
+                
+                const touch = e.touches[0];
+                const rect = draggedItem.getBoundingClientRect();
+                
+                startX = touch.clientX - rect.left - rect.width/2;
+                startY = touch.clientY - rect.top - rect.height/2;
+
+                draggedItem.style.position = 'absolute';
+                draggedItem.style.zIndex = '1000';
+                draggedItem.style.opacity = '0.8';
+                
+                moveItem(touch.clientX, touch.clientY);
+            }
+        }
+
+        function handleTouchMove(e) {
+            if(draggedItem) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                moveItem(touch.clientX, touch.clientY);
+            }
+        }
+
+        function moveItem(clientX, clientY) {
+            draggedItem.style.left = (clientX - startX - draggedItem.offsetWidth/2) + 'px';
+            draggedItem.style.top = (clientY - startY - draggedItem.offsetHeight/2) + 'px';
+        }
+
+        function handleTouchEnd(e) {
+            if(draggedItem) {
+                draggedItem.style.opacity = '1';
+                draggedItem.style.zIndex = '';
+                
+                const touch = e.changedTouches[0];
+                draggedItem.style.visibility = 'hidden';
+                const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+                draggedItem.style.visibility = 'visible';
+
+                const basket = elementBelow ? elementBelow.closest('.basket') : null;
+                const grid = elementBelow ? elementBelow.closest('.items-grid') : null;
+
+                if (basket) {
+                    processDrop(draggedItem, basket.querySelector('.basket-zone'));
+                } else if (grid) {
+                    processDrop(draggedItem, grid);
+                } else {
+                    // Jika dilepas sembarangan, kembalikan ke tempat terakhirnya
+                    processDrop(draggedItem, initialParent);
+                }
+                
+                draggedItem = null;
+            }
+        }
+
+        /* ==================================
+           FUNGSI PINDAH KOTAK
+           ================================== */
+        function processDrop(draggedElement, destinationZone) {
             draggedElement.style.opacity = "1";
-
-            const expectedType = basket.getAttribute('data-target');
-            const itemType = draggedElement.getAttribute('data-type');
-
-            // Cek kebenaran (Unsur masuk ke keranjang Unsur, dsb.)
-            if (expectedType === itemType) {
-                // Jawaban Benar
-                const zone = basket.querySelector('.basket-zone');
-                zone.appendChild(draggedElement);
-                
-                // Matikan fitur drag untuk elemen ini agar menetap di keranjang
-                draggedElement.setAttribute('draggable', 'false');
-                draggedElement.style.cursor = 'default';
-                draggedElement.style.boxShadow = 'none';
-                draggedElement.style.margin = '0';
-                
-                correctItems++;
-                checkWin();
-            } else {
-                // Jawaban Salah
-                draggedElement.classList.add('error-shake');
-                setTimeout(() => draggedElement.classList.remove('error-shake'), 400);
-            }
+            draggedElement.style.position = 'static'; // Hilangkan absolute agar masuk ke flow flex/grid
+            draggedElement.style.left = 'auto';
+            draggedElement.style.top = 'auto';
+            
+            destinationZone.appendChild(draggedElement);
         }
 
-        // Cek jika semua benda sudah tersortir
-        function checkWin() {
-            if (correctItems === totalItems) {
-                setTimeout(() => {
-                    document.getElementById('successPopup').classList.add('active');
-                }, 500);
-            }
-        }
-
-        // Mengembalikan opacity jika drag batal
+        // Kembalikan opacity desktop jika gagal drop
         document.addEventListener('dragend', function(ev) {
             if(ev.target.classList.contains('drag-item')) {
                 ev.target.style.opacity = "1";
             }
         });
+
+        /* ==================================
+           FUNGSI PERIKSA JAWABAN
+           ================================== */
+        function checkAnswers() {
+            const grid = document.getElementById('itemsGrid');
+            const allItems = document.querySelectorAll('.drag-item');
+            
+            let isAllPlaced = true;
+            let isAllCorrect = true;
+
+            // 1. Cek apakah masih ada kotak di Rak Materi
+            allItems.forEach(item => {
+                if (item.parentElement === grid) {
+                    isAllPlaced = false;
+                }
+            });
+
+            if (!isAllPlaced) {
+                alert("Harap masukkan semua kotak materi ke dalam keranjang terlebih dahulu!");
+                return;
+            }
+
+            // 2. Cek kebenaran kotak di masing-masing keranjang
+            allItems.forEach(item => {
+                const basket = item.closest('.basket');
+                if (basket) {
+                    const expectedType = basket.getAttribute('data-type');
+                    const itemType = item.getAttribute('data-type');
+
+                    if (expectedType !== itemType) {
+                        isAllCorrect = false;
+                        
+                        // Efek salah (Merah dan Bergetar)
+                        item.classList.add('wrong-answer');
+                        
+                        // Setelah bergetar, kembalikan kotak ke Rak Materi (Items Grid)
+                        setTimeout(() => {
+                            item.classList.remove('wrong-answer');
+                            grid.appendChild(item);
+                        }, 800);
+                    }
+                }
+            });
+
+            // 3. Jika semua benar
+            if (isAllCorrect) {
+                // Kunci semua kotak agar tidak bisa di-drag lagi
+                allItems.forEach(item => {
+                    item.setAttribute('draggable', 'false');
+                    item.style.cursor = 'default';
+                });
+                
+                // Tampilkan Popup Menang
+                setTimeout(() => {
+                    document.getElementById('successPopup').classList.add('active');
+                }, 500);
+            }
+        }
     </script>
 </body>
 </html>
