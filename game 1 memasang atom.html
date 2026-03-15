@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* CSS GLOBAL & LAYOUT ANTI-TERPOTONG */
         :root {
             --navy: #3D5474;
             --blue-medium: #6586B1;
@@ -28,23 +29,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Menggunakan min-height agar bisa memanjang jika konten banyak */
+            /* Menggunakan min-height dinamis agar tidak terpotong */
+            min-height: 100vh;
             min-height: 100dvh; 
-            /* Hapus overflow: hidden agar bisa scroll di layar kecil */
             overflow-x: hidden; 
             overflow-y: auto;
-            padding: 10px; /* Memberi jarak aman dari tepi layar */
+            padding: 15px; /* Memberi jarak aman dari tepi layar */
         }
 
+        /* KANVAS GAME */
         .canvas {
             width: 100%;
             max-width: 1100px;
-            /* Flex column untuk mengatur tinggi anak-anaknya */
+            /* MENGUNCI DIMENSI 16:9 LANDSCAPE UNTUK DESKTOP */
+            aspect-ratio: 16 / 9;
+            max-height: 95vh; /* Mencegah kanvas melebihi tinggi monitor */
+            
             display: flex;
             flex-direction: column;
-            /* Menggunakan min-height dinamis, maksimal setinggi layar */
-            min-height: 90dvh; 
-            max-height: 95dvh;
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
             background-size: cover;
             background-position: center;
@@ -66,36 +68,31 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 15px 20px; /* Padding dikurangi untuk mobile */
+            padding: 20px;
             position: relative;
             z-index: 5;
             justify-content: space-between;
             height: 100%;
         }
 
+        /* HEADER */
         .header-section {
             text-align: center;
-            margin-bottom: 10px; /* Sedikit direnggangkan */
-            flex-shrink: 0; /* Pastikan header tidak mengecil */
+            margin-bottom: 10px;
+            flex-shrink: 0; 
         }
 
         .header-title {
             color: white;
-            font-size: 24px; /* Sedikit dikecilkan untuk mobile */
+            font-size: 26px; 
             font-weight: 800;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             margin-bottom: 2px;
         }
-        @media (min-width: 768px) {
-            .header-title { font-size: 28px; } /* Ukuran desktop */
-        }
+        @media (min-width: 768px) { .header-title { font-size: 32px; } }
         .header-title span { color: var(--accent-orange); }
 
-        .header-subtitle {
-            color: #e2e8f0;
-            font-size: 14px; /* Disesuaikan */
-            font-weight: 500;
-        }
+        .header-subtitle { color: #e2e8f0; font-size: 14px; font-weight: 500; }
 
         /* AREA GAME PUZZLE */
         .game-area {
@@ -103,25 +100,22 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
             border-top: 6px solid var(--cyan);
-            padding: 15px; /* Padding game area */
+            padding: 15px; 
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             display: flex;
-            /* Default column untuk mobile */
             flex-direction: column; 
             justify-content: center;
             align-items: center;
-            margin-bottom: 10px;
-            gap: 20px; /* Jarak antar elemen di game area */
+            margin-bottom: 15px;
+            gap: 20px; 
             min-height: 0; /* Penting untuk mencegah konten tumpah di flexbox */
             overflow-y: auto; /* Izinkan scroll di dalam area game jika sangat sempit */
+            position: relative;
         }
 
         /* Switch ke baris untuk desktop */
         @media (min-width: 768px) {
-            .game-area {
-                flex-direction: row;
-                gap: 40px;
-            }
+            .game-area { flex-direction: row; gap: 40px; padding: 20px 40px; }
         }
 
         .level-indicator { 
@@ -132,22 +126,15 @@
             font-size: 14px; 
             font-weight: 700; 
             letter-spacing: 1px; 
-            /* Di desktop, posisikan absolut di pojok */
             margin-bottom: 10px;
         }
         @media (min-width: 768px) {
-            .level-indicator {
-                position: absolute;
-                top: 15px;
-                left: 15px;
-                margin-bottom: 0;
-            }
+            .level-indicator { position: absolute; top: 15px; left: 15px; margin-bottom: 0; }
         }
 
         /* --- DESAIN ATOM --- */
         .atom-board {
             position: relative;
-            /* Gunakan vw/vh untuk responsivitas maksimal, batasi dengan min/max */
             width: 70vw; 
             height: 70vw;
             max-width: 320px;
@@ -163,12 +150,12 @@
         }
 
         .nucleus {
-            width: 45%; /* Relatif terhadap board */
+            width: 45%; 
             height: 45%;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 kolom lebih rapat untuk mobile */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 2px;
             justify-items: center;
             align-items: center;
@@ -177,25 +164,16 @@
             z-index: 3;
         }
         @media (min-width: 768px) {
-             .nucleus {
-                 grid-template-columns: repeat(4, 1fr);
-                 gap: 4px;
-                 padding: 12px;
-             }
+             .nucleus { grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 12px; }
         }
 
-        .orbit {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid var(--blue-light);
-        }
-
+        .orbit { position: absolute; border-radius: 50%; border: 2px solid var(--blue-light); }
         .orbit-1 { width: 65%; height: 65%; z-index: 2; }
         .orbit-2 { width: 90%; height: 90%; z-index: 1; }
 
         /* SLOT DROPDOWN */
         .drop-slot {
-            width: 28px; /* Sedikit lebih kecil untuk mobile */
+            width: 28px; 
             height: 28px;
             background: rgba(0,0,0,0.04);
             border: 2px dashed #94a3b8;
@@ -205,33 +183,25 @@
             align-items: center;
             transition: background 0.3s;
         }
-        @media (min-width: 768px) {
-            .drop-slot { width: 32px; height: 32px; }
-        }
+        @media (min-width: 768px) { .drop-slot { width: 32px; height: 32px; } }
 
         .electron-slot { position: absolute; }
-        
-        .drop-slot.filled {
-            border: none;
-            background: transparent;
-        }
+        .drop-slot.filled { border: none; background: transparent; }
 
         /* KOTAK PARTIKEL */
         .particles-panel {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            width: 100%; /* Penuhi lebar kontainer di mobile */
+            width: 100%; 
             max-width: 300px;
         }
-        @media (min-width: 768px) {
-            .particles-panel { width: 250px; }
-        }
+        @media (min-width: 768px) { .particles-panel { width: 250px; } }
 
         .particles-box {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px; /* Gap lebih kecil */
+            gap: 6px; 
             background: #ffffff;
             padding: 12px;
             border-radius: 12px;
@@ -251,7 +221,7 @@
         }
 
         .particle {
-            width: 28px; /* Sesuaikan dengan drop-slot */
+            width: 28px; 
             height: 28px;
             border-radius: 50%;
             display: flex;
@@ -263,16 +233,13 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             font-size: 11px;
             transition: transform 0.2s;
-            /* Penting untuk drag & drop di mobile */
             touch-action: none; 
         }
-        @media (min-width: 768px) {
-             .particle { width: 32px; height: 32px; font-size: 13px; }
-        }
+        @media (min-width: 768px) { .particle { width: 32px; height: 32px; font-size: 13px; } }
 
         .particle.proton { background-color: var(--proton-color); }
         .particle.neutron { background-color: var(--neutron-color); color: #333; }
-        .particle.elektron { background-color: var(--electron-color); } /* Ubah dari .electron ke .elektron agar sesuai dengan JS */
+        .particle.elektron { background-color: var(--electron-color); } 
 
         .particle:active { cursor: grabbing; transform: scale(1.1); }
 
@@ -288,66 +255,44 @@
             50% { transform: translateX(5px); }
         }
 
-        /* TOMBOL & POPUP */
+        /* TOMBOL BAWAH */
         .bottom-actions { 
-            display: flex; 
-            justify-content: center; /* Tengah di mobile */
-            align-items: center; 
-            flex-shrink: 0;
-            padding-top: 5px;
-        }
-        @media (min-width: 768px) {
-            .bottom-actions { justify-content: flex-start; }
+            display: flex; justify-content: space-between; align-items: center; 
+            padding-top: 15px; border-top: 2px solid #cbd5e1; flex-shrink: 0;
         }
 
         .btn-action { 
-            padding: 12px 20px; /* Area klik lebih besar untuk jari */
-            border: none; 
-            border-radius: 10px; 
-            font-family: 'Poppins', sans-serif; 
-            font-weight: 700; 
-            font-size: 14px; 
-            cursor: pointer; 
-            transition: all 0.3s; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            width: 100%; /* Penuhi lebar di mobile */
-            justify-content: center;
-        }
-        @media (min-width: 768px) {
-            .btn-action { width: auto; font-size: 15px; justify-content: flex-start;}
+            padding: 12px 24px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; 
+            font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s; width: auto; text-align: center;
+            display: flex; align-items: center; gap: 10px;
         }
 
         .btn-back { background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; backdrop-filter: blur(5px); }
         .btn-back:hover { background-color: white; color: var(--navy); transform: translateY(-2px); }
 
-        /* Modal Responsif */
+        /* RESPONSIVE MOBILE (Melepas Rasio 16:9) */
+        @media (max-width: 768px) {
+            .canvas {
+                aspect-ratio: auto; /* Lepas rasio 16:9 */
+                min-height: 95dvh; /* Biarkan memanjang mengikuti konten di HP */
+                max-height: none;
+            }
+            .main-content { padding: 15px; }
+            .bottom-actions { justify-content: center; }
+            .btn-action { width: 100%; justify-content: center; }
+        }
+
+        /* POPUP MODAL */
         .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 30, 50, 0.85); z-index: 100; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.4s; padding: 20px; }
         .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content { 
-            background: #ffffff; 
-            width: 100%; 
-            max-width: 450px; 
-            padding: 30px 20px; /* Padding disesuaikan */
-            border-radius: 20px; 
-            text-align: center; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
-            transform: scale(0.8); 
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            border-top: 10px solid var(--success-green); 
-            max-height: 90vh; /* Cegah modal terlalu tinggi */
-            overflow-y: auto;
-        }
+        .modal-content { background: #ffffff; width: 100%; max-width: 450px; padding: 30px 20px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 10px solid var(--success-green); max-height: 90vh; overflow-y: auto; }
         .modal-overlay.active .modal-content { transform: scale(1); }
         .modal-content h2 { color: var(--success-green); font-size: 24px; margin-bottom: 10px; font-weight: 800; }
         .modal-content p { color: var(--navy); font-size: 15px; margin-bottom: 25px; font-weight: 500; }
         
         .btn-primary { background-color: var(--accent-orange); color: white; padding: 14px 20px; border: none; border-radius: 12px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; box-shadow: 0 5px 0px #c48a30; transition: all 0.3s; }
         .btn-primary:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 7px 0px #c48a30; }
-        
-        .btn-primary:active { transform: translateY(3px); box-shadow: 0 2px 0px #c48a30; } /* Efek tekan */
-
+        .btn-primary:active { transform: translateY(3px); box-shadow: 0 2px 0px #c48a30; }
     </style>
 </head>
 <body>
@@ -409,14 +354,13 @@
         let correctPlacements = 0;
         let totalRequired = 0;
 
-        // Tampilkan Nama dari Login
         document.addEventListener("DOMContentLoaded", function() {
             const savedName = sessionStorage.getItem('xmatter_name');
             if (savedName && savedName.trim() !== "") {
                 document.getElementById('playerNameDisplay').innerText = savedName;
             }
             loadLevel(currentLevel);
-            setupTouchEvents(); // Inisialisasi event sentuh untuk mobile
+            setupTouchEvents(); 
         });
 
         // 2. FUNGSI RENDER LEVEL
@@ -428,7 +372,6 @@
             document.getElementById('instructionText').innerHTML = `Tarik <b>${totalRequired} partikel</b> untuk membentuk <b>Atom ${levelData.name}</b>!`;
             document.getElementById('levelBadge').innerText = `LEVEL ${index + 1} / 3`;
 
-            // Bersihkan Board & Kotak
             const nucleus = document.getElementById('nucleus');
             const orbit1 = document.getElementById('orbit1');
             const orbit2 = document.getElementById('orbit2');
@@ -439,12 +382,10 @@
             orbit2.innerHTML = '';
             pBox.innerHTML = '<h3>Pilih Partikel</h3>';
 
-            // Generate Slot Inti Atom (Nukleus)
             let nucleusSlots = [];
             for(let i=0; i<levelData.p; i++) nucleusSlots.push('proton');
             for(let i=0; i<levelData.n; i++) nucleusSlots.push('neutron');
             
-            // Acak urutan slot di inti agar terlihat alami
             nucleusSlots.sort(() => Math.random() - 0.5);
 
             nucleusSlots.forEach(type => {
@@ -456,17 +397,14 @@
                 nucleus.appendChild(slot);
             });
 
-            // Generate Slot Orbit
             createOrbitSlots(orbit1, levelData.e1);
             createOrbitSlots(orbit2, levelData.e2);
 
-            // Generate Item Partikel yang Bisa di-Drag
             for(let i=0; i<levelData.p; i++) createDraggable(pBox, 'proton', 'p+');
             for(let i=0; i<levelData.n; i++) createDraggable(pBox, 'neutron', 'n0');
-            for(let i=0; i<levelData.e1 + levelData.e2; i++) createDraggable(pBox, 'elektron', 'e-'); // Konsisten 'elektron'
+            for(let i=0; i<levelData.e1 + levelData.e2; i++) createDraggable(pBox, 'elektron', 'e-'); 
         }
 
-        // Fungsi mengatur jarak elektron melingkar
         function createOrbitSlots(container, count) {
             if(count === 0) {
                 container.style.border = 'none';
@@ -489,7 +427,6 @@
                 slot.setAttribute('ondrop', 'drop(event)');
                 slot.setAttribute('ondragover', 'allowDrop(event)');
                 
-                // Gunakan transform terpusat agar lebih presisi di berbagai ukuran
                 slot.style.left = `${x}%`;
                 slot.style.top = `${y}%`;
                 slot.style.transform = `translate(-50%, -50%)`;
@@ -515,15 +452,13 @@
             ev.target.style.opacity = "0.5";
         }
 
-        function allowDrop(ev) {
-            ev.preventDefault();
-        }
+        function allowDrop(ev) { ev.preventDefault(); }
 
         function drop(ev) {
             ev.preventDefault();
             const draggedId = ev.dataTransfer.getData("text");
             const draggedElement = document.getElementById(draggedId);
-            const slot = ev.target.closest('.drop-slot'); // Memastikan drop ke slot, bukan anak slot
+            const slot = ev.target.closest('.drop-slot'); 
             
             if (!slot || !draggedElement) return;
 
@@ -532,7 +467,6 @@
             const expectedValue = slot.getAttribute('data-expected');
             const droppedValue = draggedElement.getAttribute('data-value');
 
-            // Cek kebenaran & pastikan slot kosong
             if (expectedValue === droppedValue && !slot.hasChildNodes()) {
                 slot.appendChild(draggedElement);
                 slot.classList.add('filled');
@@ -541,7 +475,6 @@
                 draggedElement.style.cursor = 'default';
                 draggedElement.style.boxShadow = 'none';
                 draggedElement.style.margin = '0'; 
-                // Hapus event touch setelah ditempatkan
                 draggedElement.ontouchstart = null;
                 draggedElement.ontouchmove = null;
                 draggedElement.ontouchend = null;
@@ -560,8 +493,6 @@
 
         function setupTouchEvents() {
             const container = document.getElementById('particleBox');
-            
-            // Menggunakan event delegation agar item yang baru dibuat ikut terdeteksi
             container.addEventListener('touchstart', handleTouchStart, {passive: false});
             document.addEventListener('touchmove', handleTouchMove, {passive: false});
             document.addEventListener('touchend', handleTouchEnd);
@@ -569,17 +500,15 @@
 
         function handleTouchStart(e) {
             if(e.target.classList.contains('particle') && e.target.getAttribute('draggable') === 'true') {
-                e.preventDefault(); // Mencegah scrolling halaman saat menarik partikel
+                e.preventDefault(); 
                 draggedItem = e.target;
                 
                 const touch = e.touches[0];
                 const rect = draggedItem.getBoundingClientRect();
                 
-                // Hitung offset sentuhan dari tengah elemen
                 startX = touch.clientX - rect.left - rect.width/2;
                 startY = touch.clientY - rect.top - rect.height/2;
                 
-                // Simpan posisi awal untuk dikembalikan jika salah tempat
                 initialX = draggedItem.offsetLeft;
                 initialY = draggedItem.offsetTop;
 
@@ -587,7 +516,6 @@
                 draggedItem.style.zIndex = '1000';
                 draggedItem.style.opacity = '0.8';
                 
-                // Set posisi awal absolute berdasarkan parent
                 moveItem(touch.clientX, touch.clientY);
             }
         }
@@ -601,7 +529,6 @@
         }
 
         function moveItem(clientX, clientY) {
-            // Tempatkan elemen tepat di bawah jari
             draggedItem.style.left = (clientX - startX - draggedItem.offsetWidth/2) + 'px';
             draggedItem.style.top = (clientY - startY - draggedItem.offsetHeight/2) + 'px';
         }
@@ -612,7 +539,6 @@
                 draggedItem.style.zIndex = '';
                 
                 const touch = e.changedTouches[0];
-                // Sembunyikan elemen sementara untuk mencari elemen apa yang ada di bawahnya
                 draggedItem.style.visibility = 'hidden';
                 const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
                 draggedItem.style.visibility = 'visible';
@@ -624,7 +550,6 @@
                     const droppedValue = draggedItem.getAttribute('data-value');
 
                     if (expectedValue === droppedValue && !slot.hasChildNodes()) {
-                        // Reset style yang diubah saat drag
                         draggedItem.style.position = 'static';
                         draggedItem.style.left = 'auto';
                         draggedItem.style.top = 'auto';
@@ -639,11 +564,9 @@
                         correctPlacements++;
                         checkWin();
                     } else {
-                        // Salah slot, kembalikan posisi
                         returnToInitialPos(slot);
                     }
                 } else {
-                    // Dilepas di luar area drop, kembalikan posisi
                     returnToInitialPos();
                 }
                 
@@ -661,12 +584,9 @@
             draggedItem.style.top = 'auto';
         }
 
-
         function checkWin() {
             if (correctPlacements === totalRequired) {
-                setTimeout(() => {
-                    showPopup();
-                }, 500);
+                setTimeout(() => { showPopup(); }, 500);
             }
         }
 
