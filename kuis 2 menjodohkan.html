@@ -27,22 +27,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Anti-terpotong: Menggunakan min-height dinamis */
+            /* Menggunakan min-height dinamis agar tidak terpotong */
             min-height: 100vh;
             min-height: 100dvh; 
             overflow-x: hidden;
             overflow-y: auto;
-            padding: 10px;
+            padding: 15px; /* Memberi jarak aman dari tepi layar */
         }
 
+        /* KANVAS GAME */
         .canvas {
             width: 100%;
             max-width: 1100px;
+            /* MENGUNCI DIMENSI 16:9 LANDSCAPE UNTUK DESKTOP */
+            aspect-ratio: 16 / 9; 
+            max-height: 95vh; /* Mencegah kanvas melebihi tinggi monitor */
+            
             display: flex;
             flex-direction: column;
-            min-height: 90vh;
-            min-height: 90dvh;
-            max-height: 95dvh;
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
             background-size: cover;
             background-position: center;
@@ -64,7 +66,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 15px 20px;
+            padding: 20px;
             position: relative;
             z-index: 5;
             justify-content: space-between;
@@ -72,9 +74,9 @@
         }
 
         /* HEADER */
-        .header-section { text-align: center; margin-bottom: 10px; flex-shrink: 0; }
-        .header-title { color: white; font-size: 24px; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); margin-bottom: 2px; }
-        @media (min-width: 768px) { .header-title { font-size: 30px; } }
+        .header-section { text-align: center; margin-bottom: 15px; flex-shrink: 0; }
+        .header-title { color: white; font-size: 26px; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); margin-bottom: 2px; }
+        @media (min-width: 768px) { .header-title { font-size: 32px; } }
         .header-title span { color: var(--accent-orange); }
         .header-subtitle { color: #e2e8f0; font-size: 14px; font-weight: 500; }
 
@@ -201,28 +203,13 @@
 
         /* TOMBOL BAWAH */
         .bottom-actions { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 15px;
-            flex-shrink: 0;
-            padding-top: 10px;
+            display: flex; justify-content: space-between; align-items: center; 
+            padding-top: 15px; border-top: 2px solid #cbd5e1; flex-shrink: 0;
         }
-        @media (min-width: 768px) { .bottom-actions { justify-content: space-between; } }
-
+        
         .btn-action { 
-            padding: 12px 20px; 
-            border: none; 
-            border-radius: 10px; 
-            font-family: 'Poppins', sans-serif; 
-            font-weight: 700; 
-            font-size: 14px; 
-            cursor: pointer; 
-            transition: all 0.3s; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            width: auto;
+            padding: 12px 24px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; 
+            font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s; width: auto; text-align: center;
         }
         
         .btn-back { background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; backdrop-filter: blur(5px); }
@@ -232,9 +219,16 @@
         .btn-check:hover { background-color: #2ecc71; transform: translateY(-2px); box-shadow: 0 6px 0px #27ae60; }
         .btn-check:active { transform: translateY(2px); box-shadow: 0 2px 0px #27ae60; }
 
+        /* RESPONSIVE MOBILE (Melepas Rasio 16:9) */
         @media (max-width: 768px) {
-            .bottom-actions { flex-direction: column-reverse; gap: 8px; }
-            .btn-action { width: 100%; }
+            .canvas {
+                aspect-ratio: auto; /* Lepas rasio 16:9 */
+                min-height: 92dvh; /* Biarkan memanjang mengikuti konten di HP */
+                max-height: none;
+            }
+            .main-content { padding: 15px; }
+            .bottom-actions { flex-direction: column-reverse; gap: 10px; }
+            .btn-action { width: 100%; justify-content: center; }
         }
 
         /* POPUP MODAL */
@@ -243,7 +237,7 @@
         .modal-content { background: #ffffff; width: 100%; max-width: 450px; padding: 30px 20px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 10px solid var(--success-green); max-height: 90vh; overflow-y: auto; }
         .modal-overlay.active .modal-content { transform: scale(1); }
         .modal-content h2 { color: var(--success-green); font-size: 24px; margin-bottom: 10px; font-weight: 800; }
-        .modal-content p { color: var(--navy); font-size: 15px; margin-bottom: 25px; font-weight: 500; }
+        .modal-content p { color: var(--navy); font-size: 15px; margin-bottom: 25px; font-weight: 500; line-height: 1.6;}
         
         .btn-primary { background-color: var(--accent-orange); color: white; padding: 14px 20px; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; box-shadow: 0 5px 0px #c48a30; transition: all 0.3s; }
         .btn-primary:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 7px 0px #c48a30; }
@@ -334,7 +328,7 @@
                 item.addEventListener('dragstart', drag);
             });
 
-            // Setup Event Touch (HP) untuk seluruh area dokumen agar item di keranjang juga bisa ditarik
+            // Setup Event Touch (HP)
             document.addEventListener('touchstart', handleTouchStart, {passive: false});
             document.addEventListener('touchmove', handleTouchMove, {passive: false});
             document.addEventListener('touchend', handleTouchEnd);
@@ -391,7 +385,7 @@
             if(e.target.classList.contains('drag-item') && e.target.getAttribute('draggable') === 'true') {
                 e.preventDefault(); 
                 draggedItem = e.target;
-                initialParent = draggedItem.parentElement; // Simpan asalnya
+                initialParent = draggedItem.parentElement; 
                 
                 const touch = e.touches[0];
                 const rect = draggedItem.getBoundingClientRect();
@@ -438,7 +432,6 @@
                 } else if (grid) {
                     processDrop(draggedItem, grid);
                 } else {
-                    // Jika dilepas sembarangan, kembalikan ke tempat terakhirnya
                     processDrop(draggedItem, initialParent);
                 }
                 
@@ -451,14 +444,13 @@
            ================================== */
         function processDrop(draggedElement, destinationZone) {
             draggedElement.style.opacity = "1";
-            draggedElement.style.position = 'static'; // Hilangkan absolute agar masuk ke flow flex/grid
+            draggedElement.style.position = 'static'; 
             draggedElement.style.left = 'auto';
             draggedElement.style.top = 'auto';
             
             destinationZone.appendChild(draggedElement);
         }
 
-        // Kembalikan opacity desktop jika gagal drop
         document.addEventListener('dragend', function(ev) {
             if(ev.target.classList.contains('drag-item')) {
                 ev.target.style.opacity = "1";
@@ -500,7 +492,7 @@
                         // Efek salah (Merah dan Bergetar)
                         item.classList.add('wrong-answer');
                         
-                        // Setelah bergetar, kembalikan kotak ke Rak Materi (Items Grid)
+                        // Kembalikan ke Rak Materi
                         setTimeout(() => {
                             item.classList.remove('wrong-answer');
                             grid.appendChild(item);
@@ -511,13 +503,11 @@
 
             // 3. Jika semua benar
             if (isAllCorrect) {
-                // Kunci semua kotak agar tidak bisa di-drag lagi
                 allItems.forEach(item => {
                     item.setAttribute('draggable', 'false');
                     item.style.cursor = 'default';
                 });
                 
-                // Tampilkan Popup Menang
                 setTimeout(() => {
                     document.getElementById('successPopup').classList.add('active');
                 }, 500);
