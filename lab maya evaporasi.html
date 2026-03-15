@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Lab: Evaporasi - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS GLOBAL & LAYOUT ANTI-TERPOTONG */
+        :root { 
+            --navy: #3D5474; 
+            --cyan: #26A5CB; 
+            --accent-orange: #EFB25B; 
+            --glass-bg: rgba(255, 255, 255, 0.95); 
+        }
+        
+        html, body { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; background-color: #d1d5db; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; overflow-x: hidden; overflow-y: auto; 
+        }
+
+        .canvas { 
+            width: 95vw; max-width: 1100px; 
+            height: 92vh; min-height: 550px; max-height: 800px;
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg'); 
+            background-size: cover; background-position: center; 
+            display: flex; flex-direction: column; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; border-radius: 12px; 
+            overflow: hidden;
+        }
+
+        .canvas::before { content: ""; position: absolute; inset: 0; background: rgba(20, 35, 55, 0.8); z-index: 1; }
+        
+        .main-content { 
+            flex: 1; display: flex; flex-direction: column; 
+            padding: 15px 20px; gap: 15px; position: relative; z-index: 5; height: 100%;
+        }
+        
+        /* Navigasi Tab */
+        .tab-buttons { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; flex-shrink: 0; }
+        .tab-buttons::-webkit-scrollbar { height: 4px; }
+        .tab-buttons::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .tab-btn { flex: 1; min-width: 150px; padding: 10px; background: rgba(255, 255, 255, 0.1); color: white; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px); text-align: center;}
+        .tab-btn:hover { background: rgba(38, 165, 203, 0.5); border-color: var(--cyan); }
+        .tab-btn.active { background: var(--cyan); border-color: white; box-shadow: 0 5px 15px rgba(38, 165, 203, 0.5); }
+        
+        /* Area Konten */
+        .content-area { flex: 1; display: flex; gap: 15px; min-height: 0; margin-bottom: 5px; }
+        
+        /* Panel Kiri (Instruksi) */
+        .info-panel { flex: 0.35; background: var(--glass-bg); border-radius: 15px; padding: 20px; display: flex; flex-direction: column; border-left: 6px solid var(--accent-orange); overflow-y: auto; }
+        .info-panel::-webkit-scrollbar { width: 5px; }
+        .info-panel::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .step-title { color: var(--navy); font-size: 18px; font-weight: 800; margin-bottom: 10px; border-bottom: 2px dashed #cbd5e1; padding-bottom: 5px; }
+        .step-desc { font-size: 13.5px; margin-bottom: 15px; line-height: 1.6; color: #333; font-weight: 500; }
+        .action-box { background: rgba(239, 178, 91, 0.15); border-left: 4px solid var(--accent-orange); padding: 12px; border-radius: 8px; font-size: 12.5px; margin-bottom: 15px; }
+        .btn-reset { background-color: var(--cyan); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: auto; transition: 0.3s; flex-shrink: 0;}
+        .btn-reset:hover { background-color: #1a7a99; transform: translateY(-2px); }
+
+        /* Panel Kanan (Simulasi) */
+        .simulation-area { flex: 0.65; background: rgba(255, 255, 255, 0.9); border-radius: 15px; position: relative; border: 3px solid var(--cyan); backdrop-filter: blur(10px); overflow: hidden; display: flex; justify-content: center; align-items: center;}
+        
+        .sim-header-desc {
+            background: rgba(38, 165, 203, 0.1); border-bottom: 2px dashed var(--cyan);
+            padding: 10px 15px; font-size: 12.5px; color: var(--navy); font-weight: 600;
+            text-align: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 5; line-height: 1.5;
+        }
+        .sim-header-desc span { color: var(--accent-orange); font-weight: 800; }
+
+        /* Tooltip Global */
+        #global-tooltip { position: fixed; pointer-events: none; background: var(--navy); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12.5px; font-weight: 700; border: 2px solid var(--accent-orange); z-index: 9999; opacity: 0; transform: translateY(10px); transition: 0.2s; white-space: nowrap; }
+        #global-tooltip.visible { opacity: 1; transform: translateY(0); }
+        .hoverable { cursor: pointer; }
+        
+        /* Tombol Bawah */
+        .bottom-actions { display: flex; justify-content: space-between; padding-top: 10px; border-top: 2px solid #cbd5e1; flex-shrink: 0; }
+        .btn-action { padding: 10px 20px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 13.5px; }
+        .btn-back { background: rgba(61, 84, 116, 0.1); color: var(--navy); border: 2px solid var(--navy); }
+        .btn-back:hover { background-color: var(--navy); color: white; }
+        .btn-next { background: var(--accent-orange); color: white; }
+        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 4px 0px #c48a30; }
+
+        /* =========================================
+           CSS KHUSUS ALAT EVAPORASI PRESISI
+           ========================================= */
+        .eva-setup { position: relative; transform: scale(0.9) translateY(20px); width: 350px; height: 320px; display: flex; justify-content: center; align-items: flex-end;}
+        
+        .stand-base { width: 100px; height: 12px; background: #7f8c8d; border-radius: 5px; position: absolute; bottom: 0; z-index: 2; }
+        .burner { width: 60px; height: 40px; background: #2c3e50; border-radius: 8px 8px 0 0; position: absolute; bottom: 12px; display: flex; justify-content: center; z-index: 5;}
+        .flame { width: 35px; height: 35px; background: radial-gradient(ellipse at bottom, var(--accent-orange), transparent); position: absolute; top: -30px; opacity: 0; animation: flicker 0.2s infinite alternate; filter: drop-shadow(0 0 8px rgba(255, 100, 0, 0.8));}
+        @keyframes flicker { 0% { transform: scaleY(1); } 100% { transform: scaleY(1.2); } }
+        
+        .tripod { width: 110px; height: 75px; border: 5px solid #7f8c8d; border-bottom: none; border-radius: 10px 10px 0 0; position: absolute; bottom: 50px; z-index: 3;}
+        
+        .evap-dish { width: 130px; height: 50px; background: rgba(255,255,255,0.95); border-radius: 0 0 65px 65px; position: absolute; bottom: 120px; border: 2px solid #ccc; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 15; }
+        .liquid { position: absolute; bottom: 0; width: 100%; height: 80%; background: var(--cyan); transition: height 2s ease; }
+        
+        #eva-salt { position: absolute; bottom: 0; width: 100%; height: 0%; background-color: #f1f2f6; transition: height 2s; border-top: 2px dashed #ddd; }
+        #eva-steam { width: 80px; height: 100px; background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); position: absolute; bottom: 160px; opacity: 0; transition: opacity 1s; animation: rise 2s infinite; z-index: 20;}
+        @keyframes rise { 0% { transform: translateY(0) scale(1); opacity: 0.6; } 100% { transform: translateY(-50px) scale(1.5); opacity: 0; } }
+        
+        /* Slider Pemanas (Aman di bawah) */
+        .heater-ui { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); width: 220px; text-align: center; background: white; padding: 10px 15px; border-radius: 10px; border: 2px solid var(--accent-orange); box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 30; }
+        .heater-ui input { width: 100%; cursor: pointer; }
+
+        @media (max-width: 768px) { 
+            body { align-items: flex-start; } 
+            .canvas { width: 100vw; height: auto; min-height: 100vh; border-radius: 0; overflow: visible; padding-bottom: 15px; } 
+            .content-area { flex-direction: column; overflow: visible; min-height: auto; } 
+            .info-panel { flex: none; height: auto; padding: 15px; } 
+            .simulation-area { flex: none; min-height: 380px; align-items: flex-start; padding-top: 50px; } 
+            .sim-header-desc { font-size: 11px; padding: 10px; }
+            .eva-setup { transform: scale(0.8) translateY(-10px); }
+            .heater-ui { width: 180px; padding: 8px; font-size: 12px; bottom: 10px; }
+            .btn-action { width: 100%; text-align: center; margin-bottom: 5px; }
+            .bottom-actions { flex-direction: column-reverse; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="global-tooltip">Keterangan</div>
+    
+    <div class="canvas">
+        <div class="main-content">
+            <div class="tab-buttons">
+                <button class="tab-btn" onclick="window.location.href='lab maya filtrasi.html'">1. Percobaan Filtrasi</button>
+                <button class="tab-btn active" onclick="window.location.href='lab maya evaporasi.html'">2. Percobaan Evaporasi</button>
+                <button class="tab-btn" onclick="window.location.href='lab maya kromatografi.html'">3. Percobaan Kromatografi</button>
+                <button class="tab-btn" onclick="window.location.href='lab maya distilasi.html'">4. Percobaan Destilasi</button>
+            </div>
+
+            <div class="content-area">
+                <div class="info-panel">
+                    <h2 class="step-title">2. Percobaan Evaporasi</h2>
+                    <p class="step-desc">
+                        Evaporasi (penguapan) digunakan untuk memisahkan zat padat yang terlarut dalam zat cair. Dalam percobaan ini, kita akan memisahkan kristal garam dari <b>air garam</b> (air laut).
+                    </p>
+                    <div class="action-box" id="inst-action">
+                        <strong>Langkah-langkah:</strong><br>
+                        1. Perhatikan cawan penguap yang berisi air garam.<br>
+                        2. Geser <i>slider</i> pemanas di bawah menuju <b>100°C</b> untuk mendidihkan larutan.<br>
+                        3. Amati apa yang menguap dan apa yang tertinggal!
+                    </div>
+                    <button class="btn-reset" onclick="resetSim()">🔄 Ulangi Percobaan</button>
+                </div>
+
+                <div class="simulation-area">
+                    
+                    <div class="sim-header-desc">
+                        💡 <span>Prinsip Kerja:</span> Panas dari pembakar akan membuat zat cair (air) menguap menjadi gas, sementara zat padat (garam) yang titik didihnya jauh lebih tinggi akan tertinggal di dalam cawan.
+                    </div>
+
+                    <div class="eva-setup">
+                        <div id="eva-steam" class="hoverable" data-tooltip="Uap Air (Gas H₂O)"></div>
+                        
+                        <div class="tripod"></div>
+                        
+                        <div class="evap-dish hoverable" data-tooltip="Cawan Penguap (Berisi Air Garam)">
+                            <div class="liquid" id="eva-liquid"></div>
+                            <div id="eva-salt" class="hoverable" data-tooltip="Kristal Garam (Residu)"></div>
+                        </div>
+                        
+                        <div class="stand-base"></div>
+                        
+                        <div class="burner hoverable" data-tooltip="Pemanas Bunsen">
+                            <div class="flame" id="eva-flame"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="heater-ui">
+                        <b>Suhu Pemanas: <span id="eva-temp" style="color:var(--accent-orange)">0</span>°C</b>
+                        <input type="range" id="eva-slider" min="0" max="100" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='lab maya filtrasi.html'">⬅ KEMBALI</button>
+                <button class="btn-action btn-next" onclick="window.location.href='lab maya kromatografi.html'">SELANJUTNYA ➔</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FUNGSI TOOLTIP
+        const tooltip = document.getElementById('global-tooltip');
+        document.querySelectorAll('.hoverable').forEach(el => {
+            el.addEventListener('mousemove', (e) => { 
+                tooltip.innerText = el.getAttribute('data-tooltip'); 
+                tooltip.classList.add('visible'); 
+                tooltip.style.left = (e.clientX + 15) + 'px'; 
+                tooltip.style.top = (e.clientY + 15) + 'px'; 
+            });
+            el.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+            el.addEventListener('touchstart', (e) => { 
+                tooltip.innerText = el.getAttribute('data-tooltip'); 
+                tooltip.classList.add('visible'); 
+                tooltip.style.left = (e.touches[0].clientX + 10) + 'px'; 
+                tooltip.style.top = (e.touches[0].clientY - 30) + 'px'; 
+            }, {passive: true});
+            el.addEventListener('touchend', () => setTimeout(() => tooltip.classList.remove('visible'), 1500));
+        });
+
+        // LOGIKA SLIDER & ANIMASI EVAPORASI
+        let slider = document.getElementById('eva-slider');
+        
+        slider.addEventListener('input', function() {
+            let temp = this.value; 
+            document.getElementById('eva-temp').innerText = temp;
+            
+            // Atur besar kecil api berdasarkan suhu
+            document.getElementById('eva-flame').style.opacity = temp / 100;
+            
+            // Jika mencapai 100 Derajat Celcius
+            if (temp >= 100) {
+                this.disabled = true; // Kunci slider
+                
+                // Jalankan animasi menguap
+                document.getElementById('eva-steam').style.opacity = '1';
+                document.getElementById('eva-liquid').style.height = '0%';
+                document.getElementById('eva-salt').style.height = '35%';
+                
+                // Setelah animasi selesai
+                setTimeout(() => {
+                    document.getElementById('eva-flame').style.opacity = '0'; // Api dimatikan
+                    document.getElementById('inst-action').innerHTML = `<strong>Berhasil! 🎉</strong> <br>Air telah menguap seluruhnya menjadi gas, dan menyisakan kristal garam padat murni (Residu) di dalam cawan.`;
+                }, 2000);
+            }
+        });
+
+        // FUNGSI RESET PERCOBAAN
+        function resetSim() {
+            slider.value = 0; 
+            slider.disabled = false;
+            document.getElementById('eva-temp').innerText = '0';
+            document.getElementById('eva-flame').style.opacity = '0';
+            document.getElementById('eva-steam').style.opacity = '0';
+            document.getElementById('eva-liquid').style.height = '80%';
+            document.getElementById('eva-salt').style.height = '0%';
+            
+            // Kembalikan teks instruksi awal
+            document.getElementById('inst-action').innerHTML = `
+                <strong>Langkah-langkah:</strong><br>
+                1. Perhatikan cawan penguap yang berisi air garam.<br>
+                2. Geser <i>slider</i> pemanas di bawah menuju <b>100°C</b> untuk mendidihkan larutan.<br>
+                3. Amati apa yang menguap dan apa yang tertinggal!
+            `;
+        }
+    </script>
+</body>
+</html>

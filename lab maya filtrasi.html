@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Lab: Filtrasi - ATOMY</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS GLOBAL & LAYOUT ANTI-TERPOTONG */
+        :root { 
+            --navy: #3D5474; 
+            --cyan: #26A5CB; 
+            --accent-orange: #EFB25B; 
+            --glass-bg: rgba(255, 255, 255, 0.95); 
+            --success: #2ecc71; 
+            --sand: #8B4513; 
+        }
+        
+        html, body { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; background-color: #d1d5db; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; overflow-x: hidden; overflow-y: auto; 
+        }
+
+        .canvas { 
+            width: 95vw; max-width: 1100px; 
+            height: 92vh; min-height: 550px; max-height: 800px;
+            background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg'); 
+            background-size: cover; background-position: center; 
+            display: flex; flex-direction: column; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; border-radius: 12px; 
+            overflow: hidden;
+        }
+
+        .canvas::before { content: ""; position: absolute; inset: 0; background: rgba(20, 35, 55, 0.8); z-index: 1; }
+        
+        .main-content { 
+            flex: 1; display: flex; flex-direction: column; 
+            padding: 15px 20px; gap: 15px; position: relative; z-index: 5; height: 100%;
+        }
+        
+        /* Navigasi Tab */
+        .tab-buttons { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; flex-shrink: 0; }
+        .tab-buttons::-webkit-scrollbar { height: 4px; }
+        .tab-buttons::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .tab-btn { flex: 1; min-width: 150px; padding: 10px; background: rgba(255, 255, 255, 0.1); color: white; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px); text-align: center;}
+        .tab-btn:hover { background: rgba(38, 165, 203, 0.5); border-color: var(--cyan); }
+        .tab-btn.active { background: var(--cyan); border-color: white; box-shadow: 0 5px 15px rgba(38, 165, 203, 0.5); }
+        
+        /* Area Konten */
+        .content-area { flex: 1; display: flex; gap: 15px; min-height: 0; margin-bottom: 5px; }
+        
+        /* Panel Kiri (Instruksi) */
+        .info-panel { flex: 0.35; background: var(--glass-bg); border-radius: 15px; padding: 20px; display: flex; flex-direction: column; border-left: 6px solid var(--accent-orange); overflow-y: auto; }
+        .info-panel::-webkit-scrollbar { width: 5px; }
+        .info-panel::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .step-title { color: var(--navy); font-size: 18px; font-weight: 800; margin-bottom: 10px; border-bottom: 2px dashed #cbd5e1; padding-bottom: 5px; }
+        .step-desc { font-size: 13.5px; margin-bottom: 15px; line-height: 1.6; color: #333; font-weight: 500; }
+        .action-box { background: rgba(239, 178, 91, 0.15); border-left: 4px solid var(--accent-orange); padding: 12px; border-radius: 8px; font-size: 12.5px; margin-bottom: 15px; }
+        .btn-reset { background-color: var(--cyan); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: auto; transition: 0.3s; flex-shrink: 0;}
+        .btn-reset:hover { background-color: #1a7a99; transform: translateY(-2px); }
+
+        /* Panel Kanan (Simulasi) */
+        .simulation-area { flex: 0.65; background: rgba(255, 255, 255, 0.9); border-radius: 15px; position: relative; border: 3px solid var(--cyan); backdrop-filter: blur(10px); overflow: hidden; display: flex; justify-content: center; align-items: center;}
+        
+        .sim-header-desc {
+            background: rgba(38, 165, 203, 0.1); border-bottom: 2px dashed var(--cyan);
+            padding: 10px 15px; font-size: 12.5px; color: var(--navy); font-weight: 600;
+            text-align: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 5; line-height: 1.5;
+        }
+        .sim-header-desc span { color: var(--accent-orange); font-weight: 800; }
+
+        /* Tooltip Global */
+        #global-tooltip { position: fixed; pointer-events: none; background: var(--navy); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12.5px; font-weight: 700; border: 2px solid var(--accent-orange); z-index: 9999; opacity: 0; transform: translateY(10px); transition: 0.2s; white-space: nowrap; }
+        #global-tooltip.visible { opacity: 1; transform: translateY(0); }
+        .hoverable { cursor: pointer; }
+        
+        /* Tombol Bawah */
+        .bottom-actions { display: flex; justify-content: space-between; padding-top: 10px; border-top: 2px solid #cbd5e1; flex-shrink: 0; }
+        .btn-action { padding: 10px 20px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 13.5px; }
+        .btn-back { background: rgba(61, 84, 116, 0.1); color: var(--navy); border: 2px solid var(--navy); }
+        .btn-back:hover { background-color: var(--navy); color: white; }
+        .btn-next { background: var(--accent-orange); color: white; }
+        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 4px 0px #c48a30; }
+
+        /* =========================================
+           CSS KHUSUS ALAT FILTRASI PRESISI 
+           ========================================= */
+        .fil-setup { position: relative; transform: scale(0.9) translateY(20px); width: 350px; height: 320px; display: flex; justify-content: center; }
+        
+        /* Statif & Klem */
+        .stand-base { width: 140px; height: 12px; background: #7f8c8d; border-radius: 5px; position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; z-index: 2; }
+        .stand-pole { width: 12px; height: 260px; background: #95a5a6; position: absolute; left: 60px; bottom: 10px; z-index: 1; border-radius: 5px 5px 0 0; }
+        .clamp { width: 70px; height: 10px; background: #7f8c8d; position: absolute; left: 70px; top: 80px; z-index: 3; border-radius: 0 5px 5px 0;}
+        .clamp-ring { width: 60px; height: 15px; border: 5px solid #7f8c8d; border-radius: 50%; position: absolute; left: 135px; top: 77px; z-index: 3; transform: rotateX(60deg);}
+        
+        /* Corong & Kertas Saring */
+        .funnel-container { position: absolute; left: 165px; top: 50px; transform: translateX(-50%); z-index: 15; display: flex; flex-direction: column; align-items: center;}
+        .funnel-cone { width: 0; height: 0; border-left: 55px solid transparent; border-right: 55px solid transparent; border-top: 65px solid rgba(255,255,255,0.7); filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .funnel-stem { width: 14px; height: 50px; background: rgba(255,255,255,0.7); margin-top: -2px; border-radius: 0 0 5px 5px; }
+        
+        .filter-paper { width: 0; height: 0; border-left: 45px solid transparent; border-right: 45px solid transparent; border-top: 55px solid #FDF5E6; position: absolute; top: 5px; z-index: 16; }
+        .sand-residue { width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-top: 30px solid var(--sand); position: absolute; top: 25px; opacity: 0; transition: opacity 2s ease; z-index: 17; }
+        
+        /* Aliran Air (Filtrat) */
+        .fil-stream { width: 6px; height: 0; background: var(--cyan); position: absolute; left: 165px; top: 165px; transform: translateX(-50%); z-index: 10; transition: height 0.5s ease; opacity: 0.8;}
+        
+        /* Gelas Penampung Bawah */
+        .beaker-clean { width: 80px; height: 90px; border: 4px solid rgba(255,255,255,0.9); border-top: none; border-radius: 0 0 10px 10px; background: rgba(255,255,255,0.3); position: absolute; left: 165px; bottom: 12px; transform: translateX(-50%); box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1); z-index: 11;}
+        .liquid-clean { position: absolute; bottom: 0; width: 100%; border-radius: 0 0 6px 6px; height: 0%; background: var(--cyan); transition: height 2s ease; }
+        
+        /* Interaksi Drag & Drop */
+        .draggable { position: absolute; cursor: grab; z-index: 50; }
+        .draggable:active { cursor: grabbing; transform: scale(1.05); }
+        
+        .beaker-dirty { width: 70px; height: 85px; border: 4px solid rgba(255,255,255,0.9); border-top: none; border-radius: 0 0 10px 10px; background: rgba(255,255,255,0.4); box-shadow: inset 0 -10px 20px rgba(0,0,0,0.1); position: absolute; left: -100px; bottom: 12px; }
+        .liquid-dirty { position: absolute; bottom: 0; width: 100%; border-radius: 0 0 6px 6px; height: 70%; background: var(--sand); transition: height 0.5s ease; }
+        
+        .drop-zone { position: absolute; left: 165px; top: -70px; transform: translateX(-50%); width: 130px; height: 100px; border: 3px dashed var(--accent-orange); border-radius: 10px; background: rgba(239, 178, 91, 0.1); display: flex; justify-content: center; z-index: 5; transition: 0.3s; }
+        .drop-zone.hovered { background: rgba(46, 204, 113, 0.3); border-color: var(--success); }
+        .drop-label { background: var(--accent-orange); color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; transform: translateY(-50%); white-space: nowrap; height: fit-content; }
+
+        @media (max-width: 768px) { 
+            body { align-items: flex-start; } 
+            .canvas { width: 100vw; height: auto; min-height: 100vh; border-radius: 0; overflow: visible; padding-bottom: 15px; } 
+            .content-area { flex-direction: column; overflow: visible; min-height: auto; } 
+            .info-panel { flex: none; height: auto; padding: 15px; } 
+            .simulation-area { flex: none; min-height: 380px; align-items: flex-start; padding-top: 60px; } 
+            .sim-header-desc { font-size: 11px; padding: 10px; }
+            .fil-setup { transform: scale(0.7) translateY(-20px); margin-left: 30px;}
+            .beaker-dirty { left: -60px; bottom: 40px; }
+            .btn-action { width: 100%; text-align: center; margin-bottom: 5px; }
+            .bottom-actions { flex-direction: column-reverse; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="global-tooltip">Keterangan</div>
+    
+    <div class="canvas">
+        <div class="main-content">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="window.location.href='lab maya filtrasi.html'">1. Percobaan Filtrasi</button>
+                <button class="tab-btn" onclick="window.location.href='lab maya evaporasi.html'">2. Percobaan Evaporasi</button>
+                <button class="tab-btn" onclick="window.location.href='lab maya kromatografi.html'">3. Percobaan Kromatografi</button>
+                <button class="tab-btn" onclick="window.location.href='lab maya distilasi.html'">4. Percobaan Destilasi</button>
+            </div>
+
+            <div class="content-area">
+                <div class="info-panel">
+                    <h2 class="step-title">1. Percobaan Filtrasi</h2>
+                    <p class="step-desc">
+                        Filtrasi (Penyaringan) adalah metode pemisahan zat padat yang tidak larut dari zat cair berdasarkan <b>ukuran partikelnya</b>.<br><br>
+                        Campuran air dan pasir dapat dipisahkan secara fisik menggunakan corong dan <b>kertas saring</b> yang memiliki pori-pori sangat kecil.
+                    </p>
+                    <div class="action-box" id="inst-action">
+                        <strong>Langkah-langkah:</strong><br>
+                        1. Perhatikan gelas kimia kotor di sebelah kiri yang berisi campuran air dan pasir.<br>
+                        2. <b>Tarik (drag)</b> gelas kimia kotor tersebut ke dalam area kotak putus-putus di atas corong!<br>
+                        3. Amati proses penyaringannya!
+                    </div>
+                    <button class="btn-reset" onclick="resetSim()">🔄 Ulangi Percobaan</button>
+                </div>
+
+                <div class="simulation-area" id="sim-area">
+                    
+                    <div class="sim-header-desc">
+                        💡 <span>Prinsip Kerja:</span> Partikel padat yang besar (pasir) tidak akan bisa menembus pori-pori kertas saring sehingga tertinggal sebagai <b>Residu</b>. Sedangkan cairan (air) akan lolos turun menjadi <b>Filtrat</b>.
+                    </div>
+
+                    <div class="fil-setup">
+                        <div class="stand-base"></div>
+                        <div class="stand-pole"></div>
+                        <div class="clamp"></div>
+                        <div class="clamp-ring"></div>
+                        
+                        <div class="funnel-container hoverable" data-tooltip="Corong Kaca & Kertas Saring">
+                            <div class="funnel-cone"></div>
+                            <div class="funnel-stem"></div>
+                            <div class="filter-paper"></div>
+                            <div class="sand-residue" id="fil-sand"></div>
+                        </div>
+
+                        <div class="fil-stream" id="fil-stream"></div>
+                        
+                        <div class="beaker-clean hoverable" data-tooltip="Gelas Kimia (Penampung Filtrat)">
+                            <div class="liquid-clean" id="fil-water"></div>
+                        </div>
+
+                        <div class="drop-zone" id="fil-drop">
+                            <div class="drop-label">TUANG KE SINI</div>
+                        </div>
+
+                        <div class="beaker-dirty draggable hoverable" id="fil-dirty" data-tooltip="Campuran Air & Pasir Kotor">
+                            <div class="liquid-dirty" id="fil-liquid-dirty"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="bottom-actions">
+                <button class="btn-action btn-back" onclick="window.location.href='menu 3 materi 5 modul.html'">⬅ KEMBALI KE MENU</button>
+                <button class="btn-action btn-next" onclick="window.location.href='lab maya evaporasi.html'">SELANJUTNYA ➔</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FUNGSI TOOLTIP
+        const tooltip = document.getElementById('global-tooltip');
+        document.querySelectorAll('.hoverable').forEach(el => {
+            el.addEventListener('mousemove', (e) => { 
+                tooltip.innerText = el.getAttribute('data-tooltip'); 
+                tooltip.classList.add('visible'); 
+                tooltip.style.left = (e.clientX + 15) + 'px'; 
+                tooltip.style.top = (e.clientY + 15) + 'px'; 
+            });
+            el.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+            el.addEventListener('touchstart', (e) => { 
+                tooltip.innerText = el.getAttribute('data-tooltip'); 
+                tooltip.classList.add('visible'); 
+                tooltip.style.left = (e.touches[0].clientX + 10) + 'px'; 
+                tooltip.style.top = (e.touches[0].clientY - 30) + 'px'; 
+            }, {passive: true});
+            el.addEventListener('touchend', () => setTimeout(() => tooltip.classList.remove('visible'), 1500));
+        });
+
+        // SISTEM DRAG & DROP
+        let isDragging = false, obj = document.getElementById('fil-dirty'), dropZone = document.getElementById('fil-drop'), simArea = document.getElementById('sim-area');
+        let offsetX, offsetY;
+        
+        // Simpan posisi awal asli dari CSS
+        let startLeft = obj.style.left || window.getComputedStyle(obj).left;
+        let startBottom = obj.style.bottom || window.getComputedStyle(obj).bottom;
+
+        obj.addEventListener('mousedown', startDrag); 
+        obj.addEventListener('touchstart', startDrag, {passive: false});
+        
+        function startDrag(e) {
+            isDragging = true; 
+            obj.style.transition = 'none';
+            let clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            let clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            let rect = simArea.getBoundingClientRect();
+            offsetX = clientX - rect.left - obj.offsetLeft; 
+            offsetY = clientY - rect.top - obj.offsetTop;
+        }
+
+        document.addEventListener('mousemove', drag); 
+        document.addEventListener('touchmove', drag, {passive: false});
+        
+        function drag(e) {
+            if (!isDragging) return; 
+            e.preventDefault();
+            let clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            let clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            let rect = simArea.getBoundingClientRect();
+            obj.style.left = `${clientX - rect.left - offsetX}px`; 
+            obj.style.top = `${clientY - rect.top - offsetY}px`; 
+            obj.style.bottom = 'auto'; // Hapus bottom agar mengikuti top
+            checkCollision();
+        }
+
+        function checkCollision() {
+            let dRect = obj.getBoundingClientRect(), zRect = dropZone.getBoundingClientRect();
+            let cx = dRect.left + dRect.width/2, cy = dRect.top + dRect.height/2;
+            if (cx > zRect.left && cx < zRect.right && cy > zRect.top && cy < zRect.bottom) { 
+                dropZone.classList.add('hovered'); return true; 
+            }
+            dropZone.classList.remove('hovered'); return false;
+        }
+
+        document.addEventListener('mouseup', endDrag); 
+        document.addEventListener('touchend', endDrag);
+        
+        function endDrag() {
+            if (!isDragging) return; 
+            isDragging = false;
+            
+            if (checkCollision()) {
+                // Berhasil Drop - Hilangkan gelas dan drop zone
+                dropZone.style.display = 'none'; 
+                obj.style.display = 'none';
+                
+                // Mulai Animasi Aliran Air (Stream)
+                let stream = document.getElementById('fil-stream'); 
+                stream.style.height = '65px';
+                
+                setTimeout(() => {
+                    // Gelas penampung terisi air bersih (Filtrat)
+                    document.getElementById('fil-water').style.height = '60%'; 
+                    
+                    // Pasir mulai menumpuk di kertas saring (Residu)
+                    let sand = document.getElementById('fil-sand');
+                    sand.style.opacity = '1';
+                    sand.parentElement.setAttribute('data-tooltip', 'Kertas Saring (Berisi Residu Pasir)');
+                    
+                    document.getElementById('inst-action').innerHTML = `
+                        <strong>Berhasil! 🎉</strong><br>
+                        Air berhasil menembus kertas saring menjadi air bening yang disebut <b>Filtrat</b>. Sedangkan butiran pasir yang besar tertinggal di atas kertas saring yang disebut <b>Residu</b>.
+                    `;
+                    
+                    // Hentikan aliran setelah selesai
+                    setTimeout(() => stream.style.height = '0', 1800);
+                }, 400);
+
+            } else { 
+                // Gagal Drop (Kembali ke awal)
+                obj.style.transition = 'all 0.4s ease'; 
+                obj.style.left = startLeft; 
+                obj.style.top = 'auto'; 
+                obj.style.bottom = startBottom; 
+            }
+        }
+
+        // FUNGSI RESET PERCOBAAN
+        function resetSim() {
+            // Reset Posisi Gelas Kotor
+            obj.style.transition = 'none'; 
+            obj.style.display = 'block'; 
+            obj.style.left = startLeft; 
+            obj.style.top = 'auto'; 
+            obj.style.bottom = startBottom;
+            
+            // Tampilkan kembali drop zone
+            dropZone.style.display = 'flex'; 
+            dropZone.classList.remove('hovered');
+            
+            // Kosongkan aliran dan gelas penampung
+            document.getElementById('fil-stream').style.height = '0'; 
+            document.getElementById('fil-water').style.height = '0%'; 
+            
+            // Hilangkan pasir di kertas saring
+            let sand = document.getElementById('fil-sand');
+            sand.style.opacity = '0';
+            sand.parentElement.setAttribute('data-tooltip', 'Corong Kaca & Kertas Saring');
+            
+            // Reset Teks
+            document.getElementById('inst-action').innerHTML = `
+                <strong>Langkah-langkah:</strong><br>
+                1. Perhatikan gelas kimia kotor di sebelah kiri yang berisi campuran air dan pasir.<br>
+                2. <b>Tarik (drag)</b> gelas kimia kotor tersebut ke dalam area kotak putus-putus di atas corong!<br>
+                3. Amati proses penyaringannya!
+            `;
+        }
+    </script>
+</body>
+</html>
