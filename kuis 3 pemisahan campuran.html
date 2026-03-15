@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* CSS GLOBAL & LAYOUT ANTI-TERPOTONG */
         :root {
             --navy: #3D5474;
             --blue-medium: #6586B1;
@@ -26,30 +27,37 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            min-height: 100dvh; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 15px; /* Memberi jarak aman dari tepi layar */
         }
 
-        /* Container 16:9 */
+        /* KANVAS GAME */
         .canvas {
             width: 100%;
             max-width: 1100px;
-            aspect-ratio: 16 / 9;
+            /* MENGUNCI DIMENSI 16:9 LANDSCAPE UNTUK DESKTOP */
+            aspect-ratio: 16 / 9; 
+            max-height: 95vh; /* Mencegah kanvas melebihi tinggi monitor */
+            
+            display: flex;
+            flex-direction: column;
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
             background-size: cover;
             background-position: center;
-            display: flex;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
-            overflow: hidden;
             border-radius: 12px;
+            overflow: hidden;
         }
 
         .canvas::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(20, 35, 55, 0.75);
+            background: rgba(20, 35, 55, 0.8);
             z-index: 1;
         }
 
@@ -57,29 +65,21 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 20px 45px; 
+            padding: 20px;
             position: relative;
             z-index: 5;
             justify-content: space-between;
+            height: 100%;
         }
 
-        .header-section {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        .header-title {
-            color: white;
-            font-size: 28px;
-            font-weight: 800;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-            margin-bottom: 2px;
-        }
-
+        /* HEADER */
+        .header-section { text-align: center; margin-bottom: 15px; flex-shrink: 0; }
+        .header-title { color: white; font-size: 26px; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); margin-bottom: 2px; }
+        @media (min-width: 768px) { .header-title { font-size: 32px; } }
         .header-title span { color: var(--accent-orange); }
-        .header-subtitle { color: #e2e8f0; font-size: 15px; font-weight: 500; }
+        .header-subtitle { color: #e2e8f0; font-size: 14px; font-weight: 500; }
 
-        /* AREA GAME KUIS */
+        /* AREA GAME MENJODOHKAN */
         .game-area {
             flex: 1;
             background: rgba(255, 255, 255, 0.95);
@@ -89,135 +89,116 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
             position: relative;
+            margin-bottom: 15px;
+            min-height: 350px; 
+            overflow: hidden; 
         }
 
-        /* SVG untuk garis penghubung */
-        #svgCanvas {
+        /* KANVAS GARIS SVG */
+        .svg-container {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 5;
         }
 
+        /* KOLOM KIRI & KANAN */
         .col {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            z-index: 2;
+            justify-content: space-around;
             width: 40%;
+            z-index: 10;
         }
 
         .item-box {
-            background: var(--bg-white);
-            border: 2px solid var(--blue-light);
-            padding: 15px 20px;
+            background: white;
+            border: 2px solid var(--blue-medium);
+            padding: 15px;
             border-radius: 12px;
-            font-weight: 600;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
             color: var(--navy);
-            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             position: relative;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            user-select: none;
         }
+        
+        .item-box.connected { border-color: var(--cyan); background: rgba(38, 165, 203, 0.05); }
+        
+        .item-desc { font-size: 11.5px; color: #64748b; font-weight: 500; display: block; margin-top: 4px; }
 
-        .item-box:hover {
-            border-color: var(--cyan);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
-        }
-
-        .item-box.selected {
-            background: var(--cyan);
-            color: white;
-            border-color: var(--navy);
-        }
-
-        .node {
-            width: 14px;
-            height: 14px;
+        /* TITIK KONEKTOR */
+        .dot {
+            width: 22px; height: 22px;
             background: var(--blue-medium);
             border-radius: 50%;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            transition: background 0.3s;
-        }
-
-        .item-box.selected .node { background: white; }
-        .left-col .node { right: -7px; }
-        .right-col .node { left: -7px; }
-
-        .btn-check-container {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5;
-        }
-
-        .btn-check {
-            background-color: var(--success-green);
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 20px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
             cursor: pointer;
-            box-shadow: 0 4px 0px #27ae60;
-            transition: all 0.2s;
-            display: none; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            touch-action: none; 
         }
+
+        .dot:hover { background: var(--cyan); transform: translateY(-50%) scale(1.2); }
+        .dot.active { background: var(--accent-orange); transform: translateY(-50%) scale(1.3); box-shadow: 0 0 10px var(--accent-orange); }
+        .dot.connected { background: var(--success-green); }
+
+        .col-left .dot { right: -11px; }
+        .col-right .dot { left: -11px; }
+
+        /* TOMBOL BAWAH */
+        .bottom-actions { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding-top: 15px; border-top: 2px solid #cbd5e1; flex-shrink: 0;
+        }
+        
+        .btn-action { 
+            padding: 12px 24px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; 
+            font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s; width: auto; text-align: center;
+        }
+        
+        .btn-back { background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; backdrop-filter: blur(5px); }
+        .btn-back:hover { background-color: white; color: var(--navy); transform: translateY(-2px); }
+
+        .btn-check { background-color: var(--success-green); color: white; box-shadow: 0 4px 0px #27ae60; }
         .btn-check:hover { background-color: #2ecc71; transform: translateY(-2px); box-shadow: 0 6px 0px #27ae60; }
         .btn-check:active { transform: translateY(2px); box-shadow: 0 2px 0px #27ae60; }
 
-        /* Area Tombol Bawah */
-        .bottom-actions { display: flex; justify-content: flex-start; align-items: center; }
-
-        .btn-action {
-            padding: 10px 20px; border: none; border-radius: 10px;
-            font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px;
-            cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px;
+        /* RESPONSIVE MOBILE (Melepas Rasio 16:9) */
+        @media (max-width: 768px) {
+            .canvas {
+                aspect-ratio: auto; /* Lepas rasio 16:9 */
+                min-height: 92dvh; /* Biarkan memanjang mengikuti konten di HP */
+                max-height: none;
+            }
+            .main-content { padding: 15px; }
+            .game-area { padding: 15px 10px; min-height: 420px; }
+            .col { width: 45%; }
+            .item-box { padding: 12px 6px; font-size: 12px; }
+            .item-desc { font-size: 10px; }
+            .dot { width: 18px; height: 18px; }
+            .col-left .dot { right: -9px; }
+            .col-right .dot { left: -9px; }
+            .bottom-actions { flex-direction: column-reverse; gap: 10px; }
+            .btn-action { width: 100%; justify-content: center; }
         }
 
-        .btn-back {
-            background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; backdrop-filter: blur(5px);
-        }
-        .btn-back:hover { background-color: white; color: var(--navy); transform: translateX(-3px); }
-
-        /* POPUP FEEDBACK */
-        .modal-overlay {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 30, 50, 0.85); z-index: 100;
-            display: none; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.4s;
-        }
+        /* POPUP MODAL */
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 30, 50, 0.85); z-index: 100; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.4s; padding: 20px; }
         .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content {
-            background: #ffffff; width: 450px; padding: 40px; border-radius: 20px;
-            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-top: 10px solid var(--cyan);
-        }
+        .modal-content { background: #ffffff; width: 100%; max-width: 450px; padding: 30px 20px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 10px solid var(--success-green); max-height: 90vh; overflow-y: auto; }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-content h2 { font-size: 28px; margin-bottom: 15px; font-weight: 800; }
-        .modal-content p { color: var(--navy); font-size: 16px; margin-bottom: 25px; font-weight: 500; }
-
-        .btn-primary {
-            background-color: var(--accent-orange); color: white; padding: 14px 25px; border: none; border-radius: 12px;
-            font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer;
-            width: 100%; box-shadow: 0 5px 0px #c48a30; transition: all 0.3s;
-        }
+        .modal-content h2 { font-size: 24px; margin-bottom: 10px; font-weight: 800; }
+        .modal-content p { color: var(--navy); font-size: 14px; margin-bottom: 25px; font-weight: 500; line-height: 1.6; }
+        
+        .btn-primary { background-color: var(--accent-orange); color: white; padding: 14px 20px; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; width: 100%; box-shadow: 0 5px 0px #c48a30; transition: all 0.3s; }
         .btn-primary:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 7px 0px #c48a30; }
-
     </style>
 </head>
 <body>
@@ -226,35 +207,64 @@
         <div class="main-content">
             
             <div class="header-section">
-                <h1 class="header-title">Lab Pemisahan, <span id="playerNameDisplay">Pelajar</span>!</h1>
-                <p class="header-subtitle">Hubungkan masalah campuran (kiri) dengan metode pemisahan yang tepat (kanan).</p>
+                <h1 class="header-title">Jodohkan <span id="playerNameDisplay">Solusinya</span>!</h1>
+                <p class="header-subtitle">Tarik garis dari masalah campuran ke metode pemisahan yang tepat!</p>
             </div>
 
             <div class="game-area" id="gameArea">
-                <svg id="svgCanvas"></svg>
                 
-                <div class="col left-col">
-                    <div class="item-box left-item" data-id="L1" data-match="R3">Memisahkan pasir dari air kotor <div class="node" id="node-L1"></div></div>
-                    <div class="item-box left-item" data-id="L2" data-match="R1">Mendapatkan garam dari air laut <div class="node" id="node-L2"></div></div>
-                    <div class="item-box left-item" data-id="L3" data-match="R4">Memisahkan zat warna pada tinta <div class="node" id="node-L3"></div></div>
-                    <div class="item-box left-item" data-id="L4" data-match="R2">Mendapatkan air murni dari larutan <div class="node" id="node-L4"></div></div>
+                <svg class="svg-container" id="svgContainer"></svg>
+
+                <div class="col col-left">
+                    <div class="item-box" id="q1">
+                        Memisahkan pasir dari air sungai
+                        <span class="item-desc">Ukuran partikel berbeda</span>
+                        <div class="dot" id="dot-q1" data-id="q1" data-side="left"></div>
+                    </div>
+                    <div class="item-box" id="q2">
+                        Memisahkan garam dari air laut
+                        <span class="item-desc">Zat padat terlarut</span>
+                        <div class="dot" id="dot-q2" data-id="q2" data-side="left"></div>
+                    </div>
+                    <div class="item-box" id="q3">
+                        Memisahkan zat warna pada tinta
+                        <span class="item-desc">Kecepatan merambat berbeda</span>
+                        <div class="dot" id="dot-q3" data-id="q3" data-side="left"></div>
+                    </div>
+                    <div class="item-box" id="q4">
+                        Memisahkan minyak atsiri & air
+                        <span class="item-desc">Titik didih berbeda</span>
+                        <div class="dot" id="dot-q4" data-id="q4" data-side="left"></div>
+                    </div>
                 </div>
 
-                <div class="col right-col">
-                    <div class="item-box right-item" data-id="R1"><div class="node" id="node-R1"></div> Evaporasi (Penguapan)</div>
-                    <div class="item-box right-item" data-id="R2"><div class="node" id="node-R2"></div> Distilasi (Penyulingan)</div>
-                    <div class="item-box right-item" data-id="R3"><div class="node" id="node-R3"></div> Filtrasi (Penyaringan)</div>
-                    <div class="item-box right-item" data-id="R4"><div class="node" id="node-R4"></div> Kromatografi</div>
+                <div class="col col-right">
+                    <div class="item-box" id="a1">
+                        Evaporasi (Penguapan)
+                        <div class="dot" id="dot-a1" data-id="a1" data-side="right"></div>
+                    </div>
+                    <div class="item-box" id="a2">
+                        Destilasi (Penyulingan)
+                        <div class="dot" id="dot-a2" data-id="a2" data-side="right"></div>
+                    </div>
+                    <div class="item-box" id="a3">
+                        Filtrasi (Penyaringan)
+                        <div class="dot" id="dot-a3" data-id="a3" data-side="right"></div>
+                    </div>
+                    <div class="item-box" id="a4">
+                        Kromatografi Kertas
+                        <div class="dot" id="dot-a4" data-id="a4" data-side="right"></div>
+                    </div>
                 </div>
 
-                <div class="btn-check-container">
-                    <button class="btn-check" id="btnCheckAnswer" onclick="checkAnswers()">CEK JAWABAN ✔️</button>
-                </div>
             </div>
 
             <div class="bottom-actions">
-                <button class="btn-action btn-back" onclick="window.location.href='kuis 1 memasang atom.html'">
+                <button class="btn-action btn-back" onclick="window.location.href='kuis 2 menjodohkan.html'">
                     ⬅ KEMBALI
+                </button>
+                <button class="btn-action btn-check" onclick="checkAnswers()">
+                    PERIKSA JAWABAN ✔️
                 </button>
             </div>
 
@@ -262,123 +272,216 @@
 
         <div class="modal-overlay" id="feedbackPopup">
             <div class="modal-content">
-                <h2 id="feedbackTitle">Hasil Kuis</h2>
-                <p id="feedbackDesc">Deskripsi akan muncul di sini.</p>
-                <button class="btn-primary" id="btnAction"></button>
+                <h2 id="feedbackTitle">Judul</h2>
+                <p id="feedbackDesc">Deskripsi</p>
+                <button class="btn-primary" id="btnAction">AKSI</button>
             </div>
         </div>
     </div>
 
     <script>
+        const correctAnswers = {
+            'q1': 'a3', // Pasir - Filtrasi
+            'q2': 'a1', // Garam - Evaporasi
+            'q3': 'a4', // Warna - Kromatografi
+            'q4': 'a2'  // Minyak - Destilasi
+        };
+
+        const totalQuestions = Object.keys(correctAnswers).length;
+        let connections = {}; 
+
+        const svg = document.getElementById('svgContainer');
+        let isDrawing = false;
+        let activeDot = null;
+        let currentLine = null;
+
         document.addEventListener("DOMContentLoaded", function() {
             const savedName = sessionStorage.getItem('xmatter_name');
             if (savedName && savedName.trim() !== "") {
                 document.getElementById('playerNameDisplay').innerText = savedName;
             }
-        });
 
-        let selectedLeft = null;
-        let connections = {}; 
-        const totalQuestions = 4;
+            const rightCol = document.querySelector('.col-right');
+            for (let i = rightCol.children.length; i >= 0; i--) {
+                rightCol.appendChild(rightCol.children[Math.random() * i | 0]);
+            }
 
-        const leftItems = document.querySelectorAll('.left-item');
-        const rightItems = document.querySelectorAll('.right-item');
-        const svgCanvas = document.getElementById('svgCanvas');
-        const gameArea = document.getElementById('gameArea');
-        const btnCheck = document.getElementById('btnCheckAnswer');
+            document.querySelectorAll('.dot').forEach(dot => {
+                dot.addEventListener('mousedown', startDrawing);
+                dot.addEventListener('touchstart', startDrawing, {passive: false});
+            });
 
-        // Event Klik Kiri
-        leftItems.forEach(item => {
-            item.addEventListener('click', () => {
-                leftItems.forEach(i => i.classList.remove('selected'));
-                item.classList.add('selected');
-                selectedLeft = item;
+            window.addEventListener('resize', () => {
+                setTimeout(updateLinePositions, 100);
             });
         });
 
-        // Event Klik Kanan
-        rightItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (!selectedLeft) return; 
-                
-                const leftId = selectedLeft.getAttribute('data-id');
-                const rightId = item.getAttribute('data-id');
+        function getEventPos(e) {
+            if (e.touches && e.touches.length > 0) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            else if (e.changedTouches && e.changedTouches.length > 0) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+            return { x: e.clientX, y: e.clientY };
+        }
 
-                if (connections[leftId]) {
-                    svgCanvas.removeChild(connections[leftId].line);
-                }
+        function getDotCenter(dot) {
+            const rect = dot.getBoundingClientRect();
+            const svgRect = svg.getBoundingClientRect();
+            return {
+                x: rect.left + rect.width / 2 - svgRect.left,
+                y: rect.top + rect.height / 2 - svgRect.top
+            };
+        }
 
-                const correctAnswer = selectedLeft.getAttribute('data-match');
-                const isCorrect = (correctAnswer === rightId);
+        function startDrawing(e) {
+            e.preventDefault();
+            const dot = e.target;
+            const side = dot.getAttribute('data-side');
+            const id = dot.getAttribute('data-id');
 
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('stroke-width', '4');
-                line.setAttribute('stroke', '#26A5CB'); 
-                line.setAttribute('stroke-linecap', 'round');
-                svgCanvas.appendChild(line);
+            if (connections[id]) {
+                svg.removeChild(connections[id].line);
+                document.getElementById('dot-' + connections[id].target).classList.remove('connected');
+                document.getElementById(connections[id].target).classList.remove('connected');
+                delete connections[connections[id].target]; 
+                delete connections[id];
+            }
 
-                connections[leftId] = { rightId, line, isCorrect };
+            isDrawing = true;
+            activeDot = dot;
+            dot.classList.add('active');
+            dot.classList.remove('connected');
+            document.getElementById(id).classList.remove('connected');
 
-                updateLines();
-                
-                selectedLeft.classList.remove('selected');
-                selectedLeft = null;
+            const startPos = getDotCenter(dot);
 
-                if (Object.keys(connections).length === totalQuestions) {
-                    btnCheck.style.display = 'block';
-                }
-            });
-        });
+            currentLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            currentLine.setAttribute('x1', startPos.x);
+            currentLine.setAttribute('y1', startPos.y);
+            currentLine.setAttribute('x2', startPos.x);
+            currentLine.setAttribute('y2', startPos.y);
+            currentLine.setAttribute('stroke', '#26A5CB');
+            currentLine.setAttribute('stroke-width', '4');
+            currentLine.setAttribute('stroke-dasharray', '8, 8');
+            currentLine.setAttribute('stroke-linecap', 'round');
+            svg.appendChild(currentLine);
 
-        function updateLines() {
-            const areaRect = gameArea.getBoundingClientRect();
+            document.addEventListener('mousemove', drawLine);
+            document.addEventListener('touchmove', drawLine, {passive: false});
+            document.addEventListener('mouseup', stopDrawing);
+            document.addEventListener('touchend', stopDrawing);
+        }
+
+        function drawLine(e) {
+            if (!isDrawing) return;
+            e.preventDefault(); 
+            const pos = getEventPos(e);
+            const svgRect = svg.getBoundingClientRect();
             
-            for (let leftId in connections) {
-                const conn = connections[leftId];
-                const nodeLeft = document.getElementById(`node-${leftId}`);
-                const nodeRight = document.getElementById(`node-${conn.rightId}`);
+            let x = pos.x - svgRect.left;
+            let y = pos.y - svgRect.top;
 
-                const rectL = nodeLeft.getBoundingClientRect();
-                const rectR = nodeRight.getBoundingClientRect();
+            currentLine.setAttribute('x2', x);
+            currentLine.setAttribute('y2', y);
+        }
 
-                const x1 = rectL.left + (rectL.width / 2) - areaRect.left;
-                const y1 = rectL.top + (rectL.height / 2) - areaRect.top;
-                const x2 = rectR.left + (rectR.width / 2) - areaRect.left;
-                const y2 = rectR.top + (rectR.height / 2) - areaRect.top;
+        function stopDrawing(e) {
+            if (!isDrawing) return;
+            isDrawing = false;
+            activeDot.classList.remove('active');
 
-                conn.line.setAttribute('x1', x1);
-                conn.line.setAttribute('y1', y1);
-                conn.line.setAttribute('x2', x2);
-                conn.line.setAttribute('y2', y2);
+            const pos = getEventPos(e);
+            
+            currentLine.style.display = 'none';
+            const elementBelow = document.elementFromPoint(pos.x, pos.y);
+            currentLine.style.display = 'block';
+
+            const targetDot = elementBelow ? (elementBelow.classList.contains('dot') ? elementBelow : null) : null;
+            
+            if (targetDot && targetDot !== activeDot && targetDot.getAttribute('data-side') !== activeDot.getAttribute('data-side')) {
+                const targetPos = getDotCenter(targetDot);
+                currentLine.setAttribute('x2', targetPos.x);
+                currentLine.setAttribute('y2', targetPos.y);
+                currentLine.setAttribute('stroke-dasharray', 'none'); 
+
+                activeDot.classList.add('connected');
+                targetDot.classList.add('connected');
+                
+                document.getElementById(activeDot.getAttribute('data-id')).classList.add('connected');
+                document.getElementById(targetDot.getAttribute('data-id')).classList.add('connected');
+
+                let targetId = targetDot.getAttribute('data-id');
+                if(connections[targetId]) {
+                    svg.removeChild(connections[targetId].line);
+                    let oldPartnerId = connections[targetId].target;
+                    document.getElementById('dot-' + oldPartnerId).classList.remove('connected');
+                    document.getElementById(oldPartnerId).classList.remove('connected');
+                    delete connections[oldPartnerId];
+                }
+
+                const activeId = activeDot.getAttribute('data-id');
+                connections[activeId] = { target: targetId, line: currentLine };
+                connections[targetId] = { target: activeId, line: currentLine }; 
+
+            } else {
+                svg.removeChild(currentLine);
+            }
+
+            currentLine = null;
+            activeDot = null;
+
+            document.removeEventListener('mousemove', drawLine);
+            document.removeEventListener('touchmove', drawLine);
+            document.removeEventListener('mouseup', stopDrawing);
+            document.removeEventListener('touchend', stopDrawing);
+        }
+
+        function updateLinePositions() {
+            let processed = []; 
+            for (let key in connections) {
+                if(processed.includes(key)) continue;
+                
+                let dot1 = document.getElementById('dot-' + key);
+                let dot2 = document.getElementById('dot-' + connections[key].target);
+                let line = connections[key].line;
+
+                let pos1 = getDotCenter(dot1);
+                let pos2 = getDotCenter(dot2);
+
+                line.setAttribute('x1', pos1.x);
+                line.setAttribute('y1', pos1.y);
+                line.setAttribute('x2', pos2.x);
+                line.setAttribute('y2', pos2.y);
+                
+                processed.push(key);
+                processed.push(connections[key].target);
             }
         }
 
-        window.addEventListener('resize', updateLines);
-
         function checkAnswers() {
             let correctCount = 0;
-
-            for (let key in connections) {
-                if (connections[key].isCorrect) {
-                    connections[key].line.setAttribute('stroke', '#2ecc71'); 
-                    correctCount++;
-                } else {
-                    connections[key].line.setAttribute('stroke', '#e74c3c'); 
+            
+            Object.keys(correctAnswers).forEach(qId => {
+                if (connections[qId]) {
+                    let userAns = connections[qId].target;
+                    if (userAns === correctAnswers[qId]) {
+                        correctCount++;
+                        connections[qId].line.setAttribute('stroke', '#2ecc71'); 
+                        connections[qId].isCorrect = true;
+                    } else {
+                        connections[qId].line.setAttribute('stroke', '#e74c3c'); 
+                        connections[qId].isCorrect = false;
+                    }
                 }
-            }
+            });
 
             const popup = document.getElementById('feedbackPopup');
             const title = document.getElementById('feedbackTitle');
             const desc = document.getElementById('feedbackDesc');
             const btn = document.getElementById('btnAction');
 
-            // --- BAGIAN INI SUDAH DIUPDATE ---
             if (correctCount === totalQuestions) {
                 title.innerHTML = "🌟 Sempurna!";
                 title.style.color = "var(--success-green)";
                 desc.innerHTML = "Kamu berhasil menjodohkan semua metode pemisahan campuran dengan tepat! Pengetahuanmu sudah setingkat ilmuwan sungguhan.";
-                
-                // Text dan Redirect diatur ke halaman beranda
                 btn.innerHTML = "KEMBALI KE BERANDA ➔";
                 btn.onclick = () => { window.location.href = 'halaman beranda.html'; };
             } else {
@@ -394,7 +497,6 @@
 
         function closeFeedback() {
             document.getElementById('feedbackPopup').classList.remove('active');
-            
             for (let key in connections) {
                 if (!connections[key].isCorrect) {
                     connections[key].line.setAttribute('stroke', '#26A5CB'); 
