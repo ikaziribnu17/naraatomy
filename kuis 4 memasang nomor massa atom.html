@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis 1: Nomor Massa - ATOMY</title>
+    <title>Kuis 4: Nomor Massa Atom - ATOMY</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* CSS GLOBAL & LAYOUT ANTI-TERPOTONG */
         :root {
             --navy: #3D5474;
             --blue-medium: #6586B1;
@@ -25,29 +26,37 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 15px;
         }
 
-        /* Container 16:9 KONSISTEN */
+        /* KANVAS GAME */
         .canvas {
             width: 100%;
             max-width: 1100px;
-            aspect-ratio: 16 / 9;
+            /* MENGUNCI DIMENSI 16:9 LANDSCAPE UNTUK DESKTOP */
+            aspect-ratio: 16 / 9; 
+            max-height: 95vh;
+            
+            display: flex;
+            flex-direction: column;
             background-image: url('https://raw.githubusercontent.com/ikaziribnu17/xsinuli1/69ec1cd9663e74c43854b5606158d8219a8e26fd/unnamed.jpg');
             background-size: cover;
             background-position: center;
-            display: flex;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             position: relative;
-            overflow: hidden;
             border-radius: 12px;
+            overflow: hidden;
         }
 
         .canvas::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(20, 35, 55, 0.7); /* Overlay gelap transparan */
+            background: rgba(20, 35, 55, 0.8);
             z-index: 1;
         }
 
@@ -55,258 +64,196 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 25px 45px; 
+            padding: 20px;
             position: relative;
             z-index: 5;
             justify-content: space-between;
+            height: 100%;
         }
 
-        /* Header Misi */
-        .header-section {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            padding: 15px 25px;
-            border-radius: 15px;
-            border-left: 5px solid var(--accent-orange);
-        }
+        /* HEADER */
+        .header-section { text-align: center; margin-bottom: 10px; flex-shrink: 0; }
+        .header-title { color: white; font-size: 26px; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); margin-bottom: 2px; }
+        @media (min-width: 768px) { .header-title { font-size: 32px; } }
+        .header-title span { color: var(--accent-orange); }
+        .header-subtitle { color: #e2e8f0; font-size: 14px; font-weight: 500; }
 
-        .mascot {
-            font-size: 50px;
-            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3));
-        }
-
-        .instruction {
-            color: white;
+        /* AREA GAME */
+        .game-area {
             flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            border-top: 6px solid var(--cyan);
+            padding: 20px 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            margin-bottom: 15px;
+            min-height: 350px; 
+            overflow-y: auto; /* Memastikan bisa discroll jika kartu banyak */
         }
 
-        .instruction h2 { font-size: 24px; color: var(--accent-orange); margin-bottom: 5px; font-weight: 800;}
-        .instruction p { font-size: 16px; color: #e2e8f0; font-weight: 500;}
-
-        /* Area Target Unsur */
+        /* CONTAINER KARTU ATOM */
         .cards-container {
             display: flex;
             justify-content: center;
             gap: 20px;
-            flex: 1;
-            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .element-card {
-            background-color: rgba(255, 255, 255, 0.95);
-            width: 150px;
-            height: 200px;
+        .atom-card {
+            background: #ffffff;
+            border: 3px solid var(--blue-medium);
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.05);
+            min-width: 220px;
+        }
+
+        /* BAGIAN SLOTS & SIMBOL */
+        .notation-area {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .slots-column {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 10px;
+        }
+
+        .drop-slot {
+            width: 45px;
+            height: 40px;
+            border: 2px dashed #94a3b8;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.03);
+            display: flex;
             justify-content: center;
-            position: relative;
-            border: 3px solid transparent;
-            border-top: 8px solid var(--cyan);
-            transition: transform 0.3s ease;
+            align-items: center;
+            transition: 0.3s;
         }
+        
+        .drop-slot.filled { border: none; background: transparent; }
 
-        .element-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--cyan);
-        }
-
-        .element-symbol {
+        .symbol-box {
             font-size: 50px;
             font-weight: 800;
             color: var(--navy);
             line-height: 1;
         }
 
-        .element-name {
-            font-size: 14px;
+        /* BAGIAN INFO CLUE */
+        .info-box {
+            border-left: 3px solid var(--cyan);
+            padding-left: 15px;
+            font-size: 13px;
+            color: #333;
             font-weight: 600;
-            color: var(--blue-medium);
-            margin-bottom: 10px;
+            line-height: 1.6;
         }
 
-        .element-proton {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--navy);
-            position: absolute;
-            bottom: 40px;
-            left: 25px;
-        }
+        .info-box span { color: var(--navy); font-weight: 800; font-size: 15px;}
 
-        /* Target Drop Zone (Slot untuk Angka) */
-        .drop-slot {
-            width: 60px;
-            height: 45px;
-            background: rgba(38, 165, 203, 0.1);
-            border: 2px dashed var(--blue-medium);
-            border-radius: 8px;
-            position: absolute;
-            top: 20px;
-            left: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s;
-        }
-
-        .drop-slot.filled {
-            background: transparent;
-            border: none;
-        }
-
-        /* Bank Pilihan (Bawah) */
+        /* BANK PILIHAN (BAWAH) */
         .options-bank {
             background: rgba(255, 255, 255, 0.95);
             padding: 15px;
             border-radius: 12px;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
             min-height: 80px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            margin-bottom: 15px;
-            align-items: center;
+            border: 2px solid var(--cyan);
+            margin-top: 20px;
+            position: sticky; /* Agar rak angka selalu terlihat saat discroll */
+            bottom: 0;
+            z-index: 10;
         }
 
         .drag-chip {
-            background-color: var(--accent-orange);
+            width: 45px;
+            height: 40px;
+            background: var(--accent-orange);
             color: white;
+            font-weight: 800;
             font-size: 18px;
-            font-weight: 700;
-            width: 55px;
-            height: 45px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             border-radius: 8px;
-            cursor: grab;
-            box-shadow: 0 4px 0px #c99347;
-            user-select: none;
-            transition: transform 0.1s;
-        }
-
-        .drag-chip:active {
-            cursor: grabbing;
-            transform: scale(1.1) translateY(-2px);
-            box-shadow: 0 2px 0px #c99347;
-        }
-
-        /* Area Tombol Bawah */
-        .bottom-actions {
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .btn-action {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-back {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-back:hover {
-            background-color: white;
-            color: var(--navy);
-            transform: translateX(-3px);
-        }
-
-        /* Animasi Salah */
-        .error-shake {
-            animation: shake 0.4s;
-            border-color: var(--error-red) !important;
-            background-color: rgba(231, 76, 60, 0.1) !important;
-        }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-
-        /* POPUP SUKSES */
-        .modal-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 30, 50, 0.85);
-            z-index: 100;
-            display: none;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
-            opacity: 0;
-            transition: opacity 0.4s;
+            cursor: grab;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            touch-action: none;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+        .drag-chip:active { transform: scale(1.1); cursor: grabbing; box-shadow: 0 6px 10px rgba(0,0,0,0.3); }
+
+        /* ANIMASI SALAH */
+        .error-shake { animation: shake 0.4s; border-color: var(--error-red) !important; background: rgba(231, 76, 60, 0.2) !important; color: var(--error-red); }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25%, 75% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
         }
 
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
+        /* TOMBOL BAWAH */
+        .bottom-actions { 
+            display: flex; justify-content: center; align-items: center; gap: 15px;
+            padding-top: 10px; border-top: 2px solid #cbd5e1; flex-shrink: 0;
+        }
+        @media (min-width: 768px) { .bottom-actions { justify-content: space-between; } }
+        
+        .btn-action { 
+            padding: 12px 24px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; 
+            font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s; width: 100%; text-align: center;
+        }
+        @media (min-width: 768px) { .btn-action { width: auto; font-size: 15px;} }
+        
+        .btn-back { background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; backdrop-filter: blur(5px); }
+        .btn-back:hover { background-color: white; color: var(--navy); transform: translateY(-2px); }
+
+        .btn-check { background-color: var(--success-green); color: white; box-shadow: 0 4px 0px #27ae60; }
+        .btn-check:hover { background-color: #2ecc71; transform: translateY(-2px); box-shadow: 0 6px 0px #27ae60; }
+        .btn-check:active { transform: translateY(2px); box-shadow: 0 2px 0px #27ae60; }
+
+        /* RESPONSIVE MOBILE (Melepas Rasio 16:9) */
+        @media (max-width: 768px) {
+            .canvas {
+                aspect-ratio: auto;
+                min-height: 92dvh;
+                max-height: none;
+            }
+            .main-content { padding: 15px; }
+            .game-area { padding: 15px 10px; min-height: 420px; }
+            .cards-container { flex-direction: column; gap: 15px; }
+            .atom-card { padding: 15px; min-width: 100%; justify-content: space-around; gap: 10px;}
+            .symbol-box { font-size: 45px; }
+            .info-box { font-size: 12px; padding-left: 10px; }
+            .info-box span { font-size: 14px; }
+            .drop-slot, .drag-chip { width: 40px; height: 35px; font-size: 16px; }
+            .options-bank { padding: 10px; gap: 8px;}
+            .bottom-actions { flex-direction: column-reverse; gap: 10px; }
         }
 
-        .modal-content {
-            background: #ffffff;
-            width: 450px;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transform: scale(0.8);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-top: 10px solid var(--success-green);
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-content h2 { color: var(--success-green); font-size: 28px; margin-bottom: 15px; font-weight: 800; }
-        .modal-content p { color: var(--navy); font-size: 16px; margin-bottom: 25px; font-weight: 500; }
-
-        .btn-next-quiz {
-            background-color: var(--accent-orange);
-            color: white;
-            padding: 14px 25px;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 5px 0px #c48a30;
-            transition: all 0.3s;
-        }
-
-        .btn-next-quiz:hover {
-            background-color: #f2bc6b;
-            transform: translateY(-2px);
-            box-shadow: 0 7px 0px #c48a30;
-        }
-
+        /* POPUP MODAL */
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 30, 50, 0.85); z-index: 100; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.4s; padding: 20px; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content { background: #ffffff; width: 100%; max-width: 450px; padding: 30px 20px; border-radius: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-top: 10px solid var(--success-green); max-height: 90vh; overflow-y: auto; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-content h2 { color: var(--success-green); font-size: 24px; margin-bottom: 10px; font-weight: 800; }
+        .modal-content p { color: var(--navy); font-size: 15px; margin-bottom: 25px; font-weight: 500; line-height: 1.6; }
+        
+        .btn-primary { background-color: var(--accent-orange); color: white; padding: 14px 20px; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; width: 100%; box-shadow: 0 5px 0px #c48a30; transition: all 0.3s; }
+        .btn-primary:hover { background-color: #f2bc6b; transform: translateY(-2px); box-shadow: 0 7px 0px #c48a30; }
     </style>
 </head>
 <body>
@@ -315,58 +262,97 @@
         <div class="main-content">
             
             <div class="header-section">
-                <div class="mascot">🔢</div>
-                <div class="instruction">
-                    <h2>Halo, <span id="playerNameDisplay">Pelajar</span>!</h2>
-                    <p>Lengkapi notasi atom di bawah ini! Tarik (drag) angka nomor massa yang tepat ke kotak kosong di setiap unsur.</p>
-                </div>
+                <h1 class="header-title">Halo, <span id="playerNameDisplay">Pelajar</span>!</h1>
+                <p class="header-subtitle">Lengkapi notasi 5 atom di bawah ini! Masukkan semua angka, lalu tekan "Periksa".</p>
             </div>
 
-            <div class="cards-container">
+            <div class="game-area">
                 
-                <div class="element-card">
-                    <div class="drop-slot" data-expected="16" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="element-symbol">O</div>
-                    <div class="element-name">Oksigen</div>
-                    <div class="element-proton">8</div>
+                <div class="cards-container">
+                    
+                    <div class="atom-card">
+                        <div class="notation-area">
+                            <div class="slots-column">
+                                <div class="drop-slot" data-expected="16" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                <div class="drop-slot" data-expected="8" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                            </div>
+                            <div class="symbol-box">O</div>
+                        </div>
+                        <div class="info-box">
+                            Proton (p) = <span>8</span><br>
+                            Neutron (n) = <span>8</span>
+                        </div>
+                    </div>
+
+                    <div class="atom-card">
+                        <div class="notation-area">
+                            <div class="slots-column">
+                                <div class="drop-slot" data-expected="14" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                <div class="drop-slot" data-expected="7" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                            </div>
+                            <div class="symbol-box">N</div>
+                        </div>
+                        <div class="info-box">
+                            Proton (p) = <span>7</span><br>
+                            Neutron (n) = <span>7</span>
+                        </div>
+                    </div>
+
+                    <div class="atom-card">
+                        <div class="notation-area">
+                            <div class="slots-column">
+                                <div class="drop-slot" data-expected="12" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                <div class="drop-slot" data-expected="6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                            </div>
+                            <div class="symbol-box">C</div>
+                        </div>
+                        <div class="info-box">
+                            Proton (p) = <span>6</span><br>
+                            Neutron (n) = <span>6</span>
+                        </div>
+                    </div>
+
+                    <div class="atom-card">
+                        <div class="notation-area">
+                            <div class="slots-column">
+                                <div class="drop-slot" data-expected="197" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                <div class="drop-slot" data-expected="79" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                            </div>
+                            <div class="symbol-box">Au</div>
+                        </div>
+                        <div class="info-box">
+                            Proton (p) = <span>79</span><br>
+                            Neutron (n) = <span>118</span>
+                        </div>
+                    </div>
+
+                    <div class="atom-card">
+                        <div class="notation-area">
+                            <div class="slots-column">
+                                <div class="drop-slot" data-expected="27" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                                <div class="drop-slot" data-expected="13" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                            </div>
+                            <div class="symbol-box">Al</div>
+                        </div>
+                        <div class="info-box">
+                            Proton (p) = <span>13</span><br>
+                            Neutron (n) = <span>14</span>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="element-card">
-                    <div class="drop-slot" data-expected="11" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="element-symbol">B</div>
-                    <div class="element-name">Boron</div>
-                    <div class="element-proton">5</div>
-                </div>
-
-                <div class="element-card">
-                    <div class="drop-slot" data-expected="23" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="element-symbol">Na</div>
-                    <div class="element-name">Natrium</div>
-                    <div class="element-proton">11</div>
-                </div>
-
-                <div class="element-card">
-                    <div class="drop-slot" data-expected="26" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="element-symbol">Mg</div>
-                    <div class="element-name">Magnesium</div>
-                    <div class="element-proton">12</div>
-                </div>
-
-                <div class="element-card">
-                    <div class="drop-slot" data-expected="56" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-                    <div class="element-symbol">Fe</div>
-                    <div class="element-name">Besi</div>
-                    <div class="element-proton">26</div>
-                </div>
+                <div class="options-bank" id="optionsBank" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    </div>
 
             </div>
-
-            <div class="options-bank" id="optionsBank">
-                </div>
 
             <div class="bottom-actions">
-                <button class="btn-action btn-back" onclick="window.location.href='kuis 1 memasang atom.html'">
-                    ⬅ KEMBALI KE MENU KUIS
+                <button class="btn-action btn-back" onclick="window.location.href='game 1 memasang atom.html'">
+                    ⬅ KEMBALI
+                </button>
+                <button class="btn-action btn-check" onclick="checkAnswers()">
+                    PERIKSA JAWABAN ✔️
                 </button>
             </div>
 
@@ -374,47 +360,52 @@
 
         <div class="modal-overlay" id="successPopup">
             <div class="modal-content">
-                <h2>🌟 Jawaban Akurat!</h2>
-                <p>Kamu berhasil mencocokkan seluruh nomor massa atom dengan tepat. Lanjutkan misimu!</p>
-                <button class="btn-next-quiz" onclick="window.location.href='game 1 memasang atom.html'">
-                    LANJUT KE KUIS 2 (PUZZLE ATOM) ➔
+                <h2>🌟 Matematika Atom!</h2>
+                <p>Hebat! Kamu berhasil memahami letak Nomor Massa (Proton + Neutron) dan Nomor Atom (Proton) pada seluruh notasi unsur.</p>
+                <button class="btn-primary" onclick="window.location.href='halaman beranda.html'">
+                    KEMBALI KE MENU KUIS ➔
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Mengambil nama dari Halaman Login
+        // Data Angka Jawaban (Total 10 angka untuk 5 atom)
+        const numbers = ["16", "8", "14", "7", "12", "6", "197", "79", "27", "13"];
+
         document.addEventListener("DOMContentLoaded", function() {
+            // Set nama dari session storage
             const savedName = sessionStorage.getItem('xmatter_name');
             if (savedName && savedName.trim() !== "") {
                 document.getElementById('playerNameDisplay').innerText = savedName;
             }
+
+            // Acak urutan angka dan masukkan ke bank
+            const bank = document.getElementById('optionsBank');
+            numbers.sort(() => Math.random() - 0.5);
+            
+            numbers.forEach((num, index) => {
+                let chip = document.createElement('div');
+                chip.className = 'drag-chip';
+                chip.setAttribute('draggable', 'true');
+                chip.setAttribute('data-value', num);
+                chip.id = 'chip-' + index;
+                chip.innerText = num;
+                
+                // Tambahkan event pendengar drag desktop
+                chip.addEventListener('dragstart', drag);
+                bank.appendChild(chip);
+            });
+
+            // Aktifkan Touch Events untuk HP ke seluruh dokumen
+            document.addEventListener('touchstart', handleTouchStart, {passive: false});
+            document.addEventListener('touchmove', handleTouchMove, {passive: false});
+            document.addEventListener('touchend', handleTouchEnd);
         });
 
-        // Generate Angka Acak untuk Bank Jawaban
-        const numbers = [16, 11, 23, 26, 56];
-        let correctPlacements = 0;
-
-        // Mengacak array (Fisher-Yates Shuffle)
-        for (let i = numbers.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
-        }
-
-        const bank = document.getElementById('optionsBank');
-        numbers.forEach(num => {
-            const chip = document.createElement('div');
-            chip.className = 'drag-chip';
-            chip.id = 'num' + num;
-            chip.innerText = num;
-            chip.setAttribute('data-value', num);
-            chip.setAttribute('draggable', 'true');
-            chip.ondragstart = drag;
-            bank.appendChild(chip);
-        });
-
-        // Fungsi Drag & Drop
+        /* ==================================
+           LOGIKA DRAG & DROP (DESKTOP/MOUSE)
+           ================================== */
         function drag(ev) {
             ev.dataTransfer.setData("text", ev.target.id);
             ev.target.style.opacity = "0.5";
@@ -428,47 +419,180 @@
             ev.preventDefault();
             const draggedId = ev.dataTransfer.getData("text");
             const draggedElement = document.getElementById(draggedId);
-            const slot = ev.target;
+            
+            if(!draggedElement) return;
+
+            const slot = ev.target.closest('.drop-slot');
+            const bank = ev.target.closest('.options-bank');
             
             draggedElement.style.opacity = "1";
+            
+            if (slot) {
+                processDrop(draggedElement, slot);
+            } else if (bank) {
+                processDrop(draggedElement, bank);
+            }
+        }
 
-            const expectedValue = slot.getAttribute('data-expected');
-            const droppedValue = draggedElement.getAttribute('data-value');
+        /* ==================================
+           LOGIKA DRAG & DROP (MOBILE/TOUCH)
+           ================================== */
+        let draggedItem = null;
+        let startX, startY;
+        let initialParent = null;
 
-            // Cek apakah angka yang dimasukkan benar
-            if (expectedValue === droppedValue && !slot.hasChildNodes()) {
-                // Jawaban Benar
-                slot.appendChild(draggedElement);
-                slot.classList.add('filled');
+        function handleTouchStart(e) {
+            if(e.target.classList.contains('drag-chip') && e.target.getAttribute('draggable') === 'true') {
+                e.preventDefault(); 
+                draggedItem = e.target;
+                initialParent = draggedItem.parentElement; 
                 
-                draggedElement.setAttribute('draggable', 'false');
-                draggedElement.style.cursor = 'default';
-                draggedElement.style.boxShadow = 'none';
-                draggedElement.style.transform = 'none';
+                const touch = e.touches[0];
+                const rect = draggedItem.getBoundingClientRect();
+                
+                startX = touch.clientX - rect.left - rect.width/2;
+                startY = touch.clientY - rect.top - rect.height/2;
 
-                correctPlacements++;
-                checkWin();
+                draggedItem.style.position = 'absolute';
+                draggedItem.style.zIndex = '1000';
+                draggedItem.style.opacity = '0.8';
+                
+                moveItem(touch.clientX, touch.clientY);
+            }
+        }
+
+        function handleTouchMove(e) {
+            if(draggedItem) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                moveItem(touch.clientX, touch.clientY);
+            }
+        }
+
+        function moveItem(clientX, clientY) {
+            draggedItem.style.left = (clientX - startX - draggedItem.offsetWidth/2) + 'px';
+            draggedItem.style.top = (clientY - startY - draggedItem.offsetHeight/2) + 'px';
+        }
+
+        function handleTouchEnd(e) {
+            if(draggedItem) {
+                draggedItem.style.opacity = '1';
+                draggedItem.style.zIndex = '';
+                
+                const touch = e.changedTouches[0];
+                draggedItem.style.visibility = 'hidden';
+                const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+                draggedItem.style.visibility = 'visible';
+
+                const slot = elementBelow ? elementBelow.closest('.drop-slot') : null;
+                const bank = elementBelow ? elementBelow.closest('.options-bank') : null;
+
+                if (slot) {
+                    processDrop(draggedItem, slot);
+                } else if (bank) {
+                    processDrop(draggedItem, bank);
+                } else {
+                    processDrop(draggedItem, initialParent);
+                }
+                
+                draggedItem = null;
+            }
+        }
+
+        /* ==================================
+           FUNGSI PINDAH KOTAK
+           ================================== */
+        function processDrop(draggedElement, destinationZone) {
+            // Jika asal kotak adalah slot, hilangkan status "filled" nya
+            if (draggedElement.parentElement && draggedElement.parentElement.classList.contains('drop-slot')) {
+                draggedElement.parentElement.classList.remove('filled');
+            }
+
+            draggedElement.style.position = 'static';
+            draggedElement.style.left = 'auto';
+            draggedElement.style.top = 'auto';
+
+            if (destinationZone.classList.contains('drop-slot')) {
+                if (!destinationZone.hasChildNodes()) {
+                    destinationZone.appendChild(draggedElement);
+                    destinationZone.classList.add('filled');
+                } else {
+                    // Jika slot sudah penuh, kembalikan ke asal
+                    if (initialParent) {
+                        initialParent.appendChild(draggedElement);
+                        if (initialParent.classList.contains('drop-slot')) initialParent.classList.add('filled');
+                    }
+                }
             } else {
-                // Jawaban Salah
-                slot.classList.add('error-shake');
-                setTimeout(() => slot.classList.remove('error-shake'), 400);
+                // Drop ke Options Bank
+                destinationZone.appendChild(draggedElement);
             }
         }
 
-        function checkWin() {
-            if (correctPlacements === numbers.length) {
-                setTimeout(() => {
-                    document.getElementById('successPopup').classList.add('active');
-                }, 500);
-            }
-        }
-
-        // Mengembalikan opacity jika batal digeser
+        // Mengembalikan opacity mouse drag
         document.addEventListener('dragend', function(ev) {
             if(ev.target.className.includes('drag-chip')) {
                 ev.target.style.opacity = "1";
             }
         });
+
+        /* ==================================
+           FUNGSI PERIKSA JAWABAN
+           ================================== */
+        function checkAnswers() {
+            const slots = document.querySelectorAll('.drop-slot');
+            const bank = document.getElementById('optionsBank');
+            
+            let isAllPlaced = true;
+            let isAllCorrect = true;
+
+            // 1. Pastikan semua kotak telah terisi
+            slots.forEach(slot => {
+                if (!slot.hasChildNodes()) {
+                    isAllPlaced = false;
+                }
+            });
+
+            if (!isAllPlaced) {
+                alert("Harap lengkapi semua notasi atom di dalam kotak putus-putus terlebih dahulu!");
+                return;
+            }
+
+            // 2. Evaluasi jawaban di masing-masing slot
+            slots.forEach(slot => {
+                const expectedValue = slot.getAttribute('data-expected');
+                const chip = slot.firstElementChild;
+                const droppedValue = chip.getAttribute('data-value');
+
+                if (expectedValue !== droppedValue) {
+                    isAllCorrect = false;
+                    
+                    // Bergetar merah
+                    chip.classList.add('error-shake');
+                    
+                    // Kembalikan kotak yang salah ke bank angka
+                    setTimeout(() => {
+                        chip.classList.remove('error-shake');
+                        bank.appendChild(chip);
+                        slot.classList.remove('filled');
+                    }, 800);
+                }
+            });
+
+            // 3. Jika semua jawaban tepat
+            if (isAllCorrect) {
+                // Kunci permainan
+                document.querySelectorAll('.drag-chip').forEach(chip => {
+                    chip.setAttribute('draggable', 'false');
+                    chip.style.cursor = 'default';
+                });
+                
+                // Munculkan popup berhasil
+                setTimeout(() => {
+                    document.getElementById('successPopup').classList.add('active');
+                }, 500);
+            }
+        }
     </script>
 </body>
 </html>
